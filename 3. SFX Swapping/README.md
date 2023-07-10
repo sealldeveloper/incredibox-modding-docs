@@ -1,5 +1,5 @@
-# 3. SFX Swapping
-## Step 1: Changing a SFX
+# 3. Music Swapping
+## Step 1: Changing the music
 1. In your decompiled files, go to the app folder.
 2. Depending if your using a normal incredibox install with multiple packs, or a mod with just one (such as Travis), you will see multiple "asset" folders, named asset-v1, asset-v2, etc.
 3. Open the asset folder you want to edit (usually asset-v1) and then open the sound folder, then the ogg folder, then each ogg file matches to each character.
