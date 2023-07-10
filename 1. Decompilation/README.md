@@ -25,7 +25,4 @@ You should now have a bunch of files, these are the 'source' code.
 4. Type in the following two commands, **in order**:
 - `select app.asar`
 - `decompile`
-5. You can then close the window, a new folder should appear called `app.asar_DECOMPILED`. This will contain all the decompiled files neede! Congratulations.
-
-## Step 3: What next?
-You can now continue to the second step. [2. Sprite Swapping](https://github.com/sealldeveloper/incredibox-modding-docs/tree/main/2.%20Sprite%20Swapping)
+5. You can then close the window, a new folder should appear called `app.asar_DECOMPILED`. This will contain all the decompiled files needed! Congratulations.
