@@ -1,8 +1,5 @@
 # 1. Decompilation
 
-> **Warning**
-> You don't have to do this, the files are available on [GitHub](https://github.com/Joalor64GH/Incredibox-Latest) as a starting point.
-
 ## Step 1: The easy part
 
 ### Windows
