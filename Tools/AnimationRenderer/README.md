@@ -6,6 +6,7 @@ Instead of booting the game everytime to check an animation, use this!
 
 ## How to use:
 Inside the folder with the `renderer.py`, place the json to be used and rename it to `anime.json` and the sprite sheet to use named `anime.png`.
+Install the packages required with `python -m pip install -r requirements.txt`
 In the terminal, execute `python renderer.py` to use it.
 
 ### Optional, MP4 with music
