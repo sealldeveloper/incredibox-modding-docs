@@ -12,7 +12,7 @@ In the terminal, execute `python main.py` to use it.
 Type in your values, and a template, coordinates set and json will be produced!
 
 > **Note**
-> Keep in mind, sometimes the head at 0,0 in the animation JSON can float above the body, adjusting the height downwards to place the head at the same height as the 'Default' pose achieves the same thing.
+> Keep in mind, sometimes the head at 0,0 in the animation JSON can float above/below the body, adjusting the height downwards/upwards to place the head at the same height as the 'Default' pose achieves the same thing.
 
 ## How it works:
 Once you've inputted the values it does the following:
