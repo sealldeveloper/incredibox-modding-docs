@@ -49,7 +49,7 @@ So heres each value broken down:
 > Making animation are not for the feint of heart, they take **alot** of time.
 
 > **Note**
-> I have made a renderer, it runs in Python and has its own folder here in the 'Tools' section.
+> I have made a renderer, it runs in Python and has its own folder [here](https://github.com/sealldeveloper/incredibox-modding-docs/tree/main/Tools/AnimationRenderer) in the 'Tools' section.
 
 1. Start with an existing JSON, that helps alot with the formatting existing already.
 2. With your finished sprite sheet, make sure the JSON is named correctly, same as the `animeName` and the sprite sheet.
