@@ -1,5 +1,7 @@
 from PIL import Image, ImageDraw, ImageFont
-import math,os
+import math,os,json
+name=input('Name of Polo File: ')
+totalframe=int(input('Total Animation Frames (can be changed later): '))
 height=int(input('Height: '))
 width=int(input('Width: '))
 headHeight=int(input('Head Height: '))
@@ -17,7 +19,7 @@ draw.rectangle((width,0,width*2,height), fill=(0,255,0))
 draw.text((width+width/2-width/10,height/2-height/20),"Headless",fill=(0,0,0))
 draw.rectangle((width*2,0,width*3,height), fill=(0,0,255))
 draw.text((2*width+width/2-width/10,height/2-height/20),"Siloette",fill=(0,0,0))
-draw.text((0,0),f"sealldeveloper's Template Generator: {height},{width},{headHeight},{headscount}",fill=(0,0,0))
+draw.text((0,0),f"sealldeveloper's Template Generator: {name},{totalframe},{height},{width},{headHeight},{headscount}",fill=(0,0,0))
 
 heads=Image.new('RGBA',(int(width*col),int((rows*headHeight))), (255, 255, 255, 0))
 headswidth=width*col
@@ -39,4 +41,16 @@ for i in range(0,int(rows)):
                 f.write(f'Head {textcount} Coords: {j*width},{i*headHeight+height}\n')
 
 template.paste(heads,(0,height+17),heads)
-template.save('template.png')
+template.save(f'{name}.png')
+
+data={}
+data['animeName']=name
+data['percentageMax']=0.2
+data['totalFrame']=totalframe
+data['width']=width
+data['height']=height
+data['headHeight']=headHeight
+data['arrayFrame']=[{'prop':'0,0,0,0'}]
+f=open(f'{name}.json','w')
+json.dump(data,f,indent=6)
+f.close()
