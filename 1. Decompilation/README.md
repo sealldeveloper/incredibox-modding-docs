@@ -16,7 +16,7 @@ You should now have a bunch of files, these are the 'source' code.
 ## Step 2: The slightly harder part
 
 ### Windows
-1. Download [this repo](https://github.com/vlOd2/ASAREditor)
+1. Download [this]([https://github.com/vlOd2/ASAREditor](https://github.com/vlOd2/ASAREditor/archive/refs/heads/main.zip))
 2. There is a specific file in it, `ASAR Editor.bat`, copy it into the `resources` folder of the Incredibox extract.
 3. Double click it to open it, this should open a terminal window.
 4. Type in the following two commands, **in order**:
