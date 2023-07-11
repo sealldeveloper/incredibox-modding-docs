@@ -49,7 +49,24 @@ for j in range(0,headcolumns):
             temphead.save(f'internal/{j*width}-{i*headHeight+height}.png')
             count+=1
 
+
+silouettecheck=Image.new('RGBA',(width,height), (255, 255, 255, 255))
+default=Image.open(f'files/default.png')
+silouettecheck.paste(default,(0,0),default)
+silouette=Image.open(f'files/silouette.png')
+datas = silouette.getdata()
+newdata=[]
+for i in datas:
+    if not i[3] == 0:
+        newdata.append((i[0],i[1],i[2],210))
+    else:
+        newdata.append(i)
+silouette.putdata(newdata)
+silouettecheck.paste(silouette,(0,0),silouette)
+silouettecheck.save('output/silouette-check.png')
+
 gifframes=[]
+
 framecount=0
 for frame in animation_frames:
     framecount+=1
@@ -59,9 +76,21 @@ for frame in animation_frames:
     tempheadless=Image.open(f'files/headless.png')
     background=Image.new('RGBA',(width,height), (255, 255, 255, 255))
     background.paste(tempheadless,(0,0),tempheadless)
-    background.paste(temphead, (0+round(float(frame[2])),0+round(float(frame[3]))), temphead)
+    background.paste(temphead, (round(float(frame[2])),round(float(frame[3]))), temphead)
     background.save(f'gifframes/{framecount}.png')
     gifframes.append(imageio.v2.imread(f'gifframes/{framecount}.png'))
+
+
+background=Image.new('RGBA',(width,height), (255, 255, 255, 255))
+tempbody=Image.open(f'files/default.png')
+background.paste(tempbody,(0,0),tempbody)
+background.save('internal/checkframe1.png')
+background=Image.new('RGBA',(width,height), (255, 255, 255, 255))
+tempbody=Image.open(f'gifframes/1.png')
+background.paste(tempbody,(0,0),tempbody)
+background.save('internal/checkframe2.png')
+defaultcheckframes=[imageio.v2.imread(f'internal/checkframe1.png'),imageio.v2.imread(f'internal/checkframe2.png')]
+
 
 if os.path.exists('anime_a.ogg'):
     print('Compiling MP4...')
@@ -85,9 +114,10 @@ if os.path.exists('anime.mp4'):
     os.remove('anime.mp4')
 if os.path.exists('anime.ogg'):
     os.remove('anime.ogg')
-print('Compiling GIF...')
+print('Compiling GIFs...')
 imageio.mimsave('output/anime.gif',gifframes,fps=24)
-print('Compiled! Exported as anime.gif! Cleaning up...')
+imageio.mimsave('output/default-pose-compared-to-first-frame.gif',defaultcheckframes,fps=1)
+print('Compiled! Cleaning up...')
 if os.path.exists('gifframes'):
     shutil.rmtree('gifframes')
 if os.path.exists('internal'):
