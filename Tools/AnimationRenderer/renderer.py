@@ -18,6 +18,9 @@ os.makedirs('internal')
 if os.path.exists('gifframes'):
     shutil.rmtree('gifframes')
 os.makedirs('gifframes')
+if os.path.exists('output'):
+    shutil.rmtree('output')
+os.makedirs('output')
 
 img = Image.open("anime.png")
 imgwidth, imgheight = img.size
@@ -73,7 +76,7 @@ if os.path.exists('anime_a.ogg'):
         video=VideoFileClip('anime.mp4')
         audio=AudioFileClip('anime.ogg')
         final=video.set_audio(audio)
-        final.write_videofile('anime-with-audio.mp4')
+        final.write_videofile('output/anime-with-audio.mp4')
     else:
         print('Compiling MP4...')
         imageio.mimsave('anime.mp4',gifframes,fps=24)
@@ -81,12 +84,16 @@ if os.path.exists('anime_a.ogg'):
         video=VideoFileClip('anime.mp4')
         audio=AudioFileClip('anime_a.ogg')
         final=video.set_audio(audio)
-        final.write_videofile('anime-with-audio.mp4')
+        final.write_videofile('output/anime-with-audio.mp4')
 
 print('Compiling GIF...')
-imageio.mimsave('anime.gif',gifframes,fps=24)
+imageio.mimsave('output/anime.gif',gifframes,fps=24)
 print('Compiled! Exported as anime.gif! Cleaning up...')
 if os.path.exists('gifframes'):
     shutil.rmtree('gifframes')
+if os.path.exists('anime.mp4'):
+    os.remove('anime.mp4')
+if os.path.exists('anime.ogg'):
+    os.remove('anime.ogg')
 if os.path.exists('internal'):
     shutil.rmtree('internal')
