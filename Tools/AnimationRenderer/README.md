@@ -1,5 +1,5 @@
 # Animation Renderer
-Instead of booting the game everytime to check an animation, use this!
+Instead of booting the game everytime to check an animation, use this! It also checks for pixel misalignment on the first frame, or in the silouette. No need to boot the game when animating, just build your animation with this.
 
 ## Requirements
 - Python 3.11 or higher
