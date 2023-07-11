@@ -9,8 +9,16 @@ Install the packages required with `python -m pip install -r requirements.txt`
 
 In the terminal, execute `python main.py` to use it.
 
-Type in your values, and a template and coordinates set will be produced!
+Type in your values, and a template, coordinates set and json will be produced!
 
+## How it works:
+Once you've inputted the values it does the following:
+- Uses your number of heads to make multiples of 5 in each row.
+- Creates a blank image to start with the rectangles for the default, headless and siloette. This uses the `height` and `width` values provided, just creating 3 rectangles.
+- A new image is created for the heads, making the size using the `width` and `headHeight` values.
+- It then draws a new rectangle for each head, in order, colouring them in opposites to make it easy to see and labelling them, noting the coordinates down in the `name_coordinates.txt` file.
+- Merges the two images and exports it as `name_template.png`
+- Creates the JSON file using the values provided earlier, exporting it as `name.json`
 
 ## Examples
 Options Used:
@@ -24,7 +32,8 @@ Options Used:
 
 - demo_template.png:
 
-![demo_template](https://github.com/sealldeveloper/incredibox-modding-docs/assets/120470330/7a24d525-63c0-4bf4-9ae6-02f2b030b108)
+![demo_template](https://github.com/sealldeveloper/incredibox-modding-docs/assets/120470330/03fa5599-a63d-46f3-a1f3-deb6e532ef6f)
+
 
 
 - demo_coordinates.txt:
@@ -43,11 +52,11 @@ Head 8 Coords: 328,579
 ```json
 {
       "animeName": "demo",
-      "percentageMax": 0.2,
-      "totalFrame": 576,
-      "width": 164,
-      "height": 380,
-      "headHeight": 199,
+      "percentageMax": "0.2",
+      "totalFrame": "576",
+      "width": "164",
+      "height": "380",
+      "headHeight": "199",
       "arrayFrame": [
             {
                   "prop": "0,0,0,0"
