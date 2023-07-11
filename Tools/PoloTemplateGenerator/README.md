@@ -11,6 +11,14 @@ In the terminal, execute `python main.py` to use it.
 
 Type in your values, and a template and coordinates set will be produced!
 
+## How it works:
+Once you've inputted the values it does the following:
+- Uses your number of heads to make multiples of 5 in each row.
+- Creates a blank image to start with the rectangles for the default, headless and siloette. This uses the `height` and `width` values provided, just creating 3 rectangles.
+- A new image is created for the heads, making the size using the `width` and `headHeight` values.
+- It then draws a new rectangle for each head, in order, colouring them in opposites to make it easy to see and labelling them, noting the coordinates down in the `name_coordinates.txt` file.
+- Merges the two images and exports it as `name_template.png`
+- Creates the JSON file using the values provided earlier, exporting it as `name.json`
 
 ## Examples
 Options Used:
