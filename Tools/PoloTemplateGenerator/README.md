@@ -19,7 +19,9 @@ Options Used:
 - Head Height: 199
 - Head Count: 32
 ### Results
+
 - Template.png:
+
 ![template](https://github.com/sealldeveloper/incredibox-modding-docs/assets/120470330/3d0d449a-d5d0-4284-95ca-606acc384976)
 
 
