@@ -11,12 +11,8 @@
 ## Step 2: Recompiling your files
 ### Windows
 1. If you haven't already, follow steps 1 and 2 from [here](https://github.com/sealldeveloper/incredibox-modding-docs/tree/main/1.%20Decompilation#step-2-the-slightly-harder-part)
-2. Whereever your decompiled files are, the folder **outside** of it should have the .bat file.
-3. Make a new text document and change its entire name to `modded.asar`.
-4. Make sure the folder where your modding environment is stored is named `modded.asar_DECOMPILED`
-5. Open the .bat and do the following commands **in order**:
-- `select modded.asar`
-- `compile`
-6. Close the window, a new file should appear: `modded.asar_COMPILED`.
-7. Move this file to your Incredibox install, and rename the existing `app.asar` with `app-backup.asar` and rename `modded.asar` to `app.asar`.
-8. Boot Incredibox and your changes should be visible.
+2. Open it up again, then select the 'pack' tab.
+3. Inside your `app.asar.unpack` folder, select all the files then drag and drop them onto the blank box on the left side of the window.
+4. Then, press pack.
+5. After its done a file should appear in the `app.asar.unpack` folder called `app.asar`.
+6. Move this to the folder where the app.asar originally was and replace it with this one, this will use your new compiled version in the game.
