@@ -9,7 +9,7 @@ Install the packages required with `python -m pip install -r requirements.txt`
 
 In the terminal, execute `python main.py` to use it.
 
-Type in your values, and a template and coordinates set will be produced!
+Type in your values, and a template, coordinates set and json will be produced!
 
 ## How it works:
 Once you've inputted the values it does the following:
