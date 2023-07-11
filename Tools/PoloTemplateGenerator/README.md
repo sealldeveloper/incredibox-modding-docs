@@ -43,11 +43,11 @@ Head 8 Coords: 328,579
 ```json
 {
       "animeName": "demo",
-      "percentageMax": 0.2,
-      "totalFrame": 576,
-      "width": 164,
-      "height": 380,
-      "headHeight": 199,
+      "percentageMax": "0.2",
+      "totalFrame": "576",
+      "width": "164",
+      "height": "380",
+      "headHeight": "199",
       "arrayFrame": [
             {
                   "prop": "0,0,0,0"
