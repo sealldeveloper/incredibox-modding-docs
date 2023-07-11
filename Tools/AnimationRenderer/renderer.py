@@ -34,7 +34,7 @@ headless.save('files/headless.png')
 silouette=img.crop((width*2,0,width*3,height))
 silouette.save('files/silouette.png')
 
-heads=img.crop((0,height,imgwidth,imgheight-17))
+heads=img.crop((0,height,imgwidth,imgheight))
 headswidth,headsheight=heads.size
 headrows=int(headsheight/headHeight)+1
 headcolumns=int(headswidth/width)+1
