@@ -75,7 +75,9 @@ if os.path.exists('anime_a.ogg'):
         final=video.set_audio(audio)
         final.write_videofile('anime-with-audio.mp4')
     else:
-        print('Combined MP4, adding audio to MP4...')
+        print('Compiling MP4...')
+        imageio.mimsave('anime.mp4',gifframes,fps=24)
+        print('Combiled MP4, adding audio to MP4...')
         video=VideoFileClip('anime.mp4')
         audio=AudioFileClip('anime_a.ogg')
         final=video.set_audio(audio)
