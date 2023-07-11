@@ -33,7 +33,7 @@ We can see a perfect box around the head, so thats the head frame being selected
 
 Now, the remaining two values, indicate the heads movement ingame in terms of x and y! (The first value being x, second being y).
 
-If we modify the value to be `328,380,5,5` adn recompile we should see the head move to the bottom right ingame.
+If we modify the value to be `328,380,5,5` and recompile we should see the head move to the bottom right ingame.
 
 ![image](https://github.com/sealldeveloper/incredibox-modding-docs/assets/120470330/87346a7a-eaf0-471b-bfa7-07cbf9129361)
 
