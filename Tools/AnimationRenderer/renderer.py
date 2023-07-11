@@ -64,36 +64,31 @@ for frame in animation_frames:
     gifframes.append(imageio.v2.imread(f'gifframes/{framecount}.png'))
 
 if os.path.exists('anime_a.ogg'):
+    print('Compiling MP4...')
+    imageio.mimsave('anime.mp4',gifframes,fps=24)
+    video=VideoFileClip('anime.mp4')
     if os.path.exists('anime_b.ogg'):
-        print('Compiling MP4...')
-        imageio.mimsave('anime.mp4',gifframes,fps=24)
         print('Compiled MP4, merging audio tracks..')
         audioa=AudioSegment.from_ogg('anime_a.ogg')
         audiob=AudioSegment.from_ogg('anime_b.ogg')
         audiocombine=audioa+audiob
         audiocombine.export('anime.ogg',format="ogg")
         print('Audio merged, adding audio to MP4...')
-        video=VideoFileClip('anime.mp4')
         audio=AudioFileClip('anime.ogg')
-        final=video.set_audio(audio)
-        final.write_videofile('output/anime-with-audio.mp4')
     else:
-        print('Compiling MP4...')
-        imageio.mimsave('anime.mp4',gifframes,fps=24)
-        print('Combiled MP4, adding audio to MP4...')
-        video=VideoFileClip('anime.mp4')
+        print('Compiled MP4, adding audio to MP4...')
         audio=AudioFileClip('anime_a.ogg')
-        final=video.set_audio(audio)
-        final.write_videofile('output/anime-with-audio.mp4')
+    final=video.set_audio(audio)
+    final.write_videofile('output/anime-with-audio.mp4')
 
+if os.path.exists('anime.mp4'):
+    os.remove('anime.mp4')
+if os.path.exists('anime.ogg'):
+    os.remove('anime.ogg')
 print('Compiling GIF...')
 imageio.mimsave('output/anime.gif',gifframes,fps=24)
 print('Compiled! Exported as anime.gif! Cleaning up...')
 if os.path.exists('gifframes'):
     shutil.rmtree('gifframes')
-if os.path.exists('anime.mp4'):
-    os.remove('anime.mp4')
-if os.path.exists('anime.ogg'):
-    os.remove('anime.ogg')
 if os.path.exists('internal'):
     shutil.rmtree('internal')
