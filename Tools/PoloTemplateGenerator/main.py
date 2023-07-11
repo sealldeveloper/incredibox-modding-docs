@@ -50,11 +50,11 @@ for i in range (0,totalframe):
     arrayFrame.append({'prop':'0,0,0,0'})
 data={}
 data['animeName']=name
-data['percentageMax']=0.2
-data['totalFrame']=totalframe
-data['width']=width
-data['height']=height
-data['headHeight']=headHeight
+data['percentageMax']=str(0.2)
+data['totalFrame']=str(totalframe)
+data['width']=str(width)
+data['height']=str(height)
+data['headHeight']=str(headHeight)
 data['arrayFrame']=arrayFrame
 f=open(f'{name}.json','w')
 json.dump(data,f,indent=6)
