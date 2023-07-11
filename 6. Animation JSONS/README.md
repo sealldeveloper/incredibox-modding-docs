@@ -56,7 +56,7 @@ So heres each value broken down:
 3. Begin modifying your animation frames, this takes a long time to perfect and to make sure its working you have to boot up Incredibox to check.
 > **Note**
 > Some people like to use Adobe Animate to plan their animation to the music they are using, animations by guessing can appear wonky, or out of time and planning them makes it alot easier.
-4. After lots of effort, you should have a working animation.'
+4. After lots of effort, you should have a working animation.
 
 ## Step 3: Compiling your animation into the game
 ### Windows
