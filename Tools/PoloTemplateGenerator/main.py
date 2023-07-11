@@ -17,6 +17,7 @@ draw.rectangle((width,0,width*2,height), fill=(0,255,0))
 draw.text((width+width/2-width/10,height/2-height/20),"Headless",fill=(0,0,0))
 draw.rectangle((width*2,0,width*3,height), fill=(0,0,255))
 draw.text((2*width+width/2-width/10,height/2-height/20),"Siloette",fill=(0,0,0))
+draw.text((0,0),f"sealldeveloper's Template Generator: {height},{width},{headHeight},{headscount}",fill=(0,0,0))
 
 heads=Image.new('RGBA',(int(width*col),int((rows*headHeight))), (255, 255, 255, 0))
 headswidth=width*col
