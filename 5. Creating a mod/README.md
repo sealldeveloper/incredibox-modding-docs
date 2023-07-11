@@ -73,5 +73,8 @@ Starting with a mod skeleton helps with starting, I recommend starting with some
 ## Step 3: Building it and utilising previous skills!
 Using the guides in steps 2, 3, and 4, you know how to swap out all these files, you can continue to do the same with your mod, take a look around and don't be afraid to experiment and break things. Learnings about mistakes. Good luck!
 
+### Step 3(b): Making a sprite
+To start with making a sprite from scratch, a template it best. Use [the tool provided](https://github.com/sealldeveloper/incredibox-modding-docs/tree/main/Tools/PoloTemplateGenerator) to make a template to the dimensions you see fit. A JSON is generated alongside the template and coordinates with the empty frames.
+
 ## Step 4: Compiling your files.
 ### [Windows](https://github.com/sealldeveloper/incredibox-modding-docs/blob/main/1.%20Decompilation/README.md#step-3-compilation)
