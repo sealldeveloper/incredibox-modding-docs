@@ -16,11 +16,16 @@ You should now have a bunch of files, these are the 'source' code.
 ## Step 2: The slightly harder part
 
 ### Windows
-1. Download [this](https://github.com/aardio/WinAsar/raw/master/dist/WinAsar.7z) and extract the exe file. This will be marked as dangerous in some browsers, if your worried the VirusTotal scans of the zip and exe are linked at the end of this page.
+1. Download [this](https://github.com/aardio/WinAsar/raw/master/dist/WinAsar.7z) and extract the exe file. This will be marked as dangerous in some browsers, if your worried the VirusTotal scans of the zip and exe are linked at the end of this step.
 2. Once opened, there is an 'extract' button on the left, click it.
 3. Up the top press 'open', then direct to the 'app.asar' file and open it.
 4. Press extract at the bottom.
 5. A new folder called `app.asar.unpack` will appear. This will contain all the decompiled files needed! Congratulations.
+
+- [VirusTotal Scan of 7Z(https://www.virustotal.com/gui/file/818200b7b5eff0c3afa29b467a00cf975faf0d7ec409b7946ae0fdce53ab457c)
+- [VirusTotal Scan of EXE](https://www.virustotal.com/gui/file/15184a7ddf502c4e078eed4dfe41c8c74db31eb58f4fbf666c73b4249bc6235e)
+> **Note**
+> These are likely false positives, but if you are technically inclined there are other tools you can use to do this online.
 
 
 ## Step 3: Compilation
