@@ -11,3 +11,4 @@ This repo will attempt to explain aspects of Incredibox modding from decompilati
 - [3. Music Swapping](https://github.com/sealldeveloper/incredibox-modding-docs/tree/main/3.%20Music%20Swapping)
 - [4. Bonus Swapping](https://github.com/sealldeveloper/incredibox-modding-docs/tree/main/4.%20Bonus%20Swapping)
 - [5. Creating a mod](https://github.com/sealldeveloper/incredibox-modding-docs/tree/main/5.%20Creating%20a%20mod)
+- [6. Animation JSONs](https://github.com/sealldeveloper/incredibox-modding-docs/tree/main/6.%20Animation%20JSONS)
