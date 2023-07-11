@@ -49,7 +49,7 @@ So heres each value broken down:
 > Making animation are not for the feint of heart, they take **alot** of time.
 
 > **Note**
-> I plan to make a renderer for the animations in Python or the like to avoid booting the game every time to test an animation.
+> I plan to make a renderer for the animations in Python or the like to avoid booting the game and recompiling every time to test an animation.
 
 1. Start with an existing JSON, that helps alot with the formatting existing already.
 2. With your finished sprite sheet, make sure the JSON is named correctly, same as the `animeName` and the sprite sheet.
