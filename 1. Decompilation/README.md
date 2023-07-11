@@ -16,12 +16,8 @@ You should now have a bunch of files, these are the 'source' code.
 ## Step 2: The slightly harder part
 
 ### Windows
-1. Download [this](https://github.com/vlOd2/ASAREditor/archive/refs/heads/main.zip)
-2. There is a specific file in it, `ASAR Editor.bat`, copy it into the `resources` folder of the Incredibox extract.
-3. Double click it to open it, this should open a terminal window.
-4. Type in the following two commands, **in order**:
-```
-select app.asar
-decompile
-```
-5. You can then close the window, a new folder should appear called `app.asar_DECOMPILED`. This will contain all the decompiled files needed! Congratulations.
+1. Download [this](https://github.com/aardio/WinAsar/raw/master/dist/WinAsar.7z) and extract the exe file. This will be marked as dangerous in some browsers, if your worried the VirusTotal scans of the zip and exe are linked at the end of this page.
+2. Once opened, there is an 'extract' button on the left, click it.
+3. Up the top press 'open', then direct to the 'app.asar' file and open it.
+4. Press extract at the bottom.
+5. A new folder called `app.asar.unpack` will appear. This will contain all the decompiled files needed! Congratulations.
