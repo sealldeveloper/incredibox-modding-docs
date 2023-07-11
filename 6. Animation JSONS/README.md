@@ -39,8 +39,8 @@ If we modify the value to be `328,380,5,5` adn recompile we should see the head 
 
 There we go!
 So heres each value broken down:
-- `328` : Top left corner of the head sprite, x value
-- `380` : Top left corner of the head sprite, y value
+- `328` : Top left corner of the head sprite, x value (left and right across the image)
+- `380` : Top left corner of the head sprite, y value (up and down the image)
 - `0` : X movement of the head, positive numbers being right, negative numbers being left
 - `3.8` : Y movement of the head, positive numbers being down, negative numbers being up
 
