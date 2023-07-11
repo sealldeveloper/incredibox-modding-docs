@@ -32,7 +32,8 @@ Options Used:
 
 - demo_template.png:
 
-![demo_template](https://github.com/sealldeveloper/incredibox-modding-docs/assets/120470330/7a24d525-63c0-4bf4-9ae6-02f2b030b108)
+![demo_template](https://github.com/sealldeveloper/incredibox-modding-docs/assets/120470330/03fa5599-a63d-46f3-a1f3-deb6e532ef6f)
+
 
 
 - demo_coordinates.txt:
