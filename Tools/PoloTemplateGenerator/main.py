@@ -47,7 +47,7 @@ template.save(f'{name}_template.png')
 
 arrayFrame=[]
 for i in range (0,totalframe):
-    arrayFrame.append({'prop':'0,0,0,0'})
+    arrayFrame.append({'prop':f'0,{height},0,0'})
 data={}
 data['animeName']=name
 data['percentageMax']=str(0.2)
