@@ -19,11 +19,11 @@ col=nearest5/rows
 template=Image.new('RGBA',(int(width*col),int(height+(rows*headHeight))), (255, 255, 255, 0))
 draw=ImageDraw.Draw(template)
 draw.rectangle((0,0,164,height), fill=(255,0,0))
-draw.text((164/2-164/10,height/2-height/20),"Default",fill=(0,0,0))
-draw.rectangle((164,0,164*2,height), fill=(0,255,0))
-draw.text((164+164/2-164/10,height/2-height/20),"Headless",fill=(0,0,0))
-draw.rectangle((164*2,0,164*3,height), fill=(0,0,255))
-draw.text((2*164+164/2-164/10,height/2-height/20),"Siloette",fill=(0,0,0))
+draw.text((66,height/2-height/20),"Default",fill=(0,0,0))
+draw.rectangle((164,0,328,height), fill=(0,255,0))
+draw.text((230,height/2-height/20),"Headless",fill=(0,0,0))
+draw.rectangle((328,0,492,height), fill=(0,0,255))
+draw.text((394,height/2-height/20),"Siloette",fill=(0,0,0))
 draw.text((0,0),f"sealldeveloper's Template Generator\n{name},{totalframe},{height},{width},{headHeight},{headscount}",fill=(0,0,0))
 
 heads=Image.new('RGBA',(int(width*col),int((rows*headHeight))), (255, 255, 255, 0))
@@ -50,7 +50,7 @@ template.save(f'{name}_template.png')
 
 arrayFrame=[]
 for i in range (0,totalframe):
-    arrayFrame.append({'prop':f'0,{height},0,0'})
+    arrayFrame.append({'prop':f'0,{height},0,1'})
 data={}
 data['animeName']=name
 data['percentageMax']=str(0.2)
