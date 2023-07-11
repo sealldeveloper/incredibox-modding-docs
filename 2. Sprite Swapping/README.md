@@ -11,7 +11,7 @@
 ## Step 2: Recompiling your files
 ### Windows
 1. If you haven't already, follow steps 1 and 2 from [here](https://github.com/sealldeveloper/incredibox-modding-docs/tree/main/1.%20Decompilation#step-2-the-slightly-harder-part)
-2. Whereever your decompiled files are, the folder **outside** of it should have the .bat file.
+2. Where-ever your decompiled files are, the folder **outside** of it should have the .bat file.
 3. Make a new text document and change its entire name to `modded.asar`.
 4. Make sure the folder where your modding environment is stored is named `modded.asar_DECOMPILED`
 5. Open the .bat and do the following commands **in order**:
