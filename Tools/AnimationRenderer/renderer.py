@@ -34,7 +34,7 @@ silouette.save('files/silouette.png')
 heads=img.crop((0,height,imgwidth,imgheight-17))
 headswidth,headsheight=heads.size
 headrows=int(headsheight/headHeight)+1
-headcolumns=int(headswidth/width)
+headcolumns=int(headswidth/width)+1
 count=0
 print(f'Extracting heads... (~{headrows*headcolumns})')
 for j in range(0,headcolumns):
