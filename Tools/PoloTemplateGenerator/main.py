@@ -9,8 +9,6 @@ if os.path.exists('coordinates.txt'):
 nearest5=5*math.ceil(headscount/5)
 rows=nearest5/5
 col=nearest5/rows
-print(width*col)
-print(height+17+(rows*headHeight))
 template=Image.new('RGBA',(int(width*col),int(height+17+(rows*headHeight))), (255, 255, 255, 0))
 draw=ImageDraw.Draw(template)
 draw.rectangle((0,0,width,height), fill=(255,0,0))
