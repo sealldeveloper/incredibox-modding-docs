@@ -9,10 +9,4 @@
 6. After modifying the files you wish, its time to recompile.
 
 ## Step 2: Recompiling your files
-### Windows
-1. If you haven't already, follow steps 1 and 2 from [here](https://github.com/sealldeveloper/incredibox-modding-docs/tree/main/1.%20Decompilation#step-2-the-slightly-harder-part)
-2. Open it up again, then select the 'pack' tab.
-3. Inside your `app.asar.unpack` folder, select all the files then drag and drop them onto the blank box on the left side of the window.
-4. Then, press pack.
-5. After its done a file should appear in the `app.asar.unpack` folder called `app.asar`.
-6. Move this to the folder where the app.asar originally was and replace it with this one, this will use your new compiled version in the game.
+### [Windows](https://github.com/sealldeveloper/incredibox-modding-docs/blob/main/1.%20Decompilation/README.md#step-3-compilation)
