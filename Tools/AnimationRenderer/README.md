@@ -14,9 +14,11 @@ In the terminal, execute `python renderer.py` to use it.
 ### Optional, MP4 with music
 To use the music, place the audio tracks in the folder, if its a single track name it `anime_a.ogg` and if its two tracks use `anime_a.ogg` and `anime_b.ogg`.
 
-## Examples (Travis Mosaic)
-![anime](https://github.com/sealldeveloper/incredibox-modding-docs/assets/120470330/c5604f1a-671c-4ae1-80c8-93af4fdae01e)
+## Examples (Travis Euphoria)
+![anime](https://github.com/sealldeveloper/incredibox-modding-docs/assets/120470330/b0c8ba4a-52cf-4642-8285-0af7d99c1918)
 
 
-https://github.com/sealldeveloper/incredibox-modding-docs/assets/120470330/5b8acc25-ca46-447a-ac3f-43f3d0477b69
+https://github.com/sealldeveloper/incredibox-modding-docs/assets/120470330/3287ea5c-71e7-4cb3-bcbe-6a4de0372753
+
+
 
