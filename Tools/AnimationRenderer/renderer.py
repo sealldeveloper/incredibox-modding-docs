@@ -31,8 +31,8 @@ default.save('files/default.png')
 headless=img.crop((width,0,width*2,height))
 headless.save('files/headless.png')
 
-silouette=img.crop((width*2,0,width*3,height))
-silouette.save('files/silouette.png')
+silhouette=img.crop((width*2,0,width*3,height))
+silhouette.save('files/silhouette.png')
 
 heads=img.crop((0,height,imgwidth,imgheight))
 headswidth,headsheight=heads.size
@@ -50,20 +50,20 @@ for j in range(0,headcolumns):
             count+=1
 
 
-silouettecheck=Image.new('RGBA',(width,height), (255, 255, 255, 255))
+silhouettecheck=Image.new('RGBA',(width,height), (255, 255, 255, 255))
 default=Image.open(f'files/default.png')
-silouettecheck.paste(default,(0,0),default)
-silouette=Image.open(f'files/silouette.png')
-datas = silouette.getdata()
+silhouettecheck.paste(default,(0,0),default)
+silhouette=Image.open(f'files/silhouette.png')
+datas = silhouette.getdata()
 newdata=[]
 for i in datas:
     if not i[3] == 0:
         newdata.append((i[0],i[1],i[2],210))
     else:
         newdata.append(i)
-silouette.putdata(newdata)
-silouettecheck.paste(silouette,(0,0),silouette)
-silouettecheck.save('output/silouette-check.png')
+silhouette.putdata(newdata)
+silhouettecheck.paste(silhouette,(0,0),silhouette)
+silhouettecheck.save('output/silhouette-check.png')
 
 gifframes=[]
 
