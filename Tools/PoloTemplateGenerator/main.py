@@ -1,9 +1,12 @@
 from PIL import Image, ImageDraw, ImageFont
-import math,os,json
+import math,os,json,sys
 name=input('Name of Polo File: ')
 totalframe=int(input('Total Animation Frames (can be changed later): '))
 height=int(input('Height: '))
 width=int(input('Width: '))
+if width>164:
+    print('The width cannot be greater than 164 pixels! Otherwise the body breaks')
+    sys.exit()
 headHeight=int(input('Head Height: '))
 headscount=int(input('Head Count: '))
 if os.path.exists(f'{name}_coordinates.txt'):
@@ -15,12 +18,12 @@ rows=nearest5/5
 col=nearest5/rows
 template=Image.new('RGBA',(int(width*col),int(height+(rows*headHeight))), (255, 255, 255, 0))
 draw=ImageDraw.Draw(template)
-draw.rectangle((0,0,width,height), fill=(255,0,0))
-draw.text((width/2-width/10,height/2-height/20),"Default",fill=(0,0,0))
-draw.rectangle((width,0,width*2,height), fill=(0,255,0))
-draw.text((width+width/2-width/10,height/2-height/20),"Headless",fill=(0,0,0))
-draw.rectangle((width*2,0,width*3,height), fill=(0,0,255))
-draw.text((2*width+width/2-width/10,height/2-height/20),"Siloette",fill=(0,0,0))
+draw.rectangle((0,0,164,height), fill=(255,0,0))
+draw.text((164/2-164/10,height/2-height/20),"Default",fill=(0,0,0))
+draw.rectangle((164,0,164*2,height), fill=(0,255,0))
+draw.text((164+164/2-164/10,height/2-height/20),"Headless",fill=(0,0,0))
+draw.rectangle((164*2,0,164*3,height), fill=(0,0,255))
+draw.text((2*164+164/2-164/10,height/2-height/20),"Siloette",fill=(0,0,0))
 draw.text((0,0),f"sealldeveloper's Template Generator\n{name},{totalframe},{height},{width},{headHeight},{headscount}",fill=(0,0,0))
 
 heads=Image.new('RGBA',(int(width*col),int((rows*headHeight))), (255, 255, 255, 0))
