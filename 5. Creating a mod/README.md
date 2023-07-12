@@ -43,7 +43,7 @@ Starting with a mod skeleton helps with starting, I recommend starting with some
 | this.nbpolo        | The amount of polos in the game                                                        |
 | this.nbloopbonus   | The amount of loops for the bonus                                                      |
 | this.bonusloopA    | Can't determine an ingame change, leave as `!0`.                                       |
-| this.bonusendloopA | Determines if a bonus should be in loop A always. `!1` to enable.                      |
+| this.bonusendloopA | Determines if a bonus should start at the start of loop A always. `!1` to enable.      |
 | this.recmaxloop    | The maximum amount of loops for a recording.                                           |
 | this.recminloop    | The minimum amount of loops for a recording.                                           |
 | this.recmintime    | A math function to determine the minimum amount of time for a recording (don't change) |
