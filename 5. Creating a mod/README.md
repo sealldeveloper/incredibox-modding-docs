@@ -89,6 +89,7 @@ A face drawing guide for polos exists, made by Rem! A download is available [her
 A sample body sprite exists, downloadable at the following links:
 - [Normal Sprite Sheet](https://github.com/sealldeveloper/incredibox-modding-docs/assets/120470330/d6ec4001-e5ce-4305-ab7f-160e1a3ab62f)
 - [HD Sprite Sheet](https://github.com/sealldeveloper/incredibox-modding-docs/assets/120470330/28c509e9-98b3-4c94-989f-e10b7f1b6818)
+
 These files were in the Void pack, so thanks to Rem once more!
 
 ## Step 4: Compiling your files.
