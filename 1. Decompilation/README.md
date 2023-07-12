@@ -2,6 +2,9 @@
 
 ## Step 1: The easy part
 
+> **Note**
+> Generally though, instead of using an install, use a preexisting mod like Travis.
+
 ### Windows
 Firstly, go to the location of your Incredibox install, this can be found by doing the following:
 1. Open Steam
@@ -12,6 +15,7 @@ Firstly, go to the location of your Incredibox install, this can be found by doi
 Inside the folder will be one exe file, duplicate it and rename the file extension from .exe to .zip, then extract the zip.
 
 You should now have a bunch of files, these are the 'source' code.
+
 
 ## Step 2: The slightly harder part
 
