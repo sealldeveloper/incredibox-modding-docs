@@ -1,6 +1,9 @@
 # Animation Renderer
 Instead of booting the game everytime to check an animation, use this! It also checks for pixel misalignment on the first frame, or in the silouette. No need to boot the game when animating, just build your animation with this.
 
+> **Note**
+> These animations are not perfect, decimal pixel changes are not accounted for and are rounded, for example `-4.95` becomes `-5` and `1.25` becomes `1`.
+
 ## Requirements
 - Python 3.11 or higher
 
