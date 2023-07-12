@@ -15,7 +15,8 @@ python -m pip install -r requirements.txt
 ```
 python source-to-windows.py
 ```
-2. A 'source' folder will appear, once you've put your mod folders it should look like the following:
+2. A 'source' folder will appear
+3. **Once you've put your mod folders in**, it should look like the following:
 
 ![image](https://github.com/sealldeveloper/incredibox-modding-docs/assets/120470330/0bea00d6-6947-4f5f-a084-1b5f8658102f)
 
