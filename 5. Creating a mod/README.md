@@ -82,5 +82,14 @@ To start with making a sprite from scratch, a template it best. Use [the tool pr
 
 A cool sprite example is the 8th character in the Void pack. It uses a headHeight of 380 (the same height of the character by default) to make the whole body change, at the disadvantage of each head having to contain movements, rather than moving it in a JSON.
 
+#### Making a face
+A face drawing guide for polos exists, made by Rem! A download is available [here](https://github.com/sealldeveloper/incredibox-modding-docs/files/12028660/polo_faces.zip).
+
+#### Making a body
+A sample body sprite exists, downloadable at the following links:
+- [Normal Sprite Sheet](https://github.com/sealldeveloper/incredibox-modding-docs/assets/120470330/d6ec4001-e5ce-4305-ab7f-160e1a3ab62f)
+- [HD Sprite Sheet](https://github.com/sealldeveloper/incredibox-modding-docs/assets/120470330/28c509e9-98b3-4c94-989f-e10b7f1b6818)
+These files were in the Void pack, so thanks to Rem once more!
+
 ## Step 4: Compiling your files.
 ### [Windows](https://github.com/sealldeveloper/incredibox-modding-docs/blob/main/1.%20Decompilation/README.md#step-3-compilation)
