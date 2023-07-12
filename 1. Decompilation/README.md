@@ -2,6 +2,9 @@
 
 ## Step 1: The easy part
 
+> **Note**
+> Generally though, instead of using an install, use a preexisting mod like Travis.
+
 ### Windows
 Firstly, go to the location of your Incredibox install, this can be found by doing the following:
 1. Open Steam
@@ -12,6 +15,7 @@ Firstly, go to the location of your Incredibox install, this can be found by doi
 Inside the folder will be one exe file, duplicate it and rename the file extension from .exe to .zip, then extract the zip.
 
 You should now have a bunch of files, these are the 'source' code.
+
 
 ## Step 2: The slightly harder part
 
@@ -29,9 +33,14 @@ You should now have a bunch of files, these are the 'source' code.
 
 
 ## Step 3: Compilation
+You have two options for compilation.
+### GUI (easier, slower)
 1. If you haven't already, follow points 1 and 2 from Step 2.
 2. Open it up again, then select the 'pack' tab.
 3. Inside your `app.asar.unpack` folder, select all the files then drag and drop them onto the blank box on the left side of the window.
 4. Then, press pack.
 5. After its done a file should appear in the `app.asar.unpack` folder called `app.asar`.
 6. Move this to the folder where the app.asar originally was and replace it with this one, this will use your new compiled version in the game.
+
+### Python Script (slightly harder, faster)
+1. Download the following script(s): [Compiler](https://github.com/sealldeveloper/incredibox-modding-docs/tree/main/Tools/Compiler) and the steps are listed to compile from source!
