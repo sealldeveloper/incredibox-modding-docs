@@ -40,17 +40,21 @@ Starting with a mod skeleton helps with starting, I recommend starting with some
 | this.looptime      | The time it take to loop.                                                              |
 | this.bpm           | The beats per minute.                                                                  |
 | this.totalframe    | The amount of frames per character per loop.                                           |
-| this.nbpolo        | ?                                                                                      |
-| this.nbloopbonus   | ?                                                                                      |
-| this.bonusloopA    | ?                                                                                      |
-| this.bonusendloopA | ?                                                                                      |
-| this.recmaxloop    | The maximum amount of loops for a recording (unsure)                                   |
-| this.recminloop    | The minimum amount of loops for a recording (unsure)                                   |
+| this.nbpolo        | The amount of polos in the game                                                        |
+| this.nbloopbonus   | The amount of loops for the bonus                                                      |
+| this.bonusloopA    | Determines if a bonus should start at the start of loop A or not.                      |
+| this.bonusendloopA | Determines if a bonus should start at the start of loop B or not.                      |
+| this.recmaxloop    | The maximum amount of loops for a recording.                                           |
+| this.recminloop    | The minimum amount of loops for a recording.                                           |
 | this.recmintime    | A math function to determine the minimum amount of time for a recording (don't change) |
 | this.spritepolo    | The name of the file for the blank polo.                                               |
 | this.spritepicto   | The name of the file for the icons in the pack.                                        |
-| this.colBck        | The hex color code of the background.                                                  |
-| this.col0-4        | Potentially other hex codes used for the background?                                   |
+| this.colBck        | A reserve colour for if the background image fails to render.                          |
+| this.col0          | Text colour.                                                                           |
+| this.col1          | Button background colour.                                                              |
+| this.col2          | Unhovered button background colour (visible in the Playlist menu).                     |
+| this.col3          | Loading bar, unselected menu tab background colour and hoverred button colour.         |
+| this.col4          | Selected menu button icon colour. (visible in Playlist when selecting 'My Mix').       |
 | this.animearray    | Contains the characters, expanded on below.                                            |
 | this.bonusarray    | Contains the bonuses, expanded on below.                                               |
 
