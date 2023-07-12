@@ -91,22 +91,23 @@ background.paste(tempbody,(0,0),tempbody)
 background.save('internal/checkframe2.png')
 defaultcheckframes=[imageio.v2.imread(f'internal/checkframe1.png'),imageio.v2.imread(f'internal/checkframe2.png')]
 
+def audio_merge(name1,name2):
+    audioa=AudioSegment.from_ogg(name1)
+    audiob=AudioSegment.from_ogg(name2)
+    audiocombine=audioa+audiob
+    audiocombine.export('anime.ogg',format="ogg")
+    print('Audio merged, adding audio to MP4...')
+    return AudioFileClip('anime.ogg')
 
 if os.path.exists('anime_a.ogg'):
     print('Compiling MP4...')
     imageio.mimsave('anime.mp4',gifframes,fps=24)
     video=VideoFileClip('anime.mp4')
+    print('Compiled MP4, merging audio tracks..')
     if os.path.exists('anime_b.ogg'):
-        print('Compiled MP4, merging audio tracks..')
-        audioa=AudioSegment.from_ogg('anime_a.ogg')
-        audiob=AudioSegment.from_ogg('anime_b.ogg')
-        audiocombine=audioa+audiob
-        audiocombine.export('anime.ogg',format="ogg")
-        print('Audio merged, adding audio to MP4...')
-        audio=AudioFileClip('anime.ogg')
+        audio=audio_merge('anime_a.ogg','anime_b.ogg')
     else:
-        print('Compiled MP4, adding audio to MP4...')
-        audio=AudioFileClip('anime_a.ogg')
+        audio=audio_merge('anime_a.ogg','anime_a.ogg')
     final=video.set_audio(audio)
     final.write_videofile('output/anime-with-audio.mp4')
 
