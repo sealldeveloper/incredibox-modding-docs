@@ -80,5 +80,7 @@ Using the guides in steps 2, 3, and 4, you know how to swap out all these files,
 ### Step 3(b): Making a sprite
 To start with making a sprite from scratch, a template it best. Use [the tool provided](https://github.com/sealldeveloper/incredibox-modding-docs/tree/main/Tools/PoloTemplateGenerator) to make a template to the dimensions you see fit. A JSON is generated alongside the template and coordinates with the empty frames.
 
+A cool sprite example is the 8th character in the Void pack. It uses a headHeight of 380 (the same height of the character by default) to make the whole body change, at the disadvantage of each head having to contain movements, rather than moving it in a JSON.
+
 ## Step 4: Compiling your files.
 ### [Windows](https://github.com/sealldeveloper/incredibox-modding-docs/blob/main/1.%20Decompilation/README.md#step-3-compilation)
