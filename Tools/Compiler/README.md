@@ -51,3 +51,6 @@ python source-to-webapp.py
 python source-to-webapp.py
 ```
 4. This will compile the source to a working zip in the `output` folder.
+
+#### Credit for this segment goes to:
+- [This repo](https://github.com/BovineBeta/Incredibox-IOS)! Created a great lil repo for documenting why iOS doesn't work, so made this egment easier!
