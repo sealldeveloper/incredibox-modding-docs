@@ -19,11 +19,9 @@ if os.path.exists('temp/'):
 if os.path.exists('output/'):
     shutil.rmtree('output/')
 os.makedirs('output/')
-os.makedirs('temp/windows/')
 os.makedirs('temp/android/')
 os.makedirs('temp/asar/')
-print('Unpacking template(s)...')
-shutil.unpack_archive('templates/windows.zip','temp/windows/','zip')
+print('Unpacking template...')
 shutil.unpack_archive('templates/asar.zip','temp/asar/','zip')
 os.makedirs('temp/asar/app/')
 print('Unpacking app...')
