@@ -1,5 +1,5 @@
 # Compiler
-Compiling with dodgey GUIs no more! Compile from APK, or source to a windows EXE!
+Compiling with dodgey GUIs no more! Compile from APK, or source to a windows EXE or a website with iOS support!
 
 ## Requirements
 - Python 3.11 or higher
