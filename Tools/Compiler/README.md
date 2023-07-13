@@ -1,5 +1,5 @@
 # Compiler
-Compiling with dodgey GUIs no more! Compile from APK, or source to a windows EXE!
+Compiling with dodgey GUIs no more! Compile from APK, or source to a windows EXE or a website with iOS support!
 
 ## Requirements
 - Python 3.11 or higher
@@ -35,7 +35,7 @@ python android-to-windows.py
 3. This will reformat the APK to a zip for windows, its in the `output` folder.
 
 ### 3. Source to Webapp Compilation
-This allows your source to work online, with support for all iOS devices!
+This allows your source to work online, with support for all iOS devices! You can also use this to re-compile webapps to support iOS, though the success rate may vary...
 
 1. Run the following command:
 ```
@@ -53,4 +53,4 @@ python source-to-webapp.py
 4. This will compile the source to a working zip in the `output` folder.
 
 #### Credit for this segment goes to:
-- [This repo](https://github.com/BovineBeta/Incredibox-IOS)! Created a great lil repo for documenting why iOS doesn't work, so made this egment easier!
+- [This repo](https://github.com/BovineBeta/Incredibox-IOS)! Created a great lil repo for documenting why iOS doesn't work, so made this segment easier!
