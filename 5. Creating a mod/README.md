@@ -85,12 +85,14 @@ A cool sprite example is the 8th character in the Void pack. It uses a headHeigh
 #### Making a face
 A face drawing guide for polos exists, made by Rem! A download is available [here](https://github.com/sealldeveloper/incredibox-modding-docs/files/12028660/polo_faces.zip).
 
+A mouth example guide also exists, from Rem's discord! A download is available [here](https://github.com/sealldeveloper/incredibox-modding-docs/assets/120470330/799febcd-0ce6-4ae3-a359-5d240827f466).
+
 #### Making a body
 A sample body sprite exists, downloadable at the following links:
-- [Normal Sprite Sheet](https://github.com/sealldeveloper/incredibox-modding-docs/assets/120470330/d6ec4001-e5ce-4305-ab7f-160e1a3ab62f)
-- [HD Sprite Sheet](https://github.com/sealldeveloper/incredibox-modding-docs/assets/120470330/28c509e9-98b3-4c94-989f-e10b7f1b6818)
+- [Normal Body Sprite Sheet](https://github.com/sealldeveloper/incredibox-modding-docs/assets/120470330/d6ec4001-e5ce-4305-ab7f-160e1a3ab62f)
+- [HD Body Sprite Sheet](https://github.com/sealldeveloper/incredibox-modding-docs/assets/120470330/28c509e9-98b3-4c94-989f-e10b7f1b6818)
 
-These files were in the Void pack, so thanks to Rem once more!
+These files were in the Void pack and in Rem's Discord, so thanks to Rem once more!
 
 ## Step 4: Compiling your files.
 ### [Windows](https://github.com/sealldeveloper/incredibox-modding-docs/blob/main/1.%20Decompilation/README.md#step-3-compilation)
