@@ -33,3 +33,21 @@ python source-to-windows.py
 python android-to-windows.py
 ```
 3. This will reformat the APK to a zip for windows, its in the `output` folder.
+
+### 3. Source to Webapp Compilation
+This allows your source to work online, with support for all iOS devices!
+
+1. Run the following command:
+```
+python source-to-webapp.py
+```
+2. A 'source' folder will appear
+3. **Once you've put your mod folders in**, it should look like the following:
+
+![image](https://github.com/sealldeveloper/incredibox-modding-docs/assets/120470330/0bea00d6-6947-4f5f-a084-1b5f8658102f)
+
+3. Then run this:
+```
+python source-to-webapp.py
+```
+4. This will compile the source to a working zip in the `output` folder.
