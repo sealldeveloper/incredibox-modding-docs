@@ -13,6 +13,7 @@ version=input('Pack Version to be displayed (eg. 1.0.0): ')
 import os,sys,shutil
 from distutils.dir_util import copy_tree
 from pydub import AudioSegment
+from moviepy.editor import VideoFileClip
 if not os.path.exists('source/'):
     print('Please move your mod source code into the \'source\' folder!')
     os.makedirs('source/')
@@ -56,7 +57,8 @@ for x in os.listdir('temp/webapp'):
             if os.path.isfile(f'{path}/{y}') and not y.endswith('mp4'):
                 newname=y.split('.')[0]
                 video = VideoFileClip(f'{path}/{y}')
-                viedo.write_videofile(f'{path}/{newname}.mp4')
+                video.write_videofile(f'{path}/{newname}.mp4')
+                os.remove(f'{path}/{y}')
 
 
 print('Patching files for your icon count...')
