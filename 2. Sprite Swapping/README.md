@@ -9,4 +9,4 @@
 6. Once you've modified the sprite you wish to change, you have to recompile your files.
 
 ## Step 2: Recompiling your files
-### [Windows](https://github.com/sealldeveloper/incredibox-modding-docs/blob/main/1.%20Decompilation/README.md#step-3-compilation)
+### [Windows](https://github.com/sealldeveloper/incredibox-modding-docs/blob/main/1.%20Decompilation/README.md#step-2-compilation)
