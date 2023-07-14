@@ -8,7 +8,6 @@ names = [
     'css',
     'js'
 ]
-packcount=int(input('How many packs/icons do you have: '))
 version=input('Pack Version to be displayed (eg. 1.0.0): ')
 import os,sys,shutil
 from distutils.dir_util import copy_tree
