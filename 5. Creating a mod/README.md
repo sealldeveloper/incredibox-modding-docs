@@ -95,4 +95,4 @@ A sample body sprite exists, downloadable at the following links:
 These files were in the Void pack and in Rem's Discord, so thanks to Rem once more!
 
 ## Step 4: Compiling your files.
-### [Windows](https://github.com/sealldeveloper/incredibox-modding-docs/blob/main/1.%20Decompilation/README.md#step-3-compilation)
+### [Windows](https://github.com/sealldeveloper/incredibox-modding-docs/blob/main/1.%20Decompilation/README.md#step-2-compilation)
