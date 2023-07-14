@@ -59,4 +59,4 @@ So heres each value broken down:
 4. After lots of effort, you should have a working animation.
 
 ## Step 3: Compiling your animation into the game
-### [Windows](https://github.com/sealldeveloper/incredibox-modding-docs/blob/main/1.%20Decompilation/README.md#step-3-compilation)
+### [Windows](https://github.com/sealldeveloper/incredibox-modding-docs/blob/main/1.%20Decompilation/README.md#step-2-compilation)
