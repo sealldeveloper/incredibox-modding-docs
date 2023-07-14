@@ -26,6 +26,6 @@ print('Unpacking asar...')
 extract_asar('temp/windows/app/resources/app.asar','temp/source/')
 print('Packing source...')
 shutil.make_archive('output/windows-to-source-packed','zip','temp/source/')
-print('Packed as \'windows-to-source-packed.apk\'! Cleaning up...')
+print('Packed as \'windows-to-source-packed.zip\'! Cleaning up...')
 if os.path.exists('temp/'):
     shutil.rmtree('temp/')
