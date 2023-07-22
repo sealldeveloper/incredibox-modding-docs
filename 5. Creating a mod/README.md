@@ -30,7 +30,10 @@ Starting with a mod skeleton helps with starting, I recommend starting with some
 | app.js      | All technical customization of character file names, source folder, colors, bpm and more. |
 
 ### `app.js`: broken down
-`app.js` is a JavaScript file that controls the settings of the pack, I plan to make a builder for this later. The ExampleMod includes a nicely formatted version of `app.js` for easier understanding.
+`app.js` is a JavaScript file that controls the settings of the pack.
+> **Note**
+> I have made a generator for this, which vastly simplifies this process, take a look [here](https://files.seall.dev/incredibox/appjs.html)
+
 | Variable           | Purpose                                                                                |
 |--------------------|----------------------------------------------------------------------------------------|
 | this.name          | The name of the pack, keep inside double quotes.                                       |
