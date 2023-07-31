@@ -13,4 +13,5 @@ This repo will attempt to explain aspects of Incredibox modding from decompilati
 - [5. Creating a mod](https://github.com/sealldeveloper/incredibox-modding-docs/tree/main/5.%20Creating%20a%20mod)
 - [6. Animation JSONs](https://github.com/sealldeveloper/incredibox-modding-docs/tree/main/6.%20Animation%20JSONS)
 - [Tools](https://github.com/sealldeveloper/incredibox-modding-docs/tree/main/Tools)
+
 **If any of my tools or information in this repo helped you, I would greaty appreciate a star or a little note of credit inside your mod!**
