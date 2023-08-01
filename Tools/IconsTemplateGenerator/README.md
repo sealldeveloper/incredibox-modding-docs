@@ -1,3 +1,4 @@
+# THIS TOOL HAS BEEN MOVED TO [A WEBSITE](https://files.seall.dev/incredibox/icontemplate.html)
 # Icon Template Generator
 Instead of using an existing icon pattern, you can generate the size you need.
 
