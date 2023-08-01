@@ -1,11 +1,15 @@
 from rich import print,inspect
 from rich.prompt import Prompt
-import os,sys,shutil
-import linecache
+from rich.panel import Panel
+import rich
+import os,sys,shutil,linecache
+from distutils.dir_util import copy_tree
+from asarPy import pack_asar,extract_asar
+from pydub import AudioSegment
+from moviepy.editor import VideoFileClip
 
 
 def android_to_source(names):
-    from distutils.dir_util import copy_tree
     os.makedirs('temp/android/')
     os.makedirs('temp/asar/')
     print('Unpacking template...')
@@ -37,10 +41,6 @@ def android_to_source(names):
 def android_to_webapp(names):
     version=Prompt.ask('Pack Version to be displayed (eg. 1.0.0)')
     print('Importing libraries...')
-    import os,sys,shutil
-    from distutils.dir_util import copy_tree
-    from pydub import AudioSegment
-    from moviepy.editor import VideoFileClip
     os.makedirs('temp/asar/')
     os.makedirs('temp/webapp/')
     print('Unpacking templates...')
@@ -187,9 +187,6 @@ def android_to_webapp(names):
 
 
 def android_to_windows(names):
-    import os,sys,shutil
-    from asarPy import pack_asar
-    from distutils.dir_util import copy_tree
     os.makedirs('temp/windows/')
     os.makedirs('temp/android/')
     os.makedirs('temp/asar/')
@@ -259,10 +256,6 @@ def source_to_webapp():
         'js'
     ]
     version=Prompt.ask('Pack Version to be displayed (eg. 1.0.0)')
-    import os,sys,shutil
-    from distutils.dir_util import copy_tree
-    from pydub import AudioSegment
-    from moviepy.editor import VideoFileClip
     os.makedirs('temp/webapp/')
     print('Unpacking template...')
     shutil.unpack_archive('templates/webapp.zip','temp/webapp/','zip')
@@ -390,8 +383,6 @@ def source_to_webapp():
 
 
 def source_to_windows():
-    import os,sys,shutil
-    from asarPy import pack_asar
     os.makedirs('temp/windows/')
     print('Unpacking template...')
     shutil.unpack_archive('templates/windows.zip','temp/windows/','zip')
@@ -430,11 +421,7 @@ def windows_to_webapp():
         'css',
         'js'
     ]
-    version=Prompt.ask('Pack Version to be displayed (eg. 1.0.0): ')
-    from distutils.dir_util import copy_tree
-    from pydub import AudioSegment
-    from asarPy import extract_asar
-    from moviepy.editor import VideoFileClip
+    version=Prompt.ask('Pack Version to be displayed (eg. 1.0.0): ')    
     os.makedirs('temp/webapp/')
     os.makedirs('temp/windows/')
     print('Unpacking template and app...')
@@ -566,8 +553,6 @@ def windows_to_webapp():
 
 
 def windows_to_source():
-    from asarPy import extract_asar
-    from distutils.dir_util import copy_tree
     names = [
         'css',
         'font',
@@ -619,6 +604,7 @@ def PrintException():
 
 
 if __name__ == "__main__":
+    print(Panel("[bright_cyan]Incredibox Mod Formatter\n[dodger_blue1]by [salmon1]sealldeveloper", title="[green1]Welcome![bright_white]"))
     format_output = ""
     format_input = Prompt.ask("Enter the format you are importing",choices=['android','source','windows'])
     output_choices=[]
