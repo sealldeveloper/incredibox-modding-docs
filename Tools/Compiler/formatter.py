@@ -1,4 +1,4 @@
-from rich import print,inspect
+from rich import print
 from rich.prompt import Prompt
 from rich.panel import Panel
 import rich
