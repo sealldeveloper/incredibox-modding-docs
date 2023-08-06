@@ -383,105 +383,11 @@ def source_to_webapp():
 
 
 def source_to_windows():
-    names = [
-        'css',
-        'js'
-    ]
-    version=Prompt.ask('Pack Version to be displayed (eg. 1.0.0)')
     os.makedirs('temp/windows/')
-    os.makedirs('temp/source/')
-    os.makedirs('temp/webapp/')
     print('Unpacking template...')
     shutil.unpack_archive('templates/windows.zip','temp/windows/','zip')
-    shutil.unpack_archive('templates/webapp.zip','temp/webapp/','zip')
-    assetversions=[]
-    for x in os.listdir('temp/webapp'):
-        if x.startswith('asset-v') and os.path.isdir(f'temp/webapp/{x}'):
-            assetversions.append(x.replace('asset-v',''))
-    print('Patching files for your icon count...')
-    icon="""
-    <div class='icon hoverLocked' id='replaceiconid'>
-        <div class='img'></div>
-        <div class='txt'></div>
-        <div class='bul'>
-            <svg class='icn-svg'>
-            <use xlink:href='#ic-check'></use>
-            </svg>
-        </div>
-        <div class='ic-locked'>
-            <svg class='icn-svg'>
-            <use xlink:href='#ic-lock'></use>
-            </svg>
-        </div>
-    </div>
-    """
-    versionhtml=f"<div class='text mini'>{version}</div>"
-    icons=[]
-    for i in assetversions:
-        icons.append(icon.replace('replaceiconid',f'icon{i}'))
-    iconhtml="\n".join(icons)
-    newdata=[]
-    with open('temp/webapp/app.html','r') as f:
-        data=f.readlines()
-        for l in data:
-            if 'iconsreplaceme' in l:
-                newdata.append(iconhtml)
-            elif 'versionreplaceme' in l:
-                newdata.append(versionhtml)
-            else:
-                newdata.append(l)
-        with open('temp/webapp/newapp.html','w') as w:
-            finaldata="<!-- Compiled using sealldevelopers source to windows compiler -->\n"+"\n".join(newdata)
-            w.write(finaldata)
-            w.close()
-        f.close()
-    os.remove('temp/webapp/app.html')
-    os.rename('temp/webapp/newapp.html','temp/webapp/app.html')
-    newdata=[]
-    with open('temp/webapp/index.html','r') as f:
-        data=f.readlines()
-        for l in data:
-            if 'iconsreplaceme' in l:
-                newdata.append(iconhtml)
-            elif 'versionreplaceme' in l:
-                newdata.append(versionhtml)
-            else:
-                newdata.append(l)
-        with open('temp/webapp/newindex.html','w') as w:
-            finaldata="<!-- Compiled using sealldevelopers source to windows compiler -->\n"+"\n".join(newdata)
-            w.write(finaldata)
-            w.close()
-        f.close()
-    os.remove('temp/webapp/index.html')
-    os.rename('temp/webapp/newindex.html','temp/webapp/index.html')
-    print('Patching css...')
-    count=0
-    csses=['\n\n/* CSS Made with sealldeveloper webapp converter */']
-    for i in assetversions:
-        css="""
-        #page-splash .centered #sp-select .icon#icon"""+str(i)+""".tweenUp{
-            -webkit-animation:g .5s cubic-bezier(.165,.84,.44,1) ."""+str(18+(count*5))+"""s forwards;
-            animation:g .5s cubic-bezier(.165,.84,.44,1) ."""+str(18+(count*5))+"""s forwards
-        }
-        #sp-select .icon#icon"""+str(i)+""" .img{
-            background-position:-"""+str(130*(int(i)-1))+"""px 0
-        }
-        #sp-select .icon#icon"""+str(i)+""" .txt{
-            background-position:-"""+str(130*(int(i)-1))+"""px -126px
-        }
-        #sp-select .icon#icon"""+str(i)+""" .bul{
-            background-color:#000000
-        }"""
-        csses.append(css)
-        count+=1
-    with open('temp/webapp/css/style.min.css','a') as f:
-        f.write("\n".join(csses))
-        f.close()
     print('Packing asar...')
-    copy_tree(f'source',f'temp/source')
-    os.replace('temp/source/app/index.html','temp/webapp/index.html')
-    os.replace('temp/source/app/app.html','temp/webapp/app.html')
-    pack_asar("temp/source",'temp/app.asar')
+    pack_asar("source",'temp/app.asar')
     print('Copying new asar...')
     shutil.copyfile('temp/app.asar','temp/windows/app/resources/app.asar')
     print('Repacking new version...')
