@@ -10,6 +10,9 @@ Instead of booting the game everytime to check an animation, use this! It also c
 ## How to use:
 Inside the folder with the `renderer.py`, place the json to be used and rename it to `anime.json` and the sprite sheet to use named `anime.png`.
 
+> **Note**
+> When using `renderer-hd.py`, `anime.png` should be `anime-hd.png` and use the HD spritesheet.
+
 Install the packages required with `python -m pip install -r requirements.txt`
 
 In the terminal, execute `python renderer.py` to use it.
