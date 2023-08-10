@@ -32,7 +32,7 @@ Starting with a mod skeleton helps with starting, I recommend starting with some
 ### `app.js`: broken down
 `app.js` is a JavaScript file that controls the settings of the pack.
 > **Note**
-> I have made a generator for this, which vastly simplifies this process, take a look [here](https://files.seall.dev/incredibox/appjs.html)
+> I have made a generator for this, which vastly simplifies this process, take a look [here](https://files.seall.dev/incredibox/appjs)
 
 | Variable           | Purpose                                                                                |
 |--------------------|----------------------------------------------------------------------------------------|
@@ -41,10 +41,10 @@ Starting with a mod skeleton helps with starting, I recommend starting with some
 | this.date          | The date of release, just the year generally.                                          |
 | this.folder        | The folder its stored in, if the pack is in `assets-v2` change this to `"assets-v2/"`. |
 | this.looptime      | The time it take to loop.                                                              |
-| this.bpm           | The beats per minute.                                                                  |
-| this.totalframe    | The amount of frames per character per loop.                                           |
-| this.nbpolo        | The amount of polos in the game                                                        |
-| this.nbloopbonus   | The amount of loops for the bonus                                                      |
+| this.bpm           | The beats per minute.  (Purely visual)                                                 |
+| this.totalframe    | The amount of frames per character per loop. This can be calculated from the looptime, steps listed below.|
+| this.nbpolo        | The amount of polos in the game.                                                       |
+| this.nbloopbonus   | The amount of loops for the bonus.                                                     |
 | this.bonusloopA    | Can't determine an ingame change, leave as `!0`.                                       |
 | this.bonusendloopA | Determines if a bonus should start at the start of loop A always. `!1` to enable.      |
 | this.recmaxloop    | The maximum amount of loops for a recording.                                           |
@@ -52,7 +52,7 @@ Starting with a mod skeleton helps with starting, I recommend starting with some
 | this.recmintime    | A math function to determine the minimum amount of time for a recording (don't change) |
 | this.spritepolo    | The name of the file for the blank polo.                                               |
 | this.spritepicto   | The name of the file for the icons in the pack.                                        |
-| this.colBck        | A reserve colour for if the background image fails to render.                          |
+| this.colBck        | A reserve colour for if the background image fails to render or to fill in transparent pixels of the rendered background image.|
 | this.col0          | Text colour.                                                                           |
 | this.col1          | Button background colour.                                                              |
 | this.col2          | Unhovered button background colour (visible in the Playlist menu).                     |
@@ -60,6 +60,16 @@ Starting with a mod skeleton helps with starting, I recommend starting with some
 | this.col4          | Selected menu button icon colour. (visible in Playlist when selecting 'My Mix').       |
 | this.animearray    | Contains the characters, expanded on below.                                            |
 | this.bonusarray    | Contains the bonuses, expanded on below.                                               |
+
+#### totalframe calculation from looptime
+> **Note**
+> This is automated in the [appjs generator tool](https://files.seall.dev/incredibox/appjs), putting the length of one loop in the field labelled "The length of one loop (in milliseconds)" it is outputted to the "How many frames will the Polos have in their animation? (Based off 'Loop Time')"
+
+`totalframe` is calculated from the following steps:
+1. Multiply the `looptime` by `0.024`.
+2. Round the number given down to the nearest whole number, eg. `1.7` goes to `1`.
+3. Multiply the rounded number by `2`.
+This is the amount of frames needed!
 
 #### `animearray`
 | Variable | Purpose                                                                                            |
