@@ -60,22 +60,22 @@ if __name__ == "__main__":
         print('Not a valid JSON file!')
         sys.exit()
 
-    pathoverride(f'output/{name}/hd/files')
-    pathoverride(f'output/{name}/hd/internal')
-    pathoverride(f'output/{name}/hd/gifframes')
-    pathoverride(f'output/{name}/hd/output')
+    pathoverride(f'output/{name}/normal/files')
+    pathoverride(f'output/{name}/normal/internal')
+    pathoverride(f'output/{name}/normal/gifframes')
+    pathoverride(f'output/{name}/normal/output')
 
     img = Image.open("input/anime.png")
     imgwidth, imgheight = img.size
     print('Extracting bodies...')
     default=img.crop((0,0,width,height))
-    default.save(f'output/{name}/hd/files/default.png')
+    default.save(f'output/{name}/normal/files/default.png')
 
     headless=img.crop((width,0,width*2,height))
-    headless.save(f'output/{name}/hd/files/headless.png')
+    headless.save(f'output/{name}/normal/files/headless.png')
 
     silhouette=img.crop((width*2,0,width*3,height))
-    silhouette.save(f'output/{name}/hd/files/silhouette.png')
+    silhouette.save(f'output/{name}/normal/files/silhouette.png')
 
     heads=img.crop((0,height,imgwidth,imgheight))
     headswidth,headsheight=heads.size
@@ -89,16 +89,16 @@ if __name__ == "__main__":
             temphead=heads.crop((j*width,i*headHeight,(j+1)*width,(i+1)*headHeight))
             if temphead.getbbox():
                 headcount+=1
-                temphead.save(f'output/{name}/hd/files/head{count}.png')
-                temphead.save(f'output/{name}/hd/internal/{j*width}-{i*headHeight+height}.png')
+                temphead.save(f'output/{name}/normal/files/head{count}.png')
+                temphead.save(f'output/{name}/normal/internal/{j*width}-{i*headHeight+height}.png')
                 count+=1
     print(f'Found a total of {headcount} valid heads!')
 
     print('Creating the silhouette check...')
     silhouettecheck=Image.new('RGBA',(width,height), (255, 255, 255, 0))
-    default=Image.open(f'output/{name}/hd/files/default.png')
+    default=Image.open(f'output/{name}/normal/files/default.png')
     silhouettecheck.paste(default,(0,0),default)
-    silhouette=Image.open(f'output/{name}/hd/files/silhouette.png')
+    silhouette=Image.open(f'output/{name}/normal/files/silhouette.png')
     datas = silhouette.getdata()
     newdata=[]
     for i in track(datas, description="Fixing silouette pixel transparency..."):
@@ -108,7 +108,7 @@ if __name__ == "__main__":
             newdata.append(i)
     silhouette.putdata(newdata)
     silhouettecheck.paste(silhouette,(0,0),silhouette)
-    silhouettecheck.save(f'output/{name}/hd/output/silhouette-check.png')
+    silhouettecheck.save(f'output/{name}/normal/output/silhouette-check.png')
     print('Finishing silhouette check!')
     gifframes=[]
 
@@ -118,31 +118,31 @@ if __name__ == "__main__":
         #print(f'Making gif frames: {framecount}/{len(animation_frames)}...')
         frame=frame['prop'].split(',')
         try:
-            temphead=Image.open(f'output/{name}/hd/internal/{int(frame[0])}-{int(frame[1])}.png')
+            temphead=Image.open(f'output/{name}/normal/internal/{int(frame[0])}-{int(frame[1])}.png')
         except:
             print(f'ERROR: [bright_red]A frame in your animation is selecting an invalid head ({int(frame[0])},{int(frame[1])}), or your heads are seperated unevenly in your sprite sheet. (Animation frame {framecount})')
             sys.exit()
-        tempheadless=Image.open(f'output/{name}/hd/files/headless.png')
+        tempheadless=Image.open(f'output/{name}/normal/files/headless.png')
         background=Image.new('RGBA',(width,height), (255, 255, 255, 0))
         background.paste(tempheadless,(0,0),tempheadless)
         background.paste(temphead, (round(float(frame[2])),round(float(frame[3]))), temphead)
-        background.save(f'output/{name}/hd/gifframes/{framecount}.png')
-        gifframes.append(imageio.v3.imread(f'output/{name}/hd/gifframes/{framecount}.png', plugin="pillow", mode="RGBA"))
+        background.save(f'output/{name}/normal/gifframes/{framecount}.png')
+        gifframes.append(imageio.v3.imread(f'output/{name}/normal/gifframes/{framecount}.png', plugin="pillow", mode="RGBA"))
 
     print('Creating default vs checkframe...')
     background=Image.new('RGBA',(width,height), (255, 255, 255, 0))
-    tempbody=Image.open(f'output/{name}/hd/files/default.png')
+    tempbody=Image.open(f'output/{name}/normal/files/default.png')
     background.paste(tempbody,(0,0),tempbody)
-    background.save(f'output/{name}/hd/internal/checkframe1.png')
+    background.save(f'output/{name}/normal/internal/checkframe1.png')
     background=Image.new('RGBA',(width,height), (255, 255, 255, 0))
-    tempbody=Image.open(f'output/{name}/hd/gifframes/1.png')
+    tempbody=Image.open(f'output/{name}/normal/gifframes/1.png')
     background.paste(tempbody,(0,0),tempbody)
-    background.save(f'output/{name}/hd/internal/checkframe2.png')
-    defaultcheckframes=[imageio.v3.imread(f'output/{name}/hd/internal/checkframe1.png', plugin="pillow", mode="RGBA"),imageio.v3.imread(f'output/{name}/hd/internal/checkframe2.png', plugin="pillow", mode="RGBA")]
+    background.save(f'output/{name}/normal/internal/checkframe2.png')
+    defaultcheckframes=[imageio.v3.imread(f'output/{name}/normal/internal/checkframe1.png', plugin="pillow", mode="RGBA"),imageio.v3.imread(f'output/{name}/normal/internal/checkframe2.png', plugin="pillow", mode="RGBA")]
 
     print('Compiling GIFs...')
-    imageio.v3.imwrite(f'output/{name}/hd/output/anime.gif',gifframes,duration=int(1/24*1000), plugin="pillow", mode="RGBA", loop=0, transparency=0, disposal=2)
-    imageio.v3.imwrite(f'output/{name}/hd/output/default-pose-compared-to-first-frame.gif',defaultcheckframes,duration=int(1/1*1000), plugin="pillow", mode="RGBA", loop=0, transparency=0, disposal=2)
+    imageio.v3.imwrite(f'output/{name}/normal/output/anime.gif',gifframes,duration=int(1/24*1000), plugin="pillow", mode="RGBA", loop=0, transparency=0, disposal=2)
+    imageio.v3.imwrite(f'output/{name}/normal/output/default-pose-compared-to-first-frame.gif',defaultcheckframes,duration=int(1/1*1000), plugin="pillow", mode="RGBA", loop=0, transparency=0, disposal=2)
     print('GIFs finished!')
 
     if os.path.exists('input/anime_a.ogg'):
@@ -155,12 +155,12 @@ if __name__ == "__main__":
         else:
             audio=audio_merge('input/anime_a.ogg','input/anime_a.ogg')
         final=video.set_audio(audio)
-        final.write_videofile(f'output/{name}/hd/output/anime-with-audio.mp4')
+        final.write_videofile(f'output/{name}/normal/output/anime-with-audio.mp4')
 
     if os.path.exists('output/anime-hd.mp4'):
         os.remove('output/anime-hd.mp4')
     if os.path.exists('output/anime.ogg'):
         os.remove('output/anime.ogg')
     print('[bright_green]Compiled! Cleaning up...')
-    if os.path.exists(f'output/{name}/hd/internal'):
-        shutil.rmtree(f'output/{name}/hd/internal')
+    if os.path.exists(f'output/{name}/normal/internal'):
+        shutil.rmtree(f'output/{name}/normal/internal')
