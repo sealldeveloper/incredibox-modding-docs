@@ -12,14 +12,14 @@ Instead of booting the game everytime to check an animation, use this! It also c
 1. Download this entire repository, more convinient downloads for individual tools will be provided in future.
 2. Direct to this folder, go to `Tools`, then `AnimationRenderer`.
 3. Start by opening the `#install.bat` file and installing all required packages.
-4. Then open `#start-render.bat` or `#start-renderhd.bat`, a folder called `input` should appear.
+4. Then open `#start-render.bat`, a folder called `input` should appear.
 5. Put in the appropriate files:
   - `anime.json` for your animation
-  - `anime-hd.png` for your HD spritesheet (required for the HD renderer)
-  - `anime.png` for your non-HD spritesheet (required for the non-HD renderer)
+  - `anime-hd.png` for your HD spritesheet (required for the HD render)
+  - `anime.png` for your non-HD spritesheet (required for the non-HD render)
   - `anime_a.ogg` **optional**, your A track for your polo, if you have only one track only include the A track
   - `anime_b.ogg` **optional**, your B track for your polo, only if you have two tracks
-6. Re-run the renderer by opening `#start-render.bat` or `#start-renderhd.bat` for an HD render.
+6. Re-run the renderer by opening `#start-render.bat`, type in the option you want, and it will render!
 7. Your output will be in the output folder, under the characters name provided in the animation JSON.
 
 ## Examples (Travis Euphoria - HD Renderer)
