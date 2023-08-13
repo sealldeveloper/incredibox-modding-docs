@@ -26,7 +26,7 @@ def filechecks():
         sys.exit()
     if os.path.exists('input/anime_a.ogg'):
         if not os.path.exists('input/anime_b.ogg'):
-            print('[bright_yellow]WARNING: No \'anime_b.ogg\' found in the \'input\' folder, will not use an A nd B track for audio in the MP4.')
+            print('[bright_yellow]WARNING: No \'anime_b.ogg\' found in the \'input\' folder, will not use an A and B track for audio in the MP4.')
     else:
         print('[bright_yellow]WARNING: No \'anime_a.ogg\' found in the \'input\' folder, will not make an MP4.')
 
@@ -36,8 +36,15 @@ def pathoverride(path):
     os.makedirs(path)
 
 def audio_merge(name1,name2):
-    audioa=AudioSegment.from_ogg(name1)
-    audiob=AudioSegment.from_ogg(name2)
+    try:
+        audioa=AudioSegment.from_ogg(name1)
+    except:
+        print(f'[bright_red]ERROR: The file \'{name1.replace("input","")}\' is an invalid OGG file. Please run it through a program like Audacity and re-export it as an OGG. Then retry.')
+    try:
+        audiob=AudioSegment.from_ogg(name2)
+    except:
+        print(f'[bright_red]ERROR: The file \'{name2.replace("input","")}\' is an invalid OGG file. Please run it through a program like Audacity and re-export it as an OGG. Then retry.')
+    
     audiocombine=audioa+audiob
     audiocombine.export('output/anime.ogg',format="ogg")
     print('Audio merged, adding audio to MP4...')
