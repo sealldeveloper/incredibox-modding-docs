@@ -1,13 +1,17 @@
-from rich import print
-from rich.prompt import Prompt
-from rich.panel import Panel
-import rich
-import os,sys,shutil,linecache
-from distutils.dir_util import copy_tree
-from asarPy import pack_asar,extract_asar
-from pydub import AudioSegment
-from moviepy.editor import VideoFileClip
-
+import sys
+try:
+    from rich import print
+    from rich.prompt import Prompt
+    from rich.panel import Panel
+    import rich
+    import os,sys,shutil,linecache
+    from distutils.dir_util import copy_tree
+    from asarPy import pack_asar,extract_asar
+    from pydub import AudioSegment
+    from moviepy.editor import VideoFileClip
+except:
+    print('Packages have failed to install, please try reinstalling them.')
+    sys.exit()
 
 def android_to_source(names):
     os.makedirs('temp/android/')
@@ -233,7 +237,7 @@ def android(output):
         'index.html'
     ]
     if not os.path.exists('app.apk'):
-        print('Please move your Incredibox Mod .apk file in the same folder as this file and name it \'app.apk\'!')
+        print('[bright_red]ERROR: Please move your Incredibox Mod .apk file in the same folder as this file and name it \'app.apk\'!')
         return False
     if os.path.exists('temp/'):
         shutil.rmtree('temp/')
@@ -400,7 +404,7 @@ def source_to_windows():
 
 def source(output):
     if not os.path.exists('source/'):
-        print('Please move your mod source code into the \'source\' folder!')
+        print('[bright_red]ERROR: Please move your mod source code into the \'source\' folder!')
         os.makedirs('source/')
         return False
     if os.path.exists('temp/'):
@@ -578,7 +582,7 @@ def windows_to_source():
 
 def windows(output):
     if not os.path.exists('app.zip'):
-        print('Please move your mod zip in the folder and name it \'app.zip\'!')
+        print('[bright_red]ERROR: Please move your mod zip in the folder and name it \'app.zip\'!')
         return False
     if os.path.exists('temp/'):
         shutil.rmtree('temp/')
