@@ -8,25 +8,29 @@ Instead of booting the game everytime to check an animation, use this! It also c
 - Python 3.11 or higher
 
 ## How to use:
-Inside the folder with the `renderer.py`, place the json to be used and rename it to `anime.json` and the sprite sheet to use named `anime.png`.
+### Windows
+1. Download this entire repository, more convinient downloads for individual tools will be provided in future.
+2. Direct to this folder, go to `Tools`, then `AnimationRenderer`.
+3. Start by opening the `#install.bat` file and installing all required packages.
+4. Then open `#start-render.bat` or `#start-renderhd.bat`, a folder called `input` should appear.
+5. Put in the appropriate files:
+  - `anime.json` for your animation
+  - `anime-hd.png` for your HD spritesheet (required for the HD renderer)
+  - `anime.png` for your non-HD spritesheet (required for the non-HD renderer)
+  - `anime_a.ogg` **optional**, your A track for your polo, if you have only one track only include the A track
+  - `anime_b.ogg` **optional**, your B track for your polo, only if you have two tracks
+6. Re-run the renderer by opening `#start-render.bat` or `#start-renderhd.bat` for an HD render.
+7. Your output will be in the output folder, under the characters name provided in the animation JSON.
 
-> **Note**
-> When using `renderer-hd.py`, `anime.png` should be `anime-hd.png` and use the HD spritesheet.
+## Examples (Travis Euphoria - HD Renderer)
 
-Install the packages required with `python -m pip install -r requirements.txt`
-
-In the terminal, execute `python renderer.py` to use it.
-
-### Optional, MP4 with music
-To use the music, place the audio tracks in the folder, if its a single track name it `anime_a.ogg` and if its two tracks use `anime_a.ogg` and `anime_b.ogg`.
-
-## Examples (Travis Euphoria)
-![anime](https://github.com/sealldeveloper/incredibox-modding-docs/assets/120470330/b0c8ba4a-52cf-4642-8285-0af7d99c1918)
-![silhouette-check](https://github.com/sealldeveloper/incredibox-modding-docs/assets/120470330/8c271d51-f7f1-4715-8e2a-5446499520a3)
-![default-pose-compared-to-first-frame](https://github.com/sealldeveloper/incredibox-modding-docs/assets/120470330/2275dfe1-5791-4c29-97d7-ce267b16cf2d)
+![anime](https://github.com/sealldeveloper/incredibox-modding-docs/assets/120470330/bff7e720-fc0c-4436-a383-b83fe7b9df4e)
+![default-pose-compared-to-first-frame](https://github.com/sealldeveloper/incredibox-modding-docs/assets/120470330/fc9991d2-2665-4f9c-8f0d-d86d8d6b150a)
+![silhouette-check](https://github.com/sealldeveloper/incredibox-modding-docs/assets/120470330/7a5855d5-d722-41c9-a638-86c9490d0e06)
 
 
-https://github.com/sealldeveloper/incredibox-modding-docs/assets/120470330/3287ea5c-71e7-4cb3-bcbe-6a4de0372753
+
+https://github.com/sealldeveloper/incredibox-modding-docs/assets/120470330/d39a7507-0e97-4683-8733-89e4c1495a49
 
 
 
