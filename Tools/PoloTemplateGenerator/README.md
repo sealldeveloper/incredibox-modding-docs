@@ -1,3 +1,3 @@
-# THIS TOOL HAS BEEN MOVED TO [A WEBSITE](https://files.seall.dev/incredibox/polotemplate.html)
+# THIS TOOL HAS BEEN MOVED TO [A WEBSITE](https://sealldeveloper.github.io/boogoxseal.xyz/tools/polotemplate)
 
 
