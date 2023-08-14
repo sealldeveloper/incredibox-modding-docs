@@ -18,21 +18,32 @@ def filechecks(render_choice):
     if not os.path.exists('input/anime.json'):
         print('[bright_red]ERROR: Make sure theres an \'anime.json\' file in the \'input\' folder.')
         sys.exit()
+    else:
+        print('[green]Found \'anime.json\'!')
     if render_choice == 'no-hd' or render_choice == 'both':
         if not os.path.exists('input/anime.png'):
             print('[bright_red]ERROR: Make sure theres an \'anime.png\' file in the \'input\' folder.')
             sys.exit()
+        else:
+            print('[green]Found \'anime.png\'!')
     if render_choice == 'hd' or render_choice == 'both':
         if not os.path.exists('input/anime-hd.png'):
             print('[bright_red]ERROR: Make sure theres an \'anime-hd.png\' file in the \'input\' folder.')
             sys.exit()
+        else:
+            print('[green]Found \'anime-hd.png\'!')
     if not os.path.exists('input/anime_combined.ogg'):
         print('[bright_yellow]No \'anime_combined.ogg\' found in \'input\', checking for \'anime_a.ogg\'...')
         if os.path.exists('input/anime_a.ogg'):
+            print('[green]Found \'anime_a.ogg\'!')
             if not os.path.exists('input/anime_b.ogg'):
                 print('[bright_yellow]WARNING: No \'anime_b.ogg\' found in the \'input\' folder, will not use an A and B track for audio in the MP4.')
+            else:
+                print('[green]Found \'anime_b.ogg\'!')
         else:
             print('[bright_yellow]WARNING: No \'anime_a.ogg\' found in the \'input\' folder, will not make an MP4.')
+    else:
+            print('[green]Found \'anime_combined.ogg\'!')
 
 def pathoverride(path):
     if os.path.exists(path):

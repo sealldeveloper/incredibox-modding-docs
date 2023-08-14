@@ -19,6 +19,7 @@ Instead of booting the game everytime to check an animation, use this! It also c
   - `anime.png` for your non-HD spritesheet (required for the non-HD render)
   - `anime_a.ogg` **optional**, your A track for your polo, if you have only one track only include the A track
   - `anime_b.ogg` **optional**, your B track for your polo, only if you have two tracks
+  - `anime_combined.ogg` **optional**, your A and B track in one file, only if you have two tracks and don't have them seperated
 6. Re-run the renderer by opening `#start-render.bat`, type in the option you want, and it will render!
 7. Your output will be in the output folder, under the characters name provided in the animation JSON.
 
