@@ -34,7 +34,11 @@ def filechecks(render_choice):
 
 def pathoverride(path):
     if os.path.exists(path):
-        shutil.rmtree(path)
+        try:
+            shutil.rmtree(path)
+        except Exception as e:
+            print(f'[bright_red]ERROR: Can\'t delete \'{path}\'! Most likely you have something already using this folder. Please close the programs open in this folder!\n\n{str(e)}')
+            sys.exit()
     os.makedirs(path)
 
 def extract_bodies(width,height,name,v):
@@ -172,12 +176,24 @@ def mp4_compile(gifframes,name,totalFrame,v):
 
 def cleanup(name,v):
     if os.path.exists('output/anime-hd.mp4'):
-        os.remove('output/anime-hd.mp4')
+        try:
+            os.remove('output/anime-hd.mp4')
+        except Exception as e:
+            print(f'[bright_red]ERROR: Can\'t delete \'output/anime-hd.mp4\'! Most likely you have something already using this file. Please close the programs using this file!\n\n{str(e)}')
+            sys.exit()
     if os.path.exists('output/anime.ogg'):
-        os.remove('output/anime.ogg')
+        try:
+            os.remove('output/anime.ogg')
+        except Exception as e:
+            print(f'[bright_red]ERROR: Can\'t delete \'output/anime.ogg\'! Most likely you have something already using this file. Please close the programs using this file!\n\n{str(e)}')
+            sys.exit()
     print(f'[bright_green]({v}) Compiled! Cleaning up...')
     if os.path.exists(f'output/{name}/{v}/internal'):
-        shutil.rmtree(f'output/{name}/{v}/internal')
+        try:
+            shutil.rmtree(f'output/{name}/{v}/internal')
+        except Exception as e:
+            print(f'[bright_red]ERROR: Can\'t delete \'output/{name}/{v}/internal\'! Most likely you have something already using this folder. Please close the programs open in this folder!\n\n{str(e)}')
+            sys.exit()
 
 if __name__ == "__main__":
     print(Panel("[orange_red1]Incredibox Animation Renderer\n[dodger_blue1]by [salmon1]sealldeveloper", title="[green1]Welcome![bright_white]"))
@@ -194,11 +210,14 @@ if __name__ == "__main__":
         height=int(data['height'])
         width=int(data['width'])
         headHeight=int(data['headHeight'])
+        totalFrame=int(data['totalFrame'])
         animation_frames=data['arrayFrame']
-        totalFrame=len(animation_frames)
         name=data['animeName']
     except Exception as e:
-        print('[bright_red]ERROR: \'anime.json\' is not a valid animation JSON file!\n\n'+str(e))
+        print(f'[bright_red]ERROR: \'anime.json\' is not a valid animation JSON file!\n\n{str(e)}')
+        sys.exit()
+    if not totalFrame == len(animation_frames):
+        print(f'[bright_red]ERROR: The \'totalFrame\' ({totalFrame}) and the amount of frames in the \'arrayFrame\' ({len(arrayFrame)}) are not the same in the JSON file! Please make them the same, by either adding more frames or updating the totalFrame.')
         sys.exit()
     if render_choice == 'no-hd' or render_choice == 'both':
         pathoverride(f'output/{name}/normal/files')
@@ -211,7 +230,7 @@ if __name__ == "__main__":
         gifframes = gif_frames(name,'normal')
         defaultcheckframes = def_vs_check(width,height,name,'normal')
         compile_gifs(gifframes,defaultcheckframes,name,'normal')
-        mp4_compile(gifframes,name,totalFrame,'normal')
+        mp4_compile(gifframes,name,len(animation_frames),'normal')
         cleanup(name,'normal')
     if render_choice == 'hd' or render_choice == 'both':
         height=height*2
@@ -227,5 +246,5 @@ if __name__ == "__main__":
         gifframes = gif_frames(name,'hd')
         defaultcheckframes = def_vs_check(width,height,name,'hd')
         compile_gifs(gifframes,defaultcheckframes,name,'hd')
-        mp4_compile(gifframes,name,totalFrame,'hd')
+        mp4_compile(gifframes,name,len(animation_frames),'hd')
         cleanup(name,'hd')
