@@ -26,11 +26,13 @@ def filechecks(render_choice):
         if not os.path.exists('input/anime-hd.png'):
             print('[bright_red]ERROR: Make sure theres an \'anime-hd.png\' file in the \'input\' folder.')
             sys.exit()
-    if os.path.exists('input/anime_a.ogg'):
-        if not os.path.exists('input/anime_b.ogg'):
-            print('[bright_yellow]WARNING: No \'anime_b.ogg\' found in the \'input\' folder, will not use an A and B track for audio in the MP4.')
-    else:
-        print('[bright_yellow]WARNING: No \'anime_a.ogg\' found in the \'input\' folder, will not make an MP4.')
+    if not os.path.exists('input/anime_combined.ogg'):
+        print('[bright_yellow]No \'anime_combined.ogg\' found in \'input\', checking for \'anime_a.ogg\'...')
+        if os.path.exists('input/anime_a.ogg'):
+            if not os.path.exists('input/anime_b.ogg'):
+                print('[bright_yellow]WARNING: No \'anime_b.ogg\' found in the \'input\' folder, will not use an A and B track for audio in the MP4.')
+        else:
+            print('[bright_yellow]WARNING: No \'anime_a.ogg\' found in the \'input\' folder, will not make an MP4.')
 
 def pathoverride(path):
     if os.path.exists(path):
@@ -166,11 +168,14 @@ def mp4_compile(gifframes,name,totalFrame,v):
         print(f'({v}) Compiling MP4...')
         imageio.v2.mimwrite('output/anime-hd.mp4',gifframes,fps=24,macro_block_size=1)
         video=VideoFileClip('output/anime-hd.mp4')
-        print(f'({v}) Compiled MP4, merging audio tracks..')
-        if os.path.exists('input/anime_b.ogg'):
-            audio=audio_merge('input/anime_a.ogg','input/anime_b.ogg',totalFrame,v)
+        print(f'({v}) Compiled MP4, processing audio tracks...')
+        if os.path.exists('input/anime_combined.ogg'):
+            audio = AudioFileClip('input/anime_combined.ogg')
         else:
-            audio=audio_merge('input/anime_a.ogg','input/anime_a.ogg',totalFrame,v)
+            if os.path.exists('input/anime_b.ogg'):
+                audio=audio_merge('input/anime_a.ogg','input/anime_b.ogg',totalFrame,v)
+            else:
+                audio=audio_merge('input/anime_a.ogg','input/anime_a.ogg',totalFrame,v)
         final=video.set_audio(audio)
         final.write_videofile(f'output/{name}/{v}/output/anime-with-audio.mp4',logger=None)
 
