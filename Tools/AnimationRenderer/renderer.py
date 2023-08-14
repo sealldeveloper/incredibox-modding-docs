@@ -9,6 +9,7 @@ try:
     from pydub import AudioSegment
     import json,shutil,os,imageio
     from moviepy.editor import *
+    import math
 except:
     print('Packages have failed to install, please try reinstalling them.')
     sys.exit()
@@ -134,7 +135,7 @@ def compile_gifs(gifframes,defaultcheckframes,name,v):
     print(f'({v}) GIFs finished!')
 
 def audio_merge(name1,name2,totalFrame,v):
-    sfxlength = (totalFrame/2)/0.024
+    sfxlength = math.floor((totalFrame/2)/0.024)
     try:
         audioa=AudioSegment.from_ogg(name1)
     except:
@@ -146,8 +147,8 @@ def audio_merge(name1,name2,totalFrame,v):
         print(f'[bright_red]ERROR: The file \'{name2.replace("input/","")}\' is an invalid OGG file. Please run it through a program like Audacity and re-export it as an OGG. Then retry.')
         sys.exit()
     try:
-        audioa = audioa[sfxlength:]
-        audiob = audiob[sfxlength:]
+        audioa = audioa[:sfxlength]
+        audiob = audiob[:sfxlength]
     except Exception as e:
         print(f'[bright_red]ERROR: Correcting the length of the SFX\'s failed...\n\n{str(e)}')
         sys.exit()
