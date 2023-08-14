@@ -143,18 +143,18 @@ def audio_merge(name1,name2,totalFrame,v):
     try:
         audioa=AudioSegment.from_ogg(name1)
     except:
-        print(f'[bright_red]ERROR: The file \'{name1.replace("input/","")}\' is an invalid OGG file. Please run it through a program like Audacity and re-export it as an OGG. Then retry.')
+        print(f'[bright_red]ERROR ({v}): The file \'{name1.replace("input/","")}\' is an invalid OGG file. Please run it through a program like Audacity and re-export it as an OGG. Then retry.')
         sys.exit()
     try:
         audiob=AudioSegment.from_ogg(name2)
     except:
-        print(f'[bright_red]ERROR: The file \'{name2.replace("input/","")}\' is an invalid OGG file. Please run it through a program like Audacity and re-export it as an OGG. Then retry.')
+        print(f'[bright_red]ERROR ({v}): The file \'{name2.replace("input/","")}\' is an invalid OGG file. Please run it through a program like Audacity and re-export it as an OGG. Then retry.')
         sys.exit()
     try:
         audioa = audioa[:sfxlength]
         audiob = audiob[:sfxlength]
     except Exception as e:
-        print(f'[bright_red]ERROR: Correcting the length of the SFX\'s failed...\n\n{str(e)}')
+        print(f'[bright_red]ERROR ({v}): Correcting the length of the SFX\'s failed...\n\n{str(e)}')
         sys.exit()
     audiocombine=audioa+audiob
     audiocombine.export('output/anime.ogg',format="ogg")
@@ -179,20 +179,20 @@ def cleanup(name,v):
         try:
             os.remove('output/anime-hd.mp4')
         except Exception as e:
-            print(f'[bright_red]ERROR: Can\'t delete \'output/anime-hd.mp4\'! Most likely you have something already using this file. Please close the programs using this file!\n\n{str(e)}')
+            print(f'[bright_red]ERROR ({v}): Can\'t delete \'output/anime-hd.mp4\'! Most likely you have something already using this file. Please close the programs using this file!\n\n{str(e)}')
             sys.exit()
     if os.path.exists('output/anime.ogg'):
         try:
             os.remove('output/anime.ogg')
         except Exception as e:
-            print(f'[bright_red]ERROR: Can\'t delete \'output/anime.ogg\'! Most likely you have something already using this file. Please close the programs using this file!\n\n{str(e)}')
+            print(f'[bright_red]ERROR ({v}): Can\'t delete \'output/anime.ogg\'! Most likely you have something already using this file. Please close the programs using this file!\n\n{str(e)}')
             sys.exit()
     print(f'[bright_green]({v}) Compiled! Cleaning up...')
     if os.path.exists(f'output/{name}/{v}/internal'):
         try:
             shutil.rmtree(f'output/{name}/{v}/internal')
         except Exception as e:
-            print(f'[bright_red]ERROR: Can\'t delete \'output/{name}/{v}/internal\'! Most likely you have something already using this folder. Please close the programs open in this folder!\n\n{str(e)}')
+            print(f'[bright_red]ERROR ({v}): Can\'t delete \'output/{name}/{v}/internal\'! Most likely you have something already using this folder. Please close the programs open in this folder!\n\n{str(e)}')
             sys.exit()
 
 if __name__ == "__main__":
