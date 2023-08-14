@@ -135,7 +135,7 @@ def def_vs_check(width,height,name,v):
 def compile_gifs(gifframes,defaultcheckframes,name,v):
     print(f'({v}) Compiling GIFs...')
     imageio.v3.imwrite(f'output/{name}/{v}/output/anime.gif',gifframes,duration=int(1/24*1000), plugin="pillow", mode="RGBA", loop=0, transparency=0, disposal=2)
-    imageio.v3.imwrite(f'output/{name}/{v}/output/default-pose-compared-to-first-frame.gif',defaultcheckframes,duration=int(1/1*1000), plugin="pillow", mode="RGBA", loop=0, transparency=0, disposal=2)
+    imageio.v3.imwrite(f'output/{name}/{v}/output/default-pose-compared-to-first-frame.gif',defaultcheckframes,duration=int(1000), plugin="pillow", mode="RGBA", loop=0, transparency=0, disposal=2)
     print(f'({v}) GIFs finished!')
 
 def audio_merge(name1,name2,totalFrame,v):
