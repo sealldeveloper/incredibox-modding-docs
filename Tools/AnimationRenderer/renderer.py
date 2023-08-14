@@ -133,31 +133,39 @@ def compile_gifs(gifframes,defaultcheckframes,name,v):
     imageio.v3.imwrite(f'output/{name}/{v}/output/default-pose-compared-to-first-frame.gif',defaultcheckframes,duration=int(1/1*1000), plugin="pillow", mode="RGBA", loop=0, transparency=0, disposal=2)
     print(f'({v}) GIFs finished!')
 
-def audio_merge(name1,name2,v):
+def audio_merge(name1,name2,totalFrame,v):
+    sfxlength = (totalFrame/2)/0.024
     try:
         audioa=AudioSegment.from_ogg(name1)
     except:
         print(f'[bright_red]ERROR: The file \'{name1.replace("input/","")}\' is an invalid OGG file. Please run it through a program like Audacity and re-export it as an OGG. Then retry.')
+        sys.exit()
     try:
         audiob=AudioSegment.from_ogg(name2)
     except:
         print(f'[bright_red]ERROR: The file \'{name2.replace("input/","")}\' is an invalid OGG file. Please run it through a program like Audacity and re-export it as an OGG. Then retry.')
-    
+        sys.exit()
+    try:
+        audioa = audioa[sfxlength:]
+        audiob = audiob[sfxlength:]
+    except Exception as e:
+        print(f'[bright_red]ERROR: Correcting the length of the SFX\'s failed...\n\n{str(e)}')
+        sys.exit()
     audiocombine=audioa+audiob
     audiocombine.export('output/anime.ogg',format="ogg")
     print(f'({v}) Audio merged, adding audio to MP4...')
     return AudioFileClip('output/anime.ogg')
 
-def mp4_compile(gifframes,name,v):
+def mp4_compile(gifframes,name,totalFrame,v):
     if os.path.exists('input/anime_a.ogg'):
         print(f'({v}) Compiling MP4...')
         imageio.v2.mimwrite('output/anime-hd.mp4',gifframes,fps=24,macro_block_size=1)
         video=VideoFileClip('output/anime-hd.mp4')
         print(f'({v}) Compiled MP4, merging audio tracks..')
         if os.path.exists('input/anime_b.ogg'):
-            audio=audio_merge('input/anime_a.ogg','input/anime_b.ogg',v)
+            audio=audio_merge('input/anime_a.ogg','input/anime_b.ogg',totalFrame,v)
         else:
-            audio=audio_merge('input/anime_a.ogg','input/anime_a.ogg',v)
+            audio=audio_merge('input/anime_a.ogg','input/anime_a.ogg',totalFrame,v)
         final=video.set_audio(audio)
         final.write_videofile(f'output/{name}/{v}/output/anime-with-audio.mp4',logger=None)
 
@@ -186,6 +194,7 @@ if __name__ == "__main__":
         width=int(data['width'])
         headHeight=int(data['headHeight'])
         animation_frames=data['arrayFrame']
+        totalFrame=len(animation_frames)
         name=data['animeName']
     except Exception as e:
         print('[bright_red]ERROR: \'anime.json\' is not a valid animation JSON file!\n\n'+str(e))
@@ -201,7 +210,7 @@ if __name__ == "__main__":
         gifframes = gif_frames(name,'normal')
         defaultcheckframes = def_vs_check(width,height,name,'normal')
         compile_gifs(gifframes,defaultcheckframes,name,'normal')
-        mp4_compile(gifframes,name,'normal')
+        mp4_compile(gifframes,name,totalFrame,'normal')
         cleanup(name,'normal')
     if render_choice == 'hd' or render_choice == 'both':
         height=height*2
@@ -217,5 +226,5 @@ if __name__ == "__main__":
         gifframes = gif_frames(name,'hd')
         defaultcheckframes = def_vs_check(width,height,name,'hd')
         compile_gifs(gifframes,defaultcheckframes,name,'hd')
-        mp4_compile(gifframes,name,'hd')
+        mp4_compile(gifframes,name,totalFrame,'hd')
         cleanup(name,'hd')
