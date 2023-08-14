@@ -32,7 +32,7 @@ Starting with a mod skeleton helps with starting, I recommend starting with some
 ### `app.js`: broken down
 `app.js` is a JavaScript file that controls the settings of the pack.
 > **Note**
-> I have made a generator for this, which vastly simplifies this process, take a look [here](https://files.seall.dev/incredibox/appjs)
+> I have made a generator for this, which vastly simplifies this process, take a look [here](https://sealldeveloper.github.io/boogoxseal.xyz/tools/appjs)
 
 | Variable           | Purpose                                                                                |
 |--------------------|----------------------------------------------------------------------------------------|
@@ -63,7 +63,7 @@ Starting with a mod skeleton helps with starting, I recommend starting with some
 
 #### totalframe calculation from looptime
 > **Note**
-> This is automated in the [appjs generator tool](https://files.seall.dev/incredibox/appjs), putting the length of one loop in the field labelled "The length of one loop (in milliseconds)" it is outputted to the "How many frames will the Polos have in their animation? (Based off 'Loop Time')"
+> This is automated in the [appjs generator tool](https://sealldeveloper.github.io/boogoxseal.xyz/tools/appjs), putting the length of one loop in the field labelled "The length of one loop (in milliseconds)" it is outputted to the "How many frames will the Polos have in their animation? (Based off 'Loop Time')"
 
 `totalframe` is calculated from the following steps:
 1. Multiply the `looptime` by `0.024`.
@@ -91,7 +91,7 @@ This is the amount of frames needed!
 Using the guides in steps 2, 3, and 4, you know how to swap out all these files, you can continue to do the same with your mod, take a look around and don't be afraid to experiment and break things. Learnings about mistakes. Good luck!
 
 ### Making a sprite
-To start with making a sprite from scratch, a template it best. Use [the tool provided](https://github.com/sealldeveloper/incredibox-modding-docs/tree/main/Tools/PoloTemplateGenerator) to make a template to the dimensions you see fit. A JSON is generated alongside the template and coordinates with the empty frames.
+To start with making a sprite from scratch, a template it best. Use [the tool provided](https://sealldeveloper.github.io/boogoxseal.xyz/tools/polotemplate) to make a template to the dimensions you see fit. A JSON is generated alongside the template and coordinates with the empty frames.
 
 A cool sprite example is the 8th character in the Void pack. It uses a headHeight of 380 (the same height of the character by default) to make the whole body change, at the disadvantage of each head having to contain movements, rather than moving it in a JSON.
 
