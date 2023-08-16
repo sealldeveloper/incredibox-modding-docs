@@ -150,10 +150,11 @@ def def_vs_check(width,height,name,v):
     defaultcheckframes=[imageio.v3.imread(f'output/{name}/{v}/internal/checkframe1.png', plugin="pillow", mode="RGBA"),imageio.v3.imread(f'output/{name}/{v}/internal/checkframe2.png', plugin="pillow", mode="RGBA")]
     return defaultcheckframes
 
-def compile_gifs(gifframes,defaultcheckframes,name,v):
+def compile_gifs(gifframes,defaultcheckframes,name,v,filename):
     print(f'({v}) Compiling GIFs...')
-    imageio.v3.imwrite(f'output/{name}/{v}/output/anime.gif',gifframes,duration=int(1/24*1000), plugin="pillow", mode="RGBA", loop=0, transparency=0, disposal=2)
-    imageio.v3.imwrite(f'output/{name}/{v}/output/default-pose-compared-to-first-frame.gif',defaultcheckframes,duration=int(1000), plugin="pillow", mode="RGBA", loop=0, transparency=0, disposal=2)
+    if not filename == 'notext':
+        imageio.v3.imwrite(f'output/{name}/{v}/output/default-pose-compared-to-first-frame.gif',defaultcheckframes,duration=int(1000), plugin="pillow", mode="RGBA", loop=0, transparency=0, disposal=2)
+    imageio.v3.imwrite(f'output/{name}/{v}/output/anime_{filename}.gif',gifframes,duration=int(1/24*1000), plugin="pillow", mode="RGBA", loop=0, transparency=0, disposal=2)
     print(f'({v}) GIFs finished!')
 
 def audio_merge(name1,name2,totalFrame,v):
@@ -179,7 +180,7 @@ def audio_merge(name1,name2,totalFrame,v):
     print(f'({v}) Audio merged, adding audio to MP4...')
     return AudioFileClip('output/anime.ogg')
 
-def mp4_compile(gifframes,name,totalFrame,v):
+def mp4_compile(gifframes,name,totalFrame,v,filename):
     if os.path.exists('input/anime_a.ogg'):
         print(f'({v}) Compiling MP4...')
         imageio.v2.mimwrite('output/anime-hd.mp4',gifframes,fps=24,macro_block_size=1)
@@ -193,7 +194,7 @@ def mp4_compile(gifframes,name,totalFrame,v):
             else:
                 audio=audio_merge('input/anime_a.ogg','input/anime_a.ogg',totalFrame,v)
         final=video.set_audio(audio)
-        final.write_videofile(f'output/{name}/{v}/output/anime-with-audio.mp4',logger=None)
+        final.write_videofile(f'output/{name}/{v}/output/anime-with-audio_{filename}.mp4',logger=None)
 
 def cleanup(name,v):
     if os.path.exists('output/anime-hd.mp4'):
@@ -251,8 +252,8 @@ if __name__ == "__main__":
         silhouette_check(width,height,name,'normal')
         gifframes,gifframestext = gif_frames(name,'normal')
         defaultcheckframes = def_vs_check(width,height,name,'normal')
-        compile_gifs(gifframestext,defaultcheckframes,name,'normal')
-        mp4_compile(gifframestext,name,len(animation_frames),'normal')
+        compile_gifs(gifframestext,defaultcheckframes,name,'normal','text')
+        mp4_compile(gifframestext,name,len(animation_frames),'normal','text')
         cleanup(name,'normal')
     if render_choice == 'hd' or render_choice == 'both':
         height=height*2
@@ -268,6 +269,16 @@ if __name__ == "__main__":
         silhouette_check(width,height,name,'hd')
         gifframes,gifframestext = gif_frames(name,'hd')
         defaultcheckframes = def_vs_check(width,height,name,'hd')
-        compile_gifs(gifframestext,defaultcheckframes,name,'hd')
-        mp4_compile(gifframestext,name,len(animation_frames),'hd')
+        compile_gifs(gifframestext,defaultcheckframes,name,'hd','text')
+        mp4_compile(gifframestext,name,len(animation_frames),'hd','text')
         cleanup(name,'hd')
+    no_text_choice = Prompt.ask("Do you want copies of the videos/gifs that don't have the frame counter?",choices=['y','n'])
+    if no_text_choice == 'y':
+        if render_choice == 'hd' or render_choice == 'both':
+            compile_gifs(gifframes,defaultcheckframes,name,'hd','no-text')
+            mp4_compile(gifframes,name,len(animation_frames),'hd','no-text')
+            cleanup(name,'hd')
+        if render_choice == 'no-hd' or render_choice == 'both':
+            compile_gifs(gifframes,defaultcheckframes,name,'normal','no-text')
+            mp4_compile(gifframes,name,len(animation_frames),'normal','no-text')
+            cleanup(name,'normal')
