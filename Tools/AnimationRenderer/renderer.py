@@ -5,7 +5,7 @@ try:
     from rich.panel import Panel
     from rich.progress import track
     import rich
-    from PIL import Image
+    from PIL import Image, ImageDraw
     from pydub import AudioSegment
     import json,shutil,os,imageio
     from moviepy.editor import *
@@ -108,6 +108,7 @@ def silhouette_check(width,height,name,v):
 
 def gif_frames(name,v):
     gifframes=[]
+    gifframestext=[]
 
     framecount=0
     for frame in track(animation_frames, description=f"({v}) Creating GIF frames..."):
@@ -129,8 +130,12 @@ def gif_frames(name,v):
         background.paste(tempheadless,(0,0),tempheadless)
         background.paste(temphead, (round(float(frame[2])),round(float(frame[3]))), temphead)
         background.save(f'output/{name}/{v}/gifframes/{framecount}.png')
+        backgroundDraw = ImageDraw.Draw(background)
+        backgroundDraw.text((0,0), f"{framecount}",fill=(200,0,0))
+        background.save(f'output/{name}/{v}/gifframes/text/{framecount}_text.png')
         gifframes.append(imageio.v3.imread(f'output/{name}/{v}/gifframes/{framecount}.png', plugin="pillow", mode="RGBA"))
-    return gifframes
+        gifframestext.append(imageio.v3.imread(f'output/{name}/{v}/gifframes/text/{framecount}_text.png', plugin="pillow", mode="RGBA"))
+    return gifframes,gifframestext
 
 def def_vs_check(width,height,name,v):
     print(f'({v}) Creating default vs checkframe...')
@@ -239,14 +244,15 @@ if __name__ == "__main__":
         pathoverride(f'output/{name}/normal/files')
         pathoverride(f'output/{name}/normal/internal')
         pathoverride(f'output/{name}/normal/gifframes')
+        pathoverride(f'output/{name}/normal/gifframes/text')
         pathoverride(f'output/{name}/normal/output')
         imgwidth,imgheight,img = extract_bodies(width,height,name,'normal')
         headswidth,headsheight,headcount = extract_heads(height,imgwidth,imgheight,'normal',img,headHeight,width,name)
         silhouette_check(width,height,name,'normal')
-        gifframes = gif_frames(name,'normal')
+        gifframes,gifframestext = gif_frames(name,'normal')
         defaultcheckframes = def_vs_check(width,height,name,'normal')
-        compile_gifs(gifframes,defaultcheckframes,name,'normal')
-        mp4_compile(gifframes,name,len(animation_frames),'normal')
+        compile_gifs(gifframestext,defaultcheckframes,name,'normal')
+        mp4_compile(gifframestext,name,len(animation_frames),'normal')
         cleanup(name,'normal')
     if render_choice == 'hd' or render_choice == 'both':
         height=height*2
@@ -255,12 +261,13 @@ if __name__ == "__main__":
         pathoverride(f'output/{name}/hd/files')
         pathoverride(f'output/{name}/hd/internal')
         pathoverride(f'output/{name}/hd/gifframes')
+        pathoverride(f'output/{name}/hd/gifframes/text')
         pathoverride(f'output/{name}/hd/output')
         imgwidth,imgheight,img = extract_bodies(width,height,name,'hd')
         headswidth,headsheight,headcount = extract_heads(height,imgwidth,imgheight,'hd',img, headHeight, width,name)
         silhouette_check(width,height,name,'hd')
-        gifframes = gif_frames(name,'hd')
+        gifframes,gifframestext = gif_frames(name,'hd')
         defaultcheckframes = def_vs_check(width,height,name,'hd')
-        compile_gifs(gifframes,defaultcheckframes,name,'hd')
-        mp4_compile(gifframes,name,len(animation_frames),'hd')
+        compile_gifs(gifframestext,defaultcheckframes,name,'hd')
+        mp4_compile(gifframestext,name,len(animation_frames),'hd')
         cleanup(name,'hd')
