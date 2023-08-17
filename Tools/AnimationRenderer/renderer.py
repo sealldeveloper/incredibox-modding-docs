@@ -224,6 +224,7 @@ if __name__ == "__main__":
         print('[bright_red]ERROR: Please put your files in the \'input\' folder!')
         sys.exit()
     render_choice = Prompt.ask("What render version do you want?",choices=['no-hd','hd','both'])
+    no_text_choice = Prompt.ask("Do you want copies of the videos/gifs that don't have the frame counter?",choices=['y','n'])
     filechecks(render_choice)
     
     f=open('input/anime.json')
@@ -272,8 +273,8 @@ if __name__ == "__main__":
         compile_gifs(gifframestext,defaultcheckframes,name,'hd','text')
         mp4_compile(gifframestext,name,len(animation_frames),'hd','text')
         cleanup(name,'hd')
-    no_text_choice = Prompt.ask("Do you want copies of the videos/gifs that don't have the frame counter?",choices=['y','n'])
     if no_text_choice == 'y':
+        print('[bright_blue](no-text) Compiling copies without text...')
         if render_choice == 'hd' or render_choice == 'both':
             compile_gifs(gifframes,defaultcheckframes,name,'hd','no-text')
             mp4_compile(gifframes,name,len(animation_frames),'hd','no-text')
