@@ -154,7 +154,7 @@ if __name__ == "__main__":
         newframes = spritesheet_build(width,height,headcount,headcoords,newframes,'no-hd')
         build_json(newframes,width,height,'no-hd')
     if input_choice == 'hd' or input_choice == 'both':
-        if json_choice == ' non-hd':
+        if json_choice == ' no-hd':
             width=width*2
             height=height*2
         path_setup('hd')
