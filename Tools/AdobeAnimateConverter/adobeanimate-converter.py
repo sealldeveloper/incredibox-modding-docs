@@ -128,7 +128,7 @@ if __name__ == "__main__":
         print('[bright_red]ERROR: Please put your files in the \'input\' folder!')
         sys.exit()
     input_choice = Prompt.ask("Are your sprite sheet(s) in HD, no-HD, or do both exist?",choices=['no-hd','hd','both'])
-    json_choice = Prompt.ask("Is the JSON in an HD or non-hd format?",choices=['no-hd','hd'])
+    json_choice = Prompt.ask("Is the JSON in an HD or no-HD format?",choices=['no-hd','hd'])
     filechecks(input_choice)
     
     f=open('input/anime.json', encoding='utf8')
