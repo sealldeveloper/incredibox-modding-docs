@@ -148,7 +148,7 @@ if __name__ == "__main__":
         if json_choice == 'hd':
             width=width/2
             height=height/2
-        path_setup(v)
+        path_setup('no-hd')
         img = Image.open('input/anime.png')
         headcount, newframes, headcoords = extract_heads(width,height,img,'no-hd')
         newframes = spritesheet_build(width,height,headcount,headcoords,newframes,'no-hd')
@@ -157,7 +157,7 @@ if __name__ == "__main__":
         if json_choice == ' non-hd':
             width=width*2
             height=height*2
-        path_setup(v)
+        path_setup('hd')
         img = Image.open('input/anime-hd.png')
         headcount, newframes, headcoords = extract_heads(width,height,img,'hd')
         newframes = spritesheet_build(width,height,headcount,headcoords,newframes,'hd')
