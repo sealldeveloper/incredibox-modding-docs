@@ -116,9 +116,9 @@ def gif_frames(name,v):
         frame=frame['prop'].split(',')
         try:
             if v == 'normal':
-                temphead=Image.open(f'output/{name}/{v}/internal/{int(frame[0])}-{int(frame[1])}.png')
+                temphead=Image.open(f'output/{name}/{v}/internal/{int(float(frame[0]))}-{int(float(frame[1]))}.png')
             else:
-                temphead=Image.open(f'output/{name}/{v}/internal/{int(frame[0])*2}-{int(frame[1])*2}.png')
+                temphead=Image.open(f'output/{name}/{v}/internal/{int(float(frame[0]))*2}-{int(float(frame[1]))*2}.png')
         except:
             if v == 'normal':
                 print(f'[bright_red]ERROR ({v}): A frame in your animation is selecting an invalid head ({int(frame[0])},{int(frame[1])}), or your heads are seperated unevenly in your sprite sheet. (Animation frame {framecount})')
@@ -240,7 +240,7 @@ if __name__ == "__main__":
         print(f'[bright_red]ERROR: \'anime.json\' is not a valid animation JSON file!\n\n{str(e)}')
         sys.exit()
     if not totalFrame == len(animation_frames):
-        print(f'[bright_red]ERROR: The \'totalFrame\' ({totalFrame}) and the amount of frames in the \'arrayFrame\' ({len(arrayFrame)}) are not the same in the JSON file! Please make them the same, by either adding more frames or updating the totalFrame.')
+        print(f'[bright_red]ERROR: The \'totalFrame\' ({totalFrame}) and the amount of frames in the \'arrayFrame\' ({len(animation_frames)}) are not the same in the JSON file! Please make them the same, by either adding more frames or updating the totalFrame.')
         sys.exit()
     if render_choice == 'no-hd' or render_choice == 'both':
         pathoverride(f'output/{name}/normal/files')
