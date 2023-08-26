@@ -177,7 +177,7 @@ def android_to_source(names):
     return True
 
 
-def android_to_webapp(names):
+def android_to_webapp(names,js_input):
     try:
         version=Prompt.ask('Pack Version to be displayed (eg. 1.0.0)')
         print('Importing libraries...')
@@ -198,8 +198,9 @@ def android_to_webapp(names):
                     copy_tree(f'temp/asar/app/{x}',f'temp/webapp/{x}')
         assetversions = webapp_format_conversion()
         webapp_css_html_setup(version,assetversions)
-        jsfix('temp/webapp/js/main.min.js','ios','browser','mp3')
-        jsfix('temp/webapp/js/index.min.js','ios','browser','mp3')
+        if js_input == 'modify':
+            jsfix('temp/webapp/js/main.min.js','ios','browser','mp3')
+            jsfix('temp/webapp/js/index.min.js','ios','browser','mp3')
         print('Packing up webapp...')
         shutil.make_archive('output/apk-to-webapp-packed','zip','temp/webapp/')
         print('Packed as \'apk-to-webapp-packed.zip\'! Cleaning up...')
@@ -210,7 +211,7 @@ def android_to_webapp(names):
         PrintException()
 
 
-def android_to_windows(names):
+def android_to_windows(names,js_input):
     os.makedirs('temp/windows/')
     os.makedirs('temp/android/')
     os.makedirs('temp/asar/')
@@ -222,8 +223,9 @@ def android_to_windows(names):
     shutil.unpack_archive('input/app.apk','temp/android/','zip')
     print('Organising new asar folder...')
     android_unpack(names)
-    jsfix('temp/asar/app/js/main.min.js','win','desktop','ogg')
-    jsfix('temp/asar/app/js/index.min.js','win','desktop','ogg')
+    if js_input == 'modify':
+        jsfix('temp/asar/app/js/main.min.js','win','desktop','ogg')
+        jsfix('temp/asar/app/js/index.min.js','win','desktop','ogg')
     print('Packing asar...')
     pack_asar("temp/asar",'temp/app.asar')
     print('Copying new asar...')
@@ -236,7 +238,7 @@ def android_to_windows(names):
     return True
 
 
-def android(output):
+def android(output,jsinput):
     names = [
         'css',
         'font',
@@ -258,13 +260,13 @@ def android(output):
     if output == 'source':
         val = android_to_source(names)
     elif output == 'webapp':
-        val = android_to_webapp(names)
+        val = android_to_webapp(names,jsinput)
     elif output == 'windows':
-        val = android_to_windows(names)
+        val = android_to_windows(names,jsinput)
     return val
 
 
-def source_to_webapp():
+def source_to_webapp(js_input):
     names = [
         'css'
     ]
@@ -279,8 +281,9 @@ def source_to_webapp():
                 copy_tree(f'input/source/app/{x}',f'temp/webapp/{x}')
     assetversions = webapp_format_conversion()
     webapp_css_html_setup(version,assetversions)
-    jsfix('temp/webapp/js/main.min.js','ios','browser','mp3')
-    jsfix('temp/webapp/js/index.min.js','ios','browser','mp3')
+    if js_input == 'modify':
+        jsfix('temp/webapp/js/main.min.js','ios','browser','mp3')
+        jsfix('temp/webapp/js/index.min.js','ios','browser','mp3')
     print('Packing up webapp...')
     shutil.make_archive('output/webapp-packed','zip','temp/webapp/')
     print('Packed as \'webapp-packed.zip\'! Cleaning up...')
@@ -289,13 +292,14 @@ def source_to_webapp():
     return True
 
 
-def source_to_windows():
+def source_to_windows(js_input):
     os.makedirs('temp/windows/')
     print('Unpacking template...')
     shutil.unpack_archive('templates/windows.zip','temp/windows/','zip')
     copy_tree('input/source','temp/source')
-    jsfix('temp/source/app/js/main.min.js','win','desktop','ogg')
-    jsfix('temp/source/app/js/index.min.js','win','desktop','ogg')
+    if js_input == 'modify':
+        jsfix('temp/source/app/js/main.min.js','win','desktop','ogg')
+        jsfix('temp/source/app/js/index.min.js','win','desktop','ogg')
     print('Packing asar...')
     pack_asar("temp/source",'temp/app.asar')
     print('Copying new asar...')
@@ -308,7 +312,7 @@ def source_to_windows():
     return True
 
 
-def source(output):
+def source(output,js_input):
     if not os.path.exists('input/source/'):
         print('[bright_red]ERROR: Please move your mod source code into the \'source\' folder, and then put the \'source\' folder in the \'input\' folder!')
         os.makedirs('source/')
@@ -320,13 +324,13 @@ def source(output):
     os.makedirs('output/')
     val = False
     if output == 'webapp':
-        val = source_to_webapp()
+        val = source_to_webapp(js_input)
     elif output == 'windows':
-        val = source_to_windows()
+        val = source_to_windows(js_input)
     return val
 
 
-def windows_to_webapp():
+def windows_to_webapp(js_input):
     names = [
         'css'
     ]
@@ -346,8 +350,9 @@ def windows_to_webapp():
 
     assetversions = webapp_format_conversion()
     webapp_css_html_setup(version,assetversions)
-    jsfix('temp/webapp/js/main.min.js','ios','browser','mp3')
-    jsfix('temp/webapp/js/index.min.js','ios','browser','mp3')
+    if js_input == 'modify':
+        jsfix('temp/webapp/js/main.min.js','ios','browser','mp3')
+        jsfix('temp/webapp/js/index.min.js','ios','browser','mp3')
     print('Packing up webapp...')
     shutil.make_archive('output/windows-to-webapp-packed','zip','temp/webapp/')
     print('Packed as \'windows-to-webapp-packed.zip\'! Cleaning up...')
@@ -391,7 +396,7 @@ def windows(output):
     os.makedirs('output/')
     val = False
     if output == 'webapp':
-        val = windows_to_webapp()
+        val = windows_to_webapp(js_input)
     elif output == 'source':
         val = windows_to_source()
     return val
@@ -413,6 +418,7 @@ if __name__ == "__main__":
         os.makedirs('input')
         print('[bright_red]ERROR: Please put your files in the \'input\' folder!')
         sys.exit()
+    js_input = ""
     format_output = ""
     format_input = Prompt.ask("Enter the format you are importing",choices=['android','source','windows'])
     output_choices=[]
@@ -423,15 +429,19 @@ if __name__ == "__main__":
     elif format_input =='windows':
         output_choices.extend(['source','webapp'])
     format_output = Prompt.ask("Enter the format you are exporting",choices=output_choices)
+    if not format_output == 'source':
+        js_input = Prompt.ask("Do you want the JS files to modify the existing ones in your mod, or to use tested ones (v0.5.4) and replace yours?",choices=['replace','modify'])
+    else:
+        js_input = 'replace'
     while True:
         try:
             res = ""
             if format_input == 'android':
-                res = android(format_output)
+                res = android(format_output,js_input)
             elif format_input == 'source':
-                res = source(format_output)
+                res = source(format_output,js_input)
             elif format_input == 'windows':
-                res = windows(format_output)
+                res = windows(format_output,js_input)
             if not res:
                 res_redo = Prompt.ask("The conversion failed, do you want to try again?",choices=['y','n'])
                 if res_redo == 'n':
