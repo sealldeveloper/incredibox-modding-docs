@@ -33,7 +33,6 @@ def jsfix(path,os,target,snd):
                 p5 = d.split(',sndtype="')[0]
                 p6 = d.split(',sndtype="',1)[1].split('"',1)[1]
                 d = p5 + f',sndtype="{snd}"' + p6
-                print(p6)
             except Exception as e:
                 path=path.split('/')
                 print(f'[bright_yellow]WARNING: {path[len(path)-1]} is likely obfuscated or a weird version, sizing and buttons may be weird or incorrect depending on platform.\n{str(e)}')
