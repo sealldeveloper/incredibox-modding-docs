@@ -435,6 +435,8 @@ if __name__ == "__main__":
                 print('Rerun the program, updated!')
                 sys.exit()
         else:
+            if os.path.exists('.temp.py'):
+                os.remove('.temp.py')
             print('[bright_green]Latest Version!')
     except Exception as e:
         print(f'[bright_red]ERROR: Failed to check for updates!\n{str(e)}')

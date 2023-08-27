@@ -38,11 +38,18 @@ if __name__ == "__main__":
         if not h1.hexdigest() == h2.hexdigest():
             update = Prompt.ask('Out of date! Do you want to update?',choices=['y','n'])
             if update == 'y':
-                os.remove('flipaclip-converter.py')
-                os.rename('.temp.py','flipaclip-converter.py')
+                r = requests.get('https://api.github.com/repos/sealldeveloper/incredibox-modding-docs/contents/Tools/FlipaclipConverter?ref=main')
+                json = r.json()
+                for x in json:
+                    res = requests.get(x['download_url'])
+                    data = res.content.decode('utf-8')
+                    with open(f'{x["name"]}','w') as f:
+                        f.write(data)
                 print('Rerun the program, updated!')
                 sys.exit()
         else:
+            if os.path.exists('.temp.py'):
+                os.remove('.temp.py')
             print('[bright_green]Latest Version!')
     except Exception as e:
         print(f'[bright_red]ERROR: Failed to check for updates!\n{str(e)}')
