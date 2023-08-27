@@ -430,8 +430,26 @@ if __name__ == "__main__":
         if not h1.hexdigest() == h2.hexdigest():
             update = Prompt.ask('Out of date! Do you want to update?',choices=['y','n'])
             if update == 'y':
-                os.remove('compiler.py')
-                os.rename('.temp.py','compiler.py')
+                r = requests.get('https://api.github.com/repos/sealldeveloper/incredibox-modding-docs/contents/Tools/Compiler?ref=main')
+                json = r.json()
+                for x in track(json, description='Updating...'):
+                    res = requests.get(x['download_url'])
+                    data = res.content.decode('utf-8')
+                    if not x['type'] == 'dir':
+                        with open(f'{x["name"]}','w') as f:
+                            f.write(data)
+                    else:
+                        r2 = requests.get(x['url'])
+                        json2 = r2.json()
+                        if os.path.exists(x['name']):
+                            shutil.rmtree(x['name'])
+                        os.makedirs(x['name'])
+                        for y in track(json2, description="Updating templates..."):
+                            res2 = requests.get(y['download_url'])
+                            data2 = res2.content.decode('utf-8')
+                            if not y['type'] == 'dir':
+                                with open(f'{x["name"]}/{y["name"]}','w') as ff:
+                                    ff.write(data2)
                 print('Rerun the program, updated!')
                 sys.exit()
         else:

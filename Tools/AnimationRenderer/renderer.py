@@ -239,7 +239,7 @@ if __name__ == "__main__":
             if update == 'y':
                 r = requests.get('https://api.github.com/repos/sealldeveloper/incredibox-modding-docs/contents/Tools/AnimationRenderer?ref=main')
                 json = r.json()
-                for x in json:
+                for x in track(json, description="Updating..."):
                     res = requests.get(x['download_url'])
                     data = res.content.decode('utf-8')
                     with open(f'{x["name"]}','w') as f:
