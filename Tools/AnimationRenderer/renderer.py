@@ -152,8 +152,7 @@ def def_vs_check(width,height,name,v):
 
 def compile_gifs(gifframes,defaultcheckframes,name,v,filename):
     print(f'({v}) Compiling GIFs...')
-    if not filename == 'notext':
-        imageio.v3.imwrite(f'output/{name}/{v}/output/default-pose-compared-to-first-frame.gif',defaultcheckframes,duration=int(1000), plugin="pillow", mode="RGBA", loop=0, transparency=0, disposal=2)
+    imageio.v3.imwrite(f'output/{name}/{v}/output/default-pose-compared-to-first-frame.gif',defaultcheckframes,duration=int(1000), plugin="pillow", mode="RGBA", loop=0, transparency=0, disposal=2)
     imageio.v3.imwrite(f'output/{name}/{v}/output/anime_{filename}.gif',gifframes,duration=int(1/24*1000), plugin="pillow", mode="RGBA", loop=0, transparency=0, disposal=2)
     print(f'({v}) GIFs finished!')
 
@@ -224,7 +223,7 @@ if __name__ == "__main__":
         print('[bright_red]ERROR: Please put your files in the \'input\' folder!')
         sys.exit()
     render_choice = Prompt.ask("What render version do you want?",choices=['no-hd','hd','both'])
-    no_text_choice = Prompt.ask("Do you want copies of the videos/gifs that don't have the frame counter?",choices=['y','n'])
+    no_text_choice = Prompt.ask("Do you want the frame counter?",choices=['y','n'])
     filechecks(render_choice)
     
     f=open('input/anime.json')
@@ -253,9 +252,14 @@ if __name__ == "__main__":
         silhouette_check(width,height,name,'normal')
         gifframes,gifframestext = gif_frames(name,'normal')
         defaultcheckframes = def_vs_check(width,height,name,'normal')
-        compile_gifs(gifframestext,defaultcheckframes,name,'normal','text')
-        mp4_compile(gifframestext,name,len(animation_frames),'normal','text')
-        cleanup(name,'normal')
+        if no_text_choice == 'n':
+            compile_gifs(gifframes,defaultcheckframes,name,'normal','no-text')
+            mp4_compile(gifframes,name,len(animation_frames),'normal','no-text')
+            cleanup(name,'normal')
+        else:
+            compile_gifs(gifframestext,defaultcheckframes,name,'normal','text')
+            mp4_compile(gifframestext,name,len(animation_frames),'normal','text')
+            cleanup(name,'normal')
     if render_choice == 'hd' or render_choice == 'both':
         height=height*2
         width=width*2
@@ -270,16 +274,11 @@ if __name__ == "__main__":
         silhouette_check(width,height,name,'hd')
         gifframes,gifframestext = gif_frames(name,'hd')
         defaultcheckframes = def_vs_check(width,height,name,'hd')
-        compile_gifs(gifframestext,defaultcheckframes,name,'hd','text')
-        mp4_compile(gifframestext,name,len(animation_frames),'hd','text')
-        cleanup(name,'hd')
-    if no_text_choice == 'y':
-        print('[bright_blue](no-text) Compiling copies without text...')
-        if render_choice == 'hd' or render_choice == 'both':
+        if no_text_choice == 'n':
             compile_gifs(gifframes,defaultcheckframes,name,'hd','no-text')
             mp4_compile(gifframes,name,len(animation_frames),'hd','no-text')
             cleanup(name,'hd')
-        if render_choice == 'no-hd' or render_choice == 'both':
-            compile_gifs(gifframes,defaultcheckframes,name,'normal','no-text')
-            mp4_compile(gifframes,name,len(animation_frames),'normal','no-text')
-            cleanup(name,'normal')
+        else:
+            compile_gifs(gifframestext,defaultcheckframes,name,'hd','text')
+            mp4_compile(gifframestext,name,len(animation_frames),'hd','text')
+            cleanup(name,'hd')
