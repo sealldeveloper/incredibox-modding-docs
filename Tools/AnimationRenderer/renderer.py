@@ -220,6 +220,8 @@ def cleanup(name,v):
 
 if __name__ == "__main__":
     print(Panel("[orange_red1]Incredibox Animation Renderer\n[dodger_blue1]by [salmon1]sealldeveloper", title="[green1]Welcome![bright_white]"))
+    if os.path.exists('.temp.py'):
+        os.remove('.temp.py')
     try:
         print('Checking for updates...')
         h1 = hashlib.sha256()
@@ -245,10 +247,10 @@ if __name__ == "__main__":
                     with open(f'{x["name"]}','wb') as f:
                         f.write(data)
                 print('Rerun the program, updated!')
+                if os.path.exists('.temp.py'):
+                    os.remove('.temp.py')
                 sys.exit()
         else:
-            if os.path.exists('.temp.py'):
-                os.remove('.temp.py')
             print('[bright_green]Latest Version!')
     except Exception as e:
         print(f'[bright_red]ERROR: Failed to check for updates!\n{str(e)}')

@@ -18,24 +18,27 @@ except Exception as e:
     sys.exit()
 
 def jsfix(path,os,target,snd):
-    with open(path) as f:
-        d=jsmin(f.read())
-    with open(path,'w') as f:
-        try:
-            p1 = d.split(',target="',1)[0]
-            p2 = d.split(',target="',1)[1].split('"',1)[1]
-            d = p1 + f',target="{target}"' + p2
-            p1 = d.split(',osname="')[0]
-            p2 = d.split(',osname="',1)[1].split('"',1)[1]
-            d = p1 + f',osname="{os}"' + p2
-            p1 = d.split(',sndtype="')[0]
-            p2 = d.split(',sndtype="',1)[1].split('"',1)[1]
-            d = p1 + f',sndtype="{snd}"' + p2
-        except Exception as e:
-            path=path.split('/')
-            print(f'[bright_yellow]WARNING: {path[len(path)-1]} is likely obfuscated or a weird version, sizing and buttons may be weird or incorrect depending on platform.\n{str(e)}')
-            PrintException()
-        f.write(d)
+    try:
+        with open(path, encoding='utf-8', errors='surrogateescape') as f:
+            d=jsmin(f.read())
+        with open(path,'w', encoding='utf-8', errors='surrogateescape') as f:
+            try:
+                p1 = d.split(',target="',1)[0]
+                p2 = d.split(',target="',1)[1].split('"',1)[1]
+                d = p1 + f',target="{target}"' + p2
+                p1 = d.split(',osname="')[0]
+                p2 = d.split(',osname="',1)[1].split('"',1)[1]
+                d = p1 + f',osname="{os}"' + p2
+                p1 = d.split(',sndtype="')[0]
+                p2 = d.split(',sndtype="',1)[1].split('"',1)[1]
+                d = p1 + f',sndtype="{snd}"' + p2
+            except Exception as e:
+                path=path.split('/')
+                print(f'[bright_yellow]WARNING: {path[len(path)-1]} is likely obfuscated or a weird version, sizing and buttons may be weird or incorrect depending on platform.\n{str(e)}')
+                PrintException()
+            f.write(d)
+    except:
+        PrintException()
 
 def webapp_format_conversion():
     assetversions=[]
@@ -293,23 +296,26 @@ def source_to_webapp(js_input):
 
 
 def source_to_windows(js_input):
-    os.makedirs('temp/windows/')
-    print('Unpacking template...')
-    shutil.unpack_archive('templates/windows.zip','temp/windows/','zip')
-    copy_tree('input/source','temp/source')
-    if js_input == 'modify':
-        jsfix('temp/source/app/js/main.min.js','win','desktop','ogg')
-        jsfix('temp/source/app/js/index.min.js','win','desktop','ogg')
-    print('Packing asar...')
-    pack_asar("temp/source",'temp/app.asar')
-    print('Copying new asar...')
-    shutil.copyfile('temp/app.asar','temp/windows/app/resources/app.asar')
-    print('Repacking new version...')
-    shutil.make_archive('output/windows-packed','zip','temp/windows/')
-    print('Packed as \'windows-packed.zip\'! Cleaning up...')
-    if os.path.exists('temp/'):
-        shutil.rmtree('temp/')
-    return True
+    try:
+        os.makedirs('temp/windows/')
+        print('Unpacking template...')
+        shutil.unpack_archive('templates/windows.zip','temp/windows/','zip')
+        copy_tree('input/source','temp/source')
+        if js_input == 'modify':
+            jsfix('temp/source/app/js/main.min.js','win','desktop','ogg')
+            jsfix('temp/source/app/js/index.min.js','win','desktop','ogg')
+        print('Packing asar...')
+        pack_asar("temp/source",'temp/app.asar')
+        print('Copying new asar...')
+        shutil.copyfile('temp/app.asar','temp/windows/app/resources/app.asar')
+        print('Repacking new version...')
+        shutil.make_archive('output/windows-packed','zip','temp/windows/')
+        print('Packed as \'windows-packed.zip\'! Cleaning up...')
+        if os.path.exists('temp/'):
+            shutil.rmtree('temp/')
+        return True
+    except:
+        PrintException()
 
 
 def source(output,js_input):
@@ -414,6 +420,8 @@ def PrintException():
 
 if __name__ == "__main__":
     print(Panel("[bright_cyan]Incredibox Mod Formatter\n[dodger_blue1]by [salmon1]sealldeveloper", title="[green1]Welcome![bright_white]"))
+    if os.path.exists('.temp.py'):
+        os.remove('.temp.py')
     try:
         print('Checking for updates...')
         h1 = hashlib.sha256()
@@ -452,10 +460,10 @@ if __name__ == "__main__":
                                 with open(f'{x["name"]}/{y["name"]}','wb') as ff:
                                     ff.write(data2)
                 print('Rerun the program, updated!')
+                if os.path.exists('.temp.py'):
+                    os.remove('.temp.py')
                 sys.exit()
         else:
-            if os.path.exists('.temp.py'):
-                os.remove('.temp.py')
             print('[bright_green]Latest Version!')
     except Exception as e:
         print(f'[bright_red]ERROR: Failed to check for updates!\n{str(e)}')
