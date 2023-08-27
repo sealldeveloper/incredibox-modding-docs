@@ -445,7 +445,7 @@ if __name__ == "__main__":
                         if os.path.exists(x['name']):
                             shutil.rmtree(x['name'])
                         os.makedirs(x['name'])
-                        for y in track(json2, description="Updating templates..."):
+                        for y in json2:
                             if not y['type'] == 'dir':
                                 res2 = requests.get(y['download_url'])
                                 data2 = res2.content
