@@ -20,23 +20,26 @@ except Exception as e:
 def jsfix(path,os,target,snd):
     try:
         with open(path, encoding='utf-8', errors='surrogateescape') as f:
-            d=jsmin(f.read())
-        with open(path,'w', encoding='utf-8', errors='surrogateescape') as f:
+            d=jsmin(f.read(), quote_chars="'\"`")
+            f.close()
+        with open(path,'w', encoding='utf-8') as f:
             try:
                 p1 = d.split(',target="',1)[0]
                 p2 = d.split(',target="',1)[1].split('"',1)[1]
                 d = p1 + f',target="{target}"' + p2
-                p1 = d.split(',osname="')[0]
-                p2 = d.split(',osname="',1)[1].split('"',1)[1]
-                d = p1 + f',osname="{os}"' + p2
-                p1 = d.split(',sndtype="')[0]
-                p2 = d.split(',sndtype="',1)[1].split('"',1)[1]
-                d = p1 + f',sndtype="{snd}"' + p2
+                p3 = d.split(',osname="')[0]
+                p4 = d.split(',osname="',1)[1].split('"',1)[1]
+                d = p3 + f',osname="{os}"' + p4
+                p5 = d.split(',sndtype="')[0]
+                p6 = d.split(',sndtype="',1)[1].split('"',1)[1]
+                d = p5 + f',sndtype="{snd}"' + p6
+                print(p6)
             except Exception as e:
                 path=path.split('/')
                 print(f'[bright_yellow]WARNING: {path[len(path)-1]} is likely obfuscated or a weird version, sizing and buttons may be weird or incorrect depending on platform.\n{str(e)}')
                 PrintException()
             f.write(d)
+            f.close()
     except:
         PrintException()
 
