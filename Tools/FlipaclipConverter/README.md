@@ -5,7 +5,7 @@ This will convert an exported PNG sequence from Flipaclip to a working polo spri
 > These animations rely on all motion being **inside** a 164 x 380 (or HD equivilent) box, otherwise risking offcenter animations.
 
 ## Requirements
-- Python 3.11 or higher
+- Python 3.11 or higher (Make sure to select the `Add to PATH` option)
 
 ## How to use:
 ### Windows

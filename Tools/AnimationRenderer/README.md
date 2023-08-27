@@ -5,7 +5,7 @@ Instead of booting the game everytime to check an animation, use this! It also c
 > These animations are not perfect, decimal pixel changes are not accounted for and are rounded, for example `-4.95` becomes `-5` and `1.25` becomes `1`.
 
 ## Requirements
-- Python 3.11 or higher
+- Python 3.11 or higher (Make sure to select the `Add to PATH` option)
 
 ## How to use:
 ### Windows
