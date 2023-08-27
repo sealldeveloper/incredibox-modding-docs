@@ -422,8 +422,8 @@ if __name__ == "__main__":
             h1.update(data)
         h2 = hashlib.sha256()
         r = requests.get('https://raw.githubusercontent.com/sealldeveloper/incredibox-modding-docs/main/Tools/Compiler/compiler.py')
-        text = r.content.decode('utf-8')
-        with open('.temp.py','w') as f:
+        text = r.content
+        with open('.temp.py','wb') as f:
             f.write(text)
         with open('.temp.py', 'rb') as f:
             data2 = f.read()
@@ -436,8 +436,8 @@ if __name__ == "__main__":
                 for x in track(json, description='Updating...'):
                     if not x['type'] == 'dir':
                         res = requests.get(x['download_url'])
-                        data = res.content.decode('utf-8')
-                        with open(f'{x["name"]}','w') as f:
+                        data = res.content
+                        with open(f'{x["name"]}','wb') as f:
                             f.write(data)
                     else:
                         r2 = requests.get(x['url'])
@@ -448,8 +448,8 @@ if __name__ == "__main__":
                         for y in track(json2, description="Updating templates..."):
                             if not y['type'] == 'dir':
                                 res2 = requests.get(y['download_url'])
-                                data2 = res2.content.decode('utf-8')
-                                with open(f'{x["name"]}/{y["name"]}','w') as ff:
+                                data2 = res2.content
+                                with open(f'{x["name"]}/{y["name"]}','wb') as ff:
                                     ff.write(data2)
                 print('Rerun the program, updated!')
                 sys.exit()

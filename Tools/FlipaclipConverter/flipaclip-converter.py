@@ -31,8 +31,8 @@ if __name__ == "__main__":
             h1.update(data)
         h2 = hashlib.sha256()
         r = requests.get('https://raw.githubusercontent.com/sealldeveloper/incredibox-modding-docs/main/Tools/FlipaclipConverter/flipaclip-converter.py')
-        text = r.content.decode('utf-8')
-        with open('.temp.py','w') as f:
+        text = r.content
+        with open('.temp.py','wb') as f:
             f.write(text)
         with open('.temp.py', 'rb') as f:
             data2 = f.read()
@@ -44,8 +44,8 @@ if __name__ == "__main__":
                 json = r.json()
                 for x in track(json, description="Updating..."):
                     res = requests.get(x['download_url'])
-                    data = res.content.decode('utf-8')
-                    with open(f'{x["name"]}','w') as f:
+                    data = res.content
+                    with open(f'{x["name"]}','wb') as f:
                         f.write(data)
                 print('Rerun the program, updated!')
                 sys.exit()
