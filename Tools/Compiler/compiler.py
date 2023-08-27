@@ -57,9 +57,9 @@ def webapp_format_conversion():
                         
                         try:
                             AudioSegment.from_ogg(f'{path}/ogg/{f}').export(f'{path}/mp3/{newname}')
-                            print(f'{x} - {f} -> {x} - {newname}')
+                            print(f'[bright_blue]({x}) [default]{f} -> {newname}')
                         except Exception as e:
-                            print(f'{x} - {f} -> [bright_red]ERROR! Couldn\'t convert...\n{str(e)}')
+                            print(f'[bright_blue]({x}) [default]{f} -> [bright_red]ERROR! Couldn\'t convert...\n{str(e)}')
                 shutil.rmtree(f'{path}/ogg')
             print('Converting all bonuses to MP4\'s...')
             path=f'temp/webapp/{x}/video'
