@@ -10,6 +10,8 @@ try:
     from pydub import AudioSegment
     from moviepy.editor import VideoFileClip
     from jsmin import jsmin
+    import hashlib
+    import requests
 except Exception as e:
     print(f'[bright_red]ERROR: Packages have failed to install, please try reinstalling them.\n{str(e)}')
     sys.exit()
@@ -411,6 +413,32 @@ def PrintException():
 
 if __name__ == "__main__":
     print(Panel("[bright_cyan]Incredibox Mod Formatter\n[dodger_blue1]by [salmon1]sealldeveloper", title="[green1]Welcome![bright_white]"))
+    try:
+        print('Checking for updates...')
+        h1 = hashlib.sha256()
+        with open('compiler.py','rb') as f:
+            data=f.read()
+            h1.update(data)
+        h2 = hashlib.sha256()
+        r = requests.get('https://raw.githubusercontent.com/sealldeveloper/incredibox-modding-docs/main/Tools/Compiler/compiler.py')
+        text = r.content.decode('utf-8')
+        with open('.tempcompiler.py','w') as f:
+            f.write(text)
+        with open('.tempcompiler.py', 'rb') as f:
+            data2 = f.read()
+        h2.update(data2)
+        if not h1.hexdigest() == h2.hexdigest():
+            update = Prompt.ask('Out of date! Do you want to update?',choices=['y','n'])
+            if update == 'y':
+                os.remove('compiler.py')
+                os.rename('.tempcompiler.py','compiler.py')
+                print('Rerun the program, updated!')
+                sys.exit()
+        else:
+            print('[bright_green]Latest Version!')
+    except Exception as e:
+        print(f'[bright_red]ERROR: Failed to check for updates!\n{str(e)}')
+        PrintException()
     if not os.path.exists('input'):
         os.makedirs('input')
         print('[bright_red]ERROR: Please put your files in the \'input\' folder!')
