@@ -434,9 +434,9 @@ if __name__ == "__main__":
                 r = requests.get('https://api.github.com/repos/sealldeveloper/incredibox-modding-docs/contents/Tools/Compiler?ref=main')
                 json = r.json()
                 for x in track(json, description='Updating...'):
-                    res = requests.get(x['download_url'])
-                    data = res.content.decode('utf-8')
                     if not x['type'] == 'dir':
+                        res = requests.get(x['download_url'])
+                        data = res.content.decode('utf-8')
                         with open(f'{x["name"]}','w') as f:
                             f.write(data)
                     else:
@@ -446,9 +446,9 @@ if __name__ == "__main__":
                             shutil.rmtree(x['name'])
                         os.makedirs(x['name'])
                         for y in track(json2, description="Updating templates..."):
-                            res2 = requests.get(y['download_url'])
-                            data2 = res2.content.decode('utf-8')
                             if not y['type'] == 'dir':
+                                res2 = requests.get(y['download_url'])
+                                data2 = res2.content.decode('utf-8')
                                 with open(f'{x["name"]}/{y["name"]}','w') as ff:
                                     ff.write(data2)
                 print('Rerun the program, updated!')
