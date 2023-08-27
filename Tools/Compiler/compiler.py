@@ -3,6 +3,7 @@ try:
     from rich import print
     from rich.prompt import Prompt
     from rich.panel import Panel
+    from rich.progress import track
     import rich
     import os,sys,shutil,linecache
     from distutils.dir_util import copy_tree
