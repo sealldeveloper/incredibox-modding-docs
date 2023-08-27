@@ -11,6 +11,8 @@ try:
     import numpy as np
     from PIL import ImageChops
     import re
+    import hashlib
+    import requests
 except Exception as e:
     print(f'[bright_red]ERROR: Packages have failed to install, please try reinstalling them. ({str(e)})')
     sys.exit()
