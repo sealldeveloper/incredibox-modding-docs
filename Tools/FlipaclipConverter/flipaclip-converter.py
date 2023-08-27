@@ -21,6 +21,32 @@ def calcdiff(im1, im2):
 
 if __name__ == "__main__":
     print(Panel("[orange_red1]Flipaclip to Polo\n[dodger_blue1]by [salmon1]sealldeveloper", title="[green1]Welcome![bright_white]"))
+    try:
+        print('Checking for updates...')
+        h1 = hashlib.sha256()
+        with open('flipaclip-converter.py','rb') as f:
+            data=f.read()
+            h1.update(data)
+        h2 = hashlib.sha256()
+        r = requests.get('https://raw.githubusercontent.com/sealldeveloper/incredibox-modding-docs/main/Tools/FlipaclipConverter/flipaclip-converter.py')
+        text = r.content.decode('utf-8')
+        with open('.temp.py','w') as f:
+            f.write(text)
+        with open('.temp.py', 'rb') as f:
+            data2 = f.read()
+        h2.update(data2)
+        if not h1.hexdigest() == h2.hexdigest():
+            update = Prompt.ask('Out of date! Do you want to update?',choices=['y','n'])
+            if update == 'y':
+                os.remove('flipaclip-converter.py')
+                os.rename('.temp.py','flipaclip-converter.py')
+                print('Rerun the program, updated!')
+                sys.exit()
+        else:
+            print('[bright_green]Latest Version!')
+    except Exception as e:
+        print(f'[bright_red]ERROR: Failed to check for updates!\n{str(e)}')
+        PrintException()
     if not os.path.exists('input'):
         os.makedirs('input')
         print('[bright_red]ERROR: Please put your files in the \'input\' folder!')

@@ -3,3 +3,4 @@ Pillow==9.3.0
 pydub==0.25.1
 imageio==2.26.1
 rich==12.6.0
+requests==2.28.2

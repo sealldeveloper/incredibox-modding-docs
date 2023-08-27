@@ -422,16 +422,16 @@ if __name__ == "__main__":
         h2 = hashlib.sha256()
         r = requests.get('https://raw.githubusercontent.com/sealldeveloper/incredibox-modding-docs/main/Tools/Compiler/compiler.py')
         text = r.content.decode('utf-8')
-        with open('.temp.py','w') as f:
+        with open('.tempcompiler.py','w') as f:
             f.write(text)
-        with open('.temp.py', 'rb') as f:
+        with open('.tempcompiler.py', 'rb') as f:
             data2 = f.read()
         h2.update(data2)
         if not h1.hexdigest() == h2.hexdigest():
             update = Prompt.ask('Out of date! Do you want to update?',choices=['y','n'])
             if update == 'y':
                 os.remove('compiler.py')
-                os.rename('.temp.py','compiler.py')
+                os.rename('.tempcompiler.py','compiler.py')
                 print('Rerun the program, updated!')
                 sys.exit()
         else:

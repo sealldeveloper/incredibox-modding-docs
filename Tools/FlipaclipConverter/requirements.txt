@@ -2,3 +2,4 @@ Pillow==9.3.0
 rich==12.6.0
 numpy==1.23.5
 imageio==2.26.1
+requests==2.28.2
