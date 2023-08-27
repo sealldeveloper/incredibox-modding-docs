@@ -12,7 +12,7 @@ try:
     from PIL import ImageChops
     import re
 except Exception as e:
-    print(f'Packages have failed to install, please try reinstalling them. ({str(e)})')
+    print(f'[bright_red]ERROR: Packages have failed to install, please try reinstalling them. ({str(e)})')
     sys.exit()
 
 def calcdiff(im1, im2):

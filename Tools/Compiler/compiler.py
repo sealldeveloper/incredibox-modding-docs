@@ -306,8 +306,8 @@ def source_to_windows(js_input):
     print('Repacking new version...')
     shutil.make_archive('output/windows-packed','zip','temp/windows/')
     print('Packed as \'windows-packed.zip\'! Cleaning up...')
-    #if os.path.exists('temp/'):
-        #shutil.rmtree('temp/')
+    if os.path.exists('temp/'):
+        shutil.rmtree('temp/')
     return True
 
 

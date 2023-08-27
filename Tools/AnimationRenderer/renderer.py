@@ -10,8 +10,8 @@ try:
     import json,shutil,os,imageio
     from moviepy.editor import *
     import math
-except:
-    print('Packages have failed to install, please try reinstalling them.')
+except Exception as e:
+    print(f'[bright_red]ERROR: Packages have failed to install, please try reinstalling them.\n{str(e)}')
     sys.exit()
 
 def filechecks(render_choice):
