@@ -171,16 +171,18 @@ def audio_merge(name1,name2,totalFrame,v):
         print(f'[bright_red]ERROR ({v}): The file \'{name2.replace("input/","")}\' is an invalid OGG file. Please run it through a program like Audacity and re-export it as an OGG. Then retry.')
         sys.exit()
     try:
-        if not name1 == name2:
-            audioa = audioa[:sfxlength]
-            audiob = audiob[:sfxlength]
+        if name1==name2:
+            audioa = audioa[:sfxlength*2]
         else:
             audioa = audioa[:sfxlength]
-            audiob = audiob[sfxlength:]
+            audiob = audiob[:sfxlength]
     except Exception as e:
         print(f'[bright_red]ERROR ({v}): Correcting the length of the SFX\'s failed...\n\n{str(e)}')
         sys.exit()
-    audiocombine=audioa+audiob
+    if name1 == name2:
+        audiocombine=audioa
+    else:
+        audiocombine=audioa+audiob
     audiocombine.export('output/anime.ogg',format="ogg")
     print(f'({v}) Audio merged, adding audio to MP4...')
     return AudioFileClip('output/anime.ogg')
