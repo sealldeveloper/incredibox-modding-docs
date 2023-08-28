@@ -256,6 +256,8 @@ if __name__ == "__main__":
                 sys.exit()
         else:
             print('[bright_green]Latest Version!')
+        if os.path.exists('.temp.py'):
+            os.remove('.temp.py')
     except Exception as e:
         print(f'[bright_red]ERROR: Failed to check for updates!\n{str(e)}')
     if not os.path.exists('input'):
