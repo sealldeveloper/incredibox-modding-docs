@@ -88,6 +88,12 @@ if __name__ == "__main__":
         framechoice=0
         count+=1
         im = Image.open(f'temp/{f}')
+        bw = 164
+        if hd == 'y':
+            bw=bw*2
+        wp = (bw/float(im.size[0]))
+        hs = int((float(im.size[1])*float(wp)))
+        im = im.resize((bw,hs))
         for x in allimages:
             vals.append(calcdiff(im,x))
         if not 0.0 in vals:
