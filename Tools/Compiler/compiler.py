@@ -393,7 +393,7 @@ def windows_to_source():
     return True
 
 
-def windows(output):
+def windows(output,js_input):
     if not os.path.exists('input/app.zip'):
         print('[bright_red]ERROR: Please move your mod zip into the \'input\' folder and name it \'app.zip\'!')
         return False
