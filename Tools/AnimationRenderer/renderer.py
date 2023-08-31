@@ -188,13 +188,19 @@ def audio_merge(name1,name2,totalFrame,v):
     return AudioFileClip('output/anime.ogg')
 
 def mp4_compile(gifframes,name,totalFrame,v,filename):
-    if os.path.exists('input/anime_a.ogg'):
+    if os.path.exists('input/anime_a.ogg') or os.path.exists('input/anime_combined.ogg'):
         print(f'({v}) Compiling MP4...')
-        imageio.v2.mimwrite('output/anime-hd.mp4',gifframes,fps=24,macro_block_size=1)
+        if filename == 'n':
+            imageio.v2.mimwrite('output/anime-hd.mp4',gifframes,fps=24,macro_block_size=1)
+        else:
+            imageio.v2.mimwrite('output/anime-hd.mp4',gifframestext,fps=24,macro_block_size=1)
         video=VideoFileClip('output/anime-hd.mp4')
         print(f'({v}) Compiled MP4, processing audio tracks...')
         if os.path.exists('input/anime_combined.ogg'):
-            audio = AudioFileClip('input/anime_combined.ogg')
+            try:
+                audio = AudioFileClip('input/anime_combined.ogg')
+            except Exception as e:
+                PrintException()
         else:
             if os.path.exists('input/anime_b.ogg'):
                 audio=audio_merge('input/anime_a.ogg','input/anime_b.ogg',totalFrame,v)
