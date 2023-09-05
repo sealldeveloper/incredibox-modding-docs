@@ -27,9 +27,12 @@ def jsfix(path,os,target,snd):
                 p1 = d.split(',target="',1)[0]
                 p2 = d.split(',target="',1)[1].split('"',1)[1]
                 d = p1 + f',target="{target}"' + p2
-                p3 = d.split(',osname="')[0]
-                p4 = d.split(',osname="',1)[1].split('"',1)[1]
-                d = p3 + f',osname="{os}"' + p4
+                try:
+                    p3 = d.split(',osname="')[0]
+                    p4 = d.split(',osname="',1)[1].split('"',1)[1]
+                    d = p3 + f',osname="{os}"' + p4
+                except Exception as e:
+                    print('No \'osname\' found, moving on...')
                 p5 = d.split(',sndtype="')[0]
                 p6 = d.split(',sndtype="',1)[1].split('"',1)[1]
                 d = p5 + f',sndtype="{snd}"' + p6
@@ -203,7 +206,7 @@ def android_to_webapp(names,js_input):
                 if not x in ['css']:
                     copy_tree(f'temp/asar/app/{x}',f'temp/webapp/{x}')
         assetversions = webapp_format_conversion()
-        webapp_css_html_setup(version,assetversions)
+        #webapp_css_html_setup(version,assetversions)
         if js_input == 'modify':
             jsfix('temp/webapp/js/main.min.js','ios','browser','mp3')
             jsfix('temp/webapp/js/index.min.js','ios','browser','mp3')
@@ -285,7 +288,7 @@ def source_to_webapp(js_input):
             if not x in names:
                 copy_tree(f'input/source/app/{x}',f'temp/webapp/{x}')
     assetversions = webapp_format_conversion()
-    webapp_css_html_setup(version,assetversions)
+    #webapp_css_html_setup(version,assetversions)
     if js_input == 'modify':
         jsfix('temp/webapp/js/main.min.js','ios','browser','mp3')
         jsfix('temp/webapp/js/index.min.js','ios','browser','mp3')
@@ -357,7 +360,7 @@ def windows_to_webapp(js_input):
                 copy_tree(f'temp/source/app/{x}',f'temp/webapp/{x}')
 
     assetversions = webapp_format_conversion()
-    webapp_css_html_setup(version,assetversions)
+    #webapp_css_html_setup(version,assetversions)
     if js_input == 'modify':
         jsfix('temp/webapp/js/main.min.js','ios','browser','mp3')
         jsfix('temp/webapp/js/index.min.js','ios','browser','mp3')
@@ -388,6 +391,22 @@ def windows_to_source():
     print('Packing source...')
     shutil.make_archive('output/windows-to-source-packed','zip','temp/source/')
     print('Packed as \'windows-to-source-packed.zip\'! Cleaning up...')
+    if os.path.exists('temp/'):
+        shutil.rmtree('temp/')
+    return True
+
+def windows_to_mac():
+    os.makedirs('temp/windows/')
+    os.makedirs('temp/mac/Incredibox.app')
+    print('Unpacking app...')
+    shutil.unpack_archive('input/app.zip','temp/windows/','zip')
+    shutil.unpack_archive('templates/mac.zip','temp/mac/Incredibox.app/','zip')
+    print('Moving asars...')
+    shutil.copyfile('temp/windows/app/resources/app.asar','temp/mac/Incredibox.app/Contents/Resources/app.asar')
+    shutil.copyfile('temp/windows/app/resources/electron.asar','temp/mac/Incredibox.app/Contents/Resources/electron.asar')
+    print('Packing source...')
+    shutil.make_archive('output/windows-to-mac-packed','zip','temp/mac/')
+    print('Packed as \'windows-to-source-mac.zip\'! Cleaning up...')
     if os.path.exists('temp/'):
         shutil.rmtree('temp/')
     return True
@@ -482,13 +501,13 @@ if __name__ == "__main__":
     output_choices=[]
     if format_input == 'android':
         output_choices.extend(['source','webapp','windows'])
-    elif format_input =='source':
+    elif format_input == 'source':
         output_choices.extend(['webapp','windows'])
-    elif format_input =='windows':
-        output_choices.extend(['source','webapp'])
+    elif format_input == 'windows':
+        output_choices.extend(['source','webapp','mac'])
     format_output = Prompt.ask("Enter the format you are exporting",choices=output_choices)
     if not format_output == 'source':
-        js_input = Prompt.ask("Do you want the JS files to modify the existing ones in your mod, or to use tested ones (v0.5.4) and replace yours?",choices=['replace','modify'])
+        js_input = 'modify'
     else:
         js_input = 'replace'
     while True:
