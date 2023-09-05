@@ -398,12 +398,26 @@ def windows_to_source():
 def windows_to_mac():
     os.makedirs('temp/windows/')
     os.makedirs('temp/mac/Incredibox.app')
+    print('[bright_blue]NOTE: The version being uploaded MUST have JS files ≥ v1.1.5')
     print('Unpacking app...')
     shutil.unpack_archive('input/app.zip','temp/windows/','zip')
     shutil.unpack_archive('templates/mac.zip','temp/mac/Incredibox.app/','zip')
+    shutil.unpack_archive('templates/macasar.zip','temp/macasar/','zip')
+    print('Unpacking asar...')
+    extract_asar('temp/windows/app/resources/app.asar','temp/source/')
+    print('Formatting new asar...')
+    for f in os.listdir('temp/source//'):
+        if not f == 'js':
+            if os.path.isfile(f'temp/source/{f}'):
+                shutil.copyfile(f'temp/source/{f}',f'temp/macasar/{f}')
+            elif os.path.isdir(f'temp/source/{f}'):
+                copy_tree(f'temp/source/{f}',f'temp/macasar/{f}')
+    print('Packing new asar...')
+    pack_asar('temp/macasar/','temp/mac.asar')
     print('Moving asars...')
-    shutil.copyfile('temp/windows/app/resources/app.asar','temp/mac/Incredibox.app/Contents/Resources/app.asar')
+    shutil.copyfile('temp/mac.asar','temp/mac/Incredibox.app/Contents/Resources/app.asar')
     shutil.copyfile('temp/windows/app/resources/electron.asar','temp/mac/Incredibox.app/Contents/Resources/electron.asar')
+    os.chmod('temp/mac/Incredibox.app/Contents/MacOS/Incredibox',0o755)
     print('Packing source...')
     shutil.make_archive('output/windows-to-mac-packed','zip','temp/mac/')
     print('Packed as \'windows-to-source-mac.zip\'! Cleaning up...')
@@ -426,6 +440,8 @@ def windows(output,js_input):
         val = windows_to_webapp(js_input)
     elif output == 'source':
         val = windows_to_source()
+    elif output == 'mac':
+        val = windows_to_mac()
     return val
 
 
@@ -504,7 +520,7 @@ if __name__ == "__main__":
     elif format_input == 'source':
         output_choices.extend(['webapp','windows'])
     elif format_input == 'windows':
-        output_choices.extend(['source','webapp','mac'])
+        output_choices.extend(['source','webapp',])#add mac back when working
     format_output = Prompt.ask("Enter the format you are exporting",choices=output_choices)
     if not format_output == 'source':
         js_input = 'modify'
