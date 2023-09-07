@@ -13,6 +13,8 @@ try:
     from jsmin import jsmin
     import hashlib
     import requests
+    import asyncio
+    import zipfile
 except Exception as e:
     print(f'[bright_red]ERROR: Packages have failed to install, please try reinstalling them.\n{str(e)}')
     sys.exit()
@@ -395,29 +397,35 @@ def windows_to_source():
         shutil.rmtree('temp/')
     return True
 
-def windows_to_mac():
+async def windows_to_mac():
     os.makedirs('temp/windows/')
+    os.makedirs('temp/macasar/')
     os.makedirs('temp/mac/Incredibox.app')
     print('[bright_blue]NOTE: The version being uploaded MUST have JS files ≥ v1.1.5')
     print('Unpacking app...')
-    shutil.unpack_archive('input/app.zip','temp/windows/','zip')
+    with zipfile.ZipFile('input/app.zip', 'r') as zip_ref:
+        zip_ref.extractall('temp/windows/')
     shutil.unpack_archive('templates/mac.zip','temp/mac/Incredibox.app/','zip')
     shutil.unpack_archive('templates/macasar.zip','temp/macasar/','zip')
     print('Unpacking asar...')
     extract_asar('temp/windows/app/resources/app.asar','temp/source/')
     print('Formatting new asar...')
-    for f in os.listdir('temp/source//'):
-        if not f == 'js':
-            if os.path.isfile(f'temp/source/{f}'):
-                shutil.copyfile(f'temp/source/{f}',f'temp/macasar/{f}')
-            elif os.path.isdir(f'temp/source/{f}'):
-                copy_tree(f'temp/source/{f}',f'temp/macasar/{f}')
+    for f in os.listdir('temp/source/app/'):
+        if os.path.isfile(f'temp/source/app/{f}'):
+            shutil.copyfile(f'temp/source/app/{f}',f'temp/macasar/app/{f}')
+        elif os.path.isdir(f'temp/source/app/{f}'):
+            copy_tree(f'temp/source/app/{f}',f'temp/macasar/app/{f}')
     print('Packing new asar...')
     pack_asar('temp/macasar/','temp/mac.asar')
     print('Moving asars...')
     shutil.copyfile('temp/mac.asar','temp/mac/Incredibox.app/Contents/Resources/app.asar')
     shutil.copyfile('temp/windows/app/resources/electron.asar','temp/mac/Incredibox.app/Contents/Resources/electron.asar')
     os.chmod('temp/mac/Incredibox.app/Contents/MacOS/Incredibox',0o755)
+    os.chmod('temp/mac/Incredibox.app/Contents/PkgInfo',0o755)
+    os.chmod('temp/mac/Incredibox.app/Contents/Frameworks/Incredibox Helper.app/Contents/MacOS/Incredibox Helper',0o755)
+    for f in os.listdir('temp/mac/Incredibox.app/Contents/Frameworks/'):
+        if os.path.isdir(f'temp/mac/Incredibox.app/Contents/Frameworks/{f}') and f.endswith('.framework'):
+            os.chmod(f'temp/mac/Incredibox.app/Contents/Frameworks/{f}/{f.replace(".framework","")}',0o755)
     print('Packing source...')
     shutil.make_archive('output/windows-to-mac-packed','zip','temp/mac/')
     print('Packed as \'windows-to-source-mac.zip\'! Cleaning up...')
@@ -441,7 +449,7 @@ def windows(output,js_input):
     elif output == 'source':
         val = windows_to_source()
     elif output == 'mac':
-        val = windows_to_mac()
+        val = asyncio.run(windows_to_mac())
     return val
 
 
@@ -520,7 +528,7 @@ if __name__ == "__main__":
     elif format_input == 'source':
         output_choices.extend(['webapp','windows'])
     elif format_input == 'windows':
-        output_choices.extend(['source','webapp',])#add mac back when working
+        output_choices.extend(['source','webapp','mac'])#add mac back when working
     format_output = Prompt.ask("Enter the format you are exporting",choices=output_choices)
     if not format_output == 'source':
         js_input = 'modify'
