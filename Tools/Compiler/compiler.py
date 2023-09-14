@@ -251,12 +251,14 @@ def android_to_mac(names,js_input):
     os.makedirs('temp/macasar/')
     os.makedirs('temp/mac/Incredibox.app')
     os.makedirs('temp/android/')
+    os.makedirs('temp/windows/')
     os.makedirs('temp/asar/')
     print('[bright_blue]NOTE: The version being uploaded SHOULD have JS files ≥ v1.1.5')
     print('Unpacking app...')
     shutil.unpack_archive('templates/mac.zip','temp/mac/Incredibox.app/','zip')
     shutil.unpack_archive('templates/macasar.zip','temp/macasar/','zip')
     shutil.unpack_archive('templates/asar.zip','temp/asar/','zip')
+    shutil.unpack_archive('templates/windows.zip','temp/windows/','zip')
     shutil.unpack_archive('input/app.apk','temp/android/','zip')
     print('Formatting...')
     android_unpack(names)
@@ -368,21 +370,23 @@ def source_to_windows(js_input):
 
 def source_to_mac(js_input):
     os.makedirs('temp/macasar/')
+    os.makedirs('temp/windows/')
     os.makedirs('temp/mac/Incredibox.app')
     print('[bright_blue]NOTE: The version being uploaded SHOULD have JS files ≥ v1.1.5')
     print('Unpacking app...')
     shutil.unpack_archive('templates/mac.zip','temp/mac/Incredibox.app/','zip')
+    shutil.unpack_archive('templates/windows.zip','temp/windows/','zip')
     shutil.unpack_archive('templates/macasar.zip','temp/macasar/','zip')
     copy_tree('input/source','temp/source')
     print('Formatting...')
-    if js_input == 'modify':
-        jsfix('temp/asar/app/js/main.min.js','mac','desktop','ogg')
-        jsfix('temp/asar/app/js/index.min.js','mac','desktop','ogg')
     for f in os.listdir('temp/source/app/'):
         if os.path.isfile(f'temp/source/app/{f}'):
             shutil.copyfile(f'temp/source/app/{f}',f'temp/macasar/app/{f}')
         elif os.path.isdir(f'temp/source/app/{f}'):
             copy_tree(f'temp/source/app/{f}',f'temp/macasar/app/{f}')
+    if js_input == 'modify':
+        jsfix('temp/macasar/app/js/main.min.js','mac','desktop','ogg')
+        jsfix('temp/macasar/app/js/index.min.js','mac','desktop','ogg')
     print('Packing new asar...')
     pack_asar('temp/macasar/','temp/mac.asar')
     print('Moving asars...')
