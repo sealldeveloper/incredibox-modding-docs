@@ -77,87 +77,6 @@ def webapp_format_conversion():
                     os.remove(f'{path}/{y}')
     return assetversions
 
-def webapp_css_html_setup(version,assetversions):
-    print('Patching files for your icon count...')
-    icon="""
-    <div class='icon hoverLocked' id='replaceiconid'>
-        <div class='img'></div>
-        <div class='txt'></div>
-        <div class='bul'>
-            <svg class='icn-svg'>
-            <use xlink:href='#ic-check'></use>
-            </svg>
-        </div>
-        <div class='ic-locked'>
-            <svg class='icn-svg'>
-            <use xlink:href='#ic-lock'></use>
-            </svg>
-        </div>
-    </div>
-    """
-    versionhtml=f"<div class='text mini'>{version}</div>"
-    icons=[]
-    for i in assetversions:
-        icons.append(icon.replace('replaceiconid',f'icon{i}'))
-    iconhtml="\n".join(icons)
-    newdata=[]
-    with open('temp/webapp/app.html','r') as f:
-        data=f.readlines()
-        for l in data:
-            if 'iconsreplaceme' in l:
-                newdata.append(iconhtml)
-            elif 'versionreplaceme' in l:
-                newdata.append(versionhtml)
-            else:
-                newdata.append(l)
-        with open('temp/webapp/newapp.html','w') as w:
-            finaldata="<!-- Compiled using sealldevelopers source to webapp compiler -->\n"+"\n".join(newdata)
-            w.write(finaldata)
-            w.close()
-        f.close()
-    os.remove('temp/webapp/app.html')
-    os.rename('temp/webapp/newapp.html','temp/webapp/app.html')
-    newdata=[]
-    with open('temp/webapp/index.html','r') as f:
-        data=f.readlines()
-        for l in data:
-            if 'iconsreplaceme' in l:
-                newdata.append(iconhtml)
-            elif 'versionreplaceme' in l:
-                newdata.append(versionhtml)
-            else:
-                newdata.append(l)
-        with open('temp/webapp/newindex.html','w') as w:
-            finaldata="<!-- Compiled using sealldevelopers source to webapp compiler -->\n"+"\n".join(newdata)
-            w.write(finaldata)
-            w.close()
-        f.close()
-    os.remove('temp/webapp/index.html')
-    os.rename('temp/webapp/newindex.html','temp/webapp/index.html')
-    print('Patching css...')
-    count=0
-    csses=['\n\n/* CSS Made with sealldeveloper webapp converter */']
-    for i in assetversions:
-        css="""
-        #page-splash .centered #sp-select .icon#icon"""+str(i)+""".tweenUp{
-            -webkit-animation:g .5s cubic-bezier(.165,.84,.44,1) ."""+str(18+(count*5))+"""s forwards;
-            animation:g .5s cubic-bezier(.165,.84,.44,1) ."""+str(18+(count*5))+"""s forwards
-        }
-        #sp-select .icon#icon"""+str(i)+""" .img{
-            background-position:-"""+str(130*(int(i)-1))+"""px 0
-        }
-        #sp-select .icon#icon"""+str(i)+""" .txt{
-            background-position:-"""+str(130*(int(i)-1))+"""px -126px
-        }
-        #sp-select .icon#icon"""+str(i)+""" .bul{
-            background-color:#000000
-        }"""
-        csses.append(css)
-        count+=1
-    with open('temp/webapp/css/style.min.css','a') as f:
-        f.write("\n".join(csses))
-        f.close()
-
 def android_unpack(names):
     for f in os.listdir('temp/android/assets/www/'):
         if f.startswith('asset-v'):
@@ -170,6 +89,101 @@ def android_unpack(names):
                 shutil.copyfile(f'temp/android/assets/www/{f}',f'temp/asar/app/{f}')
             elif os.path.isdir(f'temp/android/assets/www/{f}'):
                 copy_tree(f'temp/android/assets/www/{f}',f'temp/asar/app/{f}')
+
+
+
+def mac_to_webapp(js_input):
+    os.makedirs('temp/webapp/')
+    os.makedirs('temp/mac/')
+    print('Unpacking template and app...')
+    shutil.unpack_archive('input/macapp.zip','temp/mac/','zip')
+    print('Unpacking asar...')
+    if not os.path.isfile('temp/mac/Incredibox.app/Contents/Resources/app.asar'):
+        print('[bright_red]ERROR: The \'app.asar\' doesn\'t exist! Check the app is called \'Incredibox.app\', and the \'app.asar\' exists!')
+        return False
+    extract_asar('temp/mac/Incredibox.app/Contents/Resources/app.asar','temp/source/')
+    print('Duplicating source to webapp...')
+    for x in os.listdir('temp/source/app'):
+        if os.path.isdir(f'temp/source/app/{x}'):
+            copy_tree(f'temp/source/app/{x}',f'temp/webapp/{x}')
+        elif os.path.isfile(f'temp/source/app/{x}'):
+            shutil.copyfile(f'temp/source/app/{x}',f'temp/webapp/{x}')
+
+    assetversions = webapp_format_conversion()
+    if js_input == 'modify':
+        jsfix('temp/webapp/js/main.min.js','ios','browser','mp3')
+        jsfix('temp/webapp/js/index.min.js','ios','browser','mp3')
+    print('Packing up webapp...')
+    shutil.make_archive('output/mac-to-webapp-packed','zip','temp/webapp/')
+    print('Packed as \'mac-to-webapp-packed.zip\'! Cleaning up...')
+    if os.path.exists('temp/'):
+        shutil.rmtree('temp/')
+    return True
+
+def mac_to_source():
+    os.makedirs('temp/mac/')
+    print('Unpacking app...')
+    shutil.unpack_archive('input/macapp.zip','temp/mac/','zip')
+    print('Unpacking asar...')
+    if not os.path.isfile('temp/mac/Incredibox.app/Contents/Resources/app.asar'):
+        print('[bright_red]ERROR: The \'app.asar\' doesn\'t exist! Check the app is called \'Incredibox.app\', and the \'app.asar\' exists!')
+        return False
+    extract_asar('temp/mac/Incredibox.app/Contents/Resources/app.asar','temp/source/')
+    print('Packing source...')
+    shutil.make_archive('output/mac-to-source-packed','zip','temp/source/')
+    print('Packed as \'mac-to-source-packed.zip\'! Cleaning up...')
+    if os.path.exists('temp/'):
+        shutil.rmtree('temp/')
+    return True
+
+def mac_to_windows(js_input):
+    try:
+        os.makedirs('temp/windows/')
+        os.makedirs('temp/mac/')
+        os.makedirs('temp/macasar/')
+        print('Unpacking template...')
+        shutil.unpack_archive('templates/windows.zip','temp/windows/','zip')
+        shutil.unpack_archive('input/macapp.zip','temp/mac/','zip')
+        shutil.unpack_archive('templates/asar.zip','temp/asar/','zip')
+        print('Unpacking asar...')
+        if not os.path.isfile('temp/mac/Incredibox.app/Contents/Resources/app.asar'):
+            print('[bright_red]ERROR: The \'app.asar\' doesn\'t exist! Check the app is called \'Incredibox.app\', and the \'app.asar\' exists!')
+            return False
+        extract_asar('temp/mac/Incredibox.app/Contents/Resources/app.asar','temp/macasar/')
+        """if js_input == 'modify':
+            jsfix('temp/source/app/js/main.min.js','win','desktop','ogg')
+            jsfix('temp/source/app/js/index.min.js','win','desktop','ogg')
+        print('Packing asar...')
+        pack_asar("temp/source",'temp/app.asar')
+        print('Copying new asar...')
+        shutil.copyfile('temp/app.asar','temp/windows/app/resources/app.asar')
+        print('Repacking new version...')
+        shutil.make_archive('output/windows-packed','zip','temp/windows/')
+        print('Packed as \'windows-packed.zip\'! Cleaning up...')
+        if os.path.exists('temp/'):
+            shutil.rmtree('temp/')"""
+        return True
+    except:
+        PrintException()
+
+def mac(output,jsinput):
+    if not os.path.exists('input/macapp.zip'):
+        print('[bright_red]ERROR: Please move your mod zip into the \'input\' folder and name it \'macapp.zip\'!')
+        return False
+    if os.path.exists('temp/'):
+        shutil.rmtree('temp/')
+    if os.path.exists('output/'):
+        shutil.rmtree('output/')
+    os.makedirs('output/')
+    val = False
+    if output == 'webapp':
+        val = mac_to_webapp(jsinput)
+    elif output == 'source':
+        val = mac_to_source()
+    elif output == 'windows':
+        val = mac_to_windows(jsinput)
+    return val
+
 
 def android_to_source(names):
     os.makedirs('temp/android/')
@@ -187,16 +201,13 @@ def android_to_source(names):
         shutil.rmtree('temp/')
     return True
 
-
 def android_to_webapp(names,js_input):
     try:
-        version=Prompt.ask('Pack Version to be displayed (eg. 1.0.0)')
         print('Importing libraries...')
         os.makedirs('temp/asar/')
         os.makedirs('temp/webapp/')
         print('Unpacking templates...')
         shutil.unpack_archive('templates/asar.zip','temp/asar/','zip')
-        shutil.unpack_archive('templates/webapp.zip','temp/webapp/','zip')
         print('Unpacking app...')
         shutil.unpack_archive('input/app.apk','temp/android/','zip')
         print('Organising new folder...')
@@ -204,10 +215,10 @@ def android_to_webapp(names,js_input):
         print('Duplicating source to webapp...')
         for x in os.listdir('temp/asar/app'):
             if os.path.isdir(f'temp/asar/app/{x}'):
-                if not x in ['css']:
-                    copy_tree(f'temp/asar/app/{x}',f'temp/webapp/{x}')
+                copy_tree(f'temp/asar/app/{x}',f'temp/webapp/{x}')
+            elif os.path.isfile(f'temp/asar/app/{x}'):
+                shutil.copyfile(f'temp/asar/app/{x}',f'temp/webapp/{x}')
         assetversions = webapp_format_conversion()
-        #webapp_css_html_setup(version,assetversions)
         if js_input == 'modify':
             jsfix('temp/webapp/js/main.min.js','ios','browser','mp3')
             jsfix('temp/webapp/js/index.min.js','ios','browser','mp3')
@@ -219,7 +230,6 @@ def android_to_webapp(names,js_input):
         return True
     except:
         PrintException()
-
 
 def android_to_windows(names,js_input):
     os.makedirs('temp/windows/')
@@ -245,7 +255,6 @@ def android_to_windows(names,js_input):
     if os.path.exists('temp/'):
         shutil.rmtree('temp/')
     return True
-
 
 def android_to_mac(names,js_input):
     os.makedirs('temp/macasar/')
@@ -320,20 +329,15 @@ def android(output,jsinput):
 
 
 def source_to_webapp(js_input):
-    names = [
-        'css'
-    ]
-    version=Prompt.ask('Pack Version to be displayed (eg. 1.0.0)')
     os.makedirs('temp/webapp/')
     print('Unpacking template...')
-    shutil.unpack_archive('templates/webapp.zip','temp/webapp/','zip')
     print('Duplicating source to webapp...')
     for x in os.listdir('input/source/app'):
         if os.path.isdir(f'input/source/app/{x}'):
-            if not x in names:
-                copy_tree(f'input/source/app/{x}',f'temp/webapp/{x}')
+            copy_tree(f'input/source/app/{x}',f'temp/webapp/{x}')
+        elif os.path.isfile(f'input/source/app/{x}'):
+            shutil.copyfile(f'input/source/app/{x}',f'temp/webapp/{x}')
     assetversions = webapp_format_conversion()
-    #webapp_css_html_setup(version,assetversions)
     if js_input == 'modify':
         jsfix('temp/webapp/js/main.min.js','ios','browser','mp3')
         jsfix('temp/webapp/js/index.min.js','ios','browser','mp3')
@@ -343,7 +347,6 @@ def source_to_webapp(js_input):
     if os.path.exists('temp/'):
         shutil.rmtree('temp/')
     return True
-
 
 def source_to_windows(js_input):
     try:
@@ -366,7 +369,6 @@ def source_to_windows(js_input):
         return True
     except:
         PrintException()
-
 
 def source_to_mac(js_input):
     os.makedirs('temp/macasar/')
@@ -427,25 +429,20 @@ def source(output,js_input):
 
 
 def windows_to_webapp(js_input):
-    names = [
-        'css'
-    ]
-    version=Prompt.ask('Pack Version to be displayed (eg. 1.0.0): ')    
     os.makedirs('temp/webapp/')
     os.makedirs('temp/windows/')
     print('Unpacking template and app...')
-    shutil.unpack_archive('templates/webapp.zip','temp/webapp/','zip')
     shutil.unpack_archive('input/app.zip','temp/windows/','zip')
     print('Unpacking asar...')
     extract_asar('temp/windows/app/resources/app.asar','temp/source/')
     print('Duplicating source to webapp...')
     for x in os.listdir('temp/source/app'):
         if os.path.isdir(f'temp/source/app/{x}'):
-            if not x in names:
-                copy_tree(f'temp/source/app/{x}',f'temp/webapp/{x}')
+            copy_tree(f'temp/source/app/{x}',f'temp/webapp/{x}')
+        elif os.path.isfile(f'temp/source/app/{x}'):
+            shutil.copyfile(f'temp/source/app/{x}',f'temp/webapp/{x}')
 
     assetversions = webapp_format_conversion()
-    #webapp_css_html_setup(version,assetversions)
     if js_input == 'modify':
         jsfix('temp/webapp/js/main.min.js','ios','browser','mp3')
         jsfix('temp/webapp/js/index.min.js','ios','browser','mp3')
@@ -456,18 +453,7 @@ def windows_to_webapp(js_input):
         shutil.rmtree('temp/')
     return True
 
-
 def windows_to_source():
-    names = [
-        'css',
-        'font',
-        'img',
-        'js',
-        'lang',
-        'snd',
-        'app.html',
-        'index.html'
-    ]
     os.makedirs('temp/windows/')
     print('Unpacking app...')
     shutil.unpack_archive('input/app.zip','temp/windows/','zip')
@@ -604,14 +590,16 @@ if __name__ == "__main__":
         sys.exit()
     js_input = ""
     format_output = ""
-    format_input = Prompt.ask("Enter the format you are importing",choices=['android','source','windows'])
+    format_input = Prompt.ask("Enter the format you are importing",choices=['android','source','windows','mac'])
     output_choices=[]
     if format_input == 'android':
         output_choices.extend(['source','webapp','windows','mac'])
     elif format_input == 'source':
         output_choices.extend(['webapp','windows','mac'])
     elif format_input == 'windows':
-        output_choices.extend(['source','webapp','mac'])#add mac back when working
+        output_choices.extend(['source','webapp','mac'])
+    elif format_input == 'mac':
+        output_choices.extend(['source','webapp','windows'])
     format_output = Prompt.ask("Enter the format you are exporting",choices=output_choices)
     if not format_output == 'source':
         js_input = 'modify'
@@ -626,6 +614,8 @@ if __name__ == "__main__":
                 res = source(format_output,js_input)
             elif format_input == 'windows':
                 res = windows(format_output,js_input)
+            elif format_input == 'mac':
+                res = mac(format_output,js_input)
             if not res:
                 res_redo = Prompt.ask("The conversion failed, do you want to try again?",choices=['y','n'])
                 if res_redo == 'n':
