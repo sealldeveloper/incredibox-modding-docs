@@ -20,6 +20,7 @@ except Exception as e:
 
 def jsfix(path,os,target,snd):
     try:
+        fname = path.split('/')[len(path.split('/'))-1]
         with open(path, encoding='utf-8', errors='surrogateescape') as f:
             d=jsmin(f.read(), quote_chars="'\"`")
             f.close()
@@ -33,13 +34,20 @@ def jsfix(path,os,target,snd):
                     p4 = d.split(',osname="',1)[1].split('"',1)[1]
                     d = p3 + f',osname="{os}"' + p4
                 except Exception as e:
-                    print('No \'osname\' found, moving on...')
+                    print(f'{fname}: No \'osname\' found, moving on...')
                 p5 = d.split(',sndtype="')[0]
                 p6 = d.split(',sndtype="',1)[1].split('"',1)[1]
                 d = p5 + f',sndtype="{snd}"' + p6
+                try:
+                    p7 = d.split('checkAudioFormat("')[0]
+                    p8 = d.split('checkAudioFormat("',1)[1].split(':sndtype',1)[1]
+                    d = p7 + f'checkAudioFormat("{snd}")?"{snd}":sndtype' + p8
+                except Exception as e:
+                    print(f'{fname}: No \'checkAudioFormat\' found, moving on...')
+                
             except Exception as e:
                 path=path.split('/')
-                print(f'[bright_yellow]WARNING: {path[len(path)-1]} is likely obfuscated or a weird version, sizing and buttons may be weird or incorrect depending on platform.\n{str(e)}')
+                print(f'[bright_yellow]WARNING: {path[len(path)-1]} is likely obfuscated or a weird version, sizing and buttons may be weird or incorrect depending on platform, may also not load or encounter errors.\n{str(e)}')
                 PrintException()
             f.write(d)
             f.close()
