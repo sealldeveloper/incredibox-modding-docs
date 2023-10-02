@@ -43,7 +43,7 @@ def jsfix(path,os,target,snd):
                     p8 = d.split('checkAudioFormat("',1)[1].split(':sndtype',1)[1]
                     d = p7 + f'checkAudioFormat("{snd}")?"{snd}":sndtype' + p8
                 except Exception as e:
-                    print(f'{fname}: No \'checkAudioFormat\' found, moving on...')
+                    print(f'{fname}: No \'checkAudioFormat\' found, potentially issues with loading MP3\'s...')
                 
             except Exception as e:
                 path=path.split('/')
