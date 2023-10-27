@@ -164,7 +164,7 @@ if __name__ == "__main__":
                 currentheight+=bottom-top
                 currentwidth=0
             else:
-                currentwidth+=right-left
+                currentwidth+=164
         else:
             arrayFrame.append(pasted_indexes[imindex])
     if not os.path.exists(f'output/{name}'):
