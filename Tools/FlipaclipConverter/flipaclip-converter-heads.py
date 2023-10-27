@@ -21,8 +21,7 @@ def calcdiff(im1, im2):
     dif = ImageChops.difference(im1, im2)
     return np.mean(np.array(dif))
 
-if __name__ == "__main__":
-    print(Panel("[orange_red1]Flipaclip to Polo\n[dodger_blue1]by [salmon1]sealldeveloper", title="[green1]Welcome![bright_white]"))
+def update():
     if os.path.exists('.temp.py'):
         os.remove('.temp.py')
     try:
@@ -32,7 +31,7 @@ if __name__ == "__main__":
             data=f.read()
             h1.update(data)
         h2 = hashlib.sha256()
-        r = requests.get('https://raw.githubusercontent.com/sealldeveloper/incredibox-modding-docs/main/Tools/FlipaclipConverter/flipaclip-converter.py')
+        r = requests.get('https://raw.githubusercontent.com/sealldeveloper/incredibox-modding-docs/main/Tools/FlipaclipConverter/flipaclip-converter-heads.py')
         text = r.content
         with open('.temp.py','wb') as f:
             f.write(text)
@@ -60,6 +59,10 @@ if __name__ == "__main__":
     except Exception as e:
         print(f'[bright_red]ERROR: Failed to check for updates!\n{str(e)}')
         PrintException()
+
+if __name__ == "__main__":
+    print(Panel("[orange_red1]Flipaclip (Heads) to Polo\n[dodger_blue1]by [salmon1]sealldeveloper", title="[green1]Welcome![bright_white]"))
+    update()
     if not os.path.exists('input'):
         os.makedirs('input')
         print('[bright_red]ERROR: Please put your files in the \'input\' folder!')
@@ -81,8 +84,32 @@ if __name__ == "__main__":
     allimages=[]
     frames=[]
     polishedframes={}
-    count = 0
     files.sort(key=lambda f: int(re.sub('\D', '', f)))
+    boundingboxes=[]
+    for f in track(files, description="Getting smallest head area..."):
+        im = Image.open(f'temp/{f}')
+        boundingboxes.append(im.getbbox())
+    left=boundingboxes[0][0]
+    top=boundingboxes[0][1]
+    right=boundingboxes[0][2]
+    bottom=boundingboxes[0][3]
+    for x in boundingboxes:
+        if x is None:
+            continue
+        if x[0] < left:
+            left=x[0]
+        if x[1] < top:
+            top=x[1]
+        if x[2] > right:
+            right=x[2]
+        if x[3] > bottom:
+            bottom=x[3]
+    for f in track(files, description="Re-exporting for smaller size..."):
+        im = Image.open(f'temp/{f}')
+        im2 = im.crop((left,top,right,bottom))
+        im2.save(f'temp/{f}')
+    
+    count=0
     for f in track(files, description="Ignoring duplicates..."):
         vals=[]
         framechoice=0
@@ -113,12 +140,13 @@ if __name__ == "__main__":
     currentwidth=0
     arrayFrame=[]
     count=len(files)
-    height=380*(math.ceil(len(allimages)/5)+1)
-    width=164*5
+    height=(bottom-top)*(math.ceil(len(allimages)/5))
+    width=(right-left)*5
     if hd == 'y':
-        height=height*2
         currentheight=currentheight*2
-        width=width*2
+        height+=380*2
+    else:
+        height+=380
     
     template=Image.new('RGBA',(width,height), (255, 255, 255, 0))
 
@@ -132,16 +160,10 @@ if __name__ == "__main__":
             arrayFrame.append({'prop':f'{int(currentwidth)/2},{int(currentheight)/2},0,0'})
             pasted_indexes[imindex] = {'prop':f'{int(currentwidth)/2},{int(currentheight)/2},0,0'}
             if rowcount%5 == 0:
-                if hd == 'y':
-                    currentheight+=380*2
-                else:
-                    currentheight+=380
+                currentheight+=bottom-top
                 currentwidth=0
             else:
-                if hd == 'y':
-                    currentwidth+=164*2
-                else:
-                    currentwidth+=164
+                currentwidth+=right-left
         else:
             arrayFrame.append(pasted_indexes[imindex])
     if not os.path.exists(f'output/{name}'):
