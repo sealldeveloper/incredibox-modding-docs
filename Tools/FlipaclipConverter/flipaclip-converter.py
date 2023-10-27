@@ -88,9 +88,7 @@ if __name__ == "__main__":
         framechoice=0
         count+=1
         im = Image.open(f'temp/{f}')
-        bw = 164
-        if hd == 'y':
-            bw=bw*2
+        bw = 164*2 if hd == 'y' else 164
         wp = (bw/float(im.size[0]))
         hs = int((float(im.size[1])*float(wp)))
         im = im.resize((bw,hs))
@@ -116,9 +114,9 @@ if __name__ == "__main__":
     height=380*(math.ceil(len(allimages)/5)+1)
     width=164*5
     if hd == 'y':
-        height=height*2
-        currentheight=currentheight*2
-        width=width*2
+        height*=2
+        currentheight*=2
+        width*=2
     
     template=Image.new('RGBA',(width,height), (255, 255, 255, 0))
 
@@ -132,42 +130,31 @@ if __name__ == "__main__":
             arrayFrame.append({'prop':f'{int(currentwidth)/2},{int(currentheight)/2},0,0'})
             pasted_indexes[imindex] = {'prop':f'{int(currentwidth)/2},{int(currentheight)/2},0,0'}
             if rowcount%5 == 0:
-                if hd == 'y':
-                    currentheight+=380*2
-                else:
-                    currentheight+=380
+                currentheight+= 380*2 if hd == 'y' else 380
                 currentwidth=0
             else:
-                if hd == 'y':
-                    currentwidth+=164*2
-                else:
-                    currentwidth+=164
+                currentwidth+=164*2 if hd == 'y' else 164
         else:
             arrayFrame.append(pasted_indexes[imindex])
     if not os.path.exists(f'output/{name}'):
         os.makedirs(f'output/{name}') 
+    templatesavepath = f'output/{name}/'+('anime-hd.png' if hd == 'y' else 'anime.png')
+    template.save(templatesavepath)
     if hd == 'y':
-        template.save(f'output/{name}/anime-hd.png')
         tw,th=template.size
-        nonhd=template.resize((math.ceil(tw/2),math.ceil(th/2)))
+        nonhd=template.resize((int(tw/2),int(th/2)))
         nonhd.save(f'output/{name}/anime.png')
-    else:
-        template.save(f'output/{name}/anime.png')
-    data={}
-    data['animeName']=name
-    data['percentageMax']=str(0.2)
-    data['totalFrame']=count
-    data['width']=164
-    data['height']=380
-    data['headHeight']=380
-    data['arrayFrame']=arrayFrame
-    if hd == 'y':
-        f=open(f'output/{name}/anime-hd.json','w')
-        json.dump(data,f,indent=6)
-        f.close()
-    else:
-        f=open(f'output/{name}/anime.json','w')
-        json.dump(data,f,indent=6)
-        f.close()
+    data={
+        'animeName':name,
+        'percentageMax':'0.2',
+        'totalFrame':count,
+        'width':164,
+        'height':380,
+        'headHeight':380,
+        'arrayFrame':arrayFrame
+    }
+    f=open(f'output/{name}/anime.json','w')
+    json.dump(data,f,indent=6)
+    f.close()
     if os.path.exists('temp'):
         shutil.rmtree('temp')
