@@ -142,10 +142,12 @@ if __name__ == "__main__":
     count=len(files)
     height=(bottom-top)*(math.ceil(len(allimages)/5))
     width=164*5
+    widthadjust=164
     if hd == 'y':
         currentheight=currentheight*2
         height+=380*2
-        width=width*2
+        width*=2
+        widthadjust*=2
     else:
         height+=380
     
@@ -164,7 +166,7 @@ if __name__ == "__main__":
                 currentheight+=bottom-top
                 currentwidth=0
             else:
-                currentwidth+=width
+                currentwidth+=widthadjust
         else:
             arrayFrame.append(pasted_indexes[imindex])
     if not os.path.exists(f'output/{name}'):
