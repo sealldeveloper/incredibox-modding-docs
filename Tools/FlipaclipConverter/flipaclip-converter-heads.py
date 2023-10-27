@@ -141,7 +141,7 @@ if __name__ == "__main__":
     arrayFrame=[]
     count=len(files)
     height=(bottom-top)*(math.ceil(len(allimages)/5))
-    width=(right-left)*5
+    width=164*5
     if hd == 'y':
         currentheight=currentheight*2
         height+=380*2
