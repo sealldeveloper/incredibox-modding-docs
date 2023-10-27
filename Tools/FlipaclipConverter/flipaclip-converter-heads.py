@@ -145,7 +145,7 @@ if __name__ == "__main__":
     if hd == 'y':
         currentheight=currentheight*2
         height+=380*2
-        width*=2
+        width=width*2
     else:
         height+=380
     
