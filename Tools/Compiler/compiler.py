@@ -14,9 +14,37 @@ try:
     import hashlib
     import requests
     import zipfile
+    import http.server
+    import socketserver
 except Exception as e:
     print(f'[bright_red]ERROR: Packages have failed to install, please try reinstalling them.\n{str(e)}')
     sys.exit()
+
+def webapp_localhost(name):
+    try:
+        localhost = Prompt.ask("Do you want to start the webapp on localhost?",choices=['y','n'])
+        if localhost == 'y':
+            DIRECTORY = 'output/webapp/'
+            if not os.path.exists(DIRECTORY):
+                os.mkdir(DIRECTORY)
+            shutil.unpack_archive(name,DIRECTORY,'zip')
+            class Handler(http.server.SimpleHTTPRequestHandler):
+                def __init__(self, *args, **kwargs):
+                    super().__init__(*args, directory=DIRECTORY, **kwargs)
+                def log_message(self, format, *args):
+                    no_logging_lol=""
+            with socketserver.TCPServer(("", 8000), Handler) as httpd:
+                try:
+                    print('Press CTRL+C to stop! Hosting on http://localhost:8000/')
+                    httpd.serve_forever()
+                except KeyboardInterrupt:
+                    pass
+                finally:
+                    httpd.server_close()
+    except:
+        PrintException()
+
+
 
 def jsfix(path,os,target,snd):
     try:
@@ -55,94 +83,108 @@ def jsfix(path,os,target,snd):
         PrintException()
 
 def webapp_format_conversion():
-    assetversions=[]
-    for x in os.listdir('temp/webapp'):
-        if x.startswith('asset-v') and os.path.isdir(f'temp/webapp/{x}'):
-            assetversions.append(x.replace('asset-v',''))
-            print('Converting OGG\'s to MP3\'s for better compatibility on devices...')
-            path=f'temp/webapp/{x}/sound'
-            if not os.path.exists(f'{path}/mp3/') and os.path.exists(f'{path}/ogg/'):
-                os.makedirs(f'{path}/mp3/')
-                for f in os.listdir(f'{path}/ogg'):
-                    if os.path.isfile(f'{path}/ogg/{f}') and f.endswith('.ogg'):
-                        newname=f.replace('.ogg','.mp3')
-                        
-                        try:
-                            AudioSegment.from_ogg(f'{path}/ogg/{f}').export(f'{path}/mp3/{newname}')
-                            print(f'[bright_blue]({x}) [default]{f} -> {newname}')
-                        except Exception as e:
-                            print(f'[bright_blue]({x}) [default]{f} -> [bright_red]ERROR! Couldn\'t convert...\n{str(e)}')
-                shutil.rmtree(f'{path}/ogg')
-            print('Converting all bonuses to MP4\'s...')
-            path=f'temp/webapp/{x}/video'
-            if not os.path.exists(path):
-                os.makedirs(path)
-            for y in os.listdir(path):
-                if os.path.isfile(f'{path}/{y}') and not y.endswith('mp4'):
-                    newname=y.split('.')[0]
-                    video = VideoFileClip(f'{path}/{y}')
-                    video.write_videofile(f'{path}/{newname}.mp4')
-                    os.remove(f'{path}/{y}')
-    return assetversions
+    try:
+        assetversions=[]
+        for x in os.listdir('temp/webapp'):
+            if x.startswith('asset-v') and os.path.isdir(f'temp/webapp/{x}'):
+                assetversions.append(x.replace('asset-v',''))
+                print('Converting OGG\'s to MP3\'s for better compatibility on devices...')
+                path=f'temp/webapp/{x}/sound'
+                if not os.path.exists(f'{path}/mp3/') and os.path.exists(f'{path}/ogg/'):
+                    os.makedirs(f'{path}/mp3/')
+                    for f in os.listdir(f'{path}/ogg'):
+                        if os.path.isfile(f'{path}/ogg/{f}') and f.endswith('.ogg'):
+                            newname=f.replace('.ogg','.mp3')
+                            
+                            try:
+                                AudioSegment.from_ogg(f'{path}/ogg/{f}').export(f'{path}/mp3/{newname}')
+                                print(f'[bright_blue]({x}) [default]{f} -> {newname}')
+                            except Exception as e:
+                                print(f'[bright_blue]({x}) [default]{f} -> [bright_red]ERROR! Couldn\'t convert...\n{str(e)}')
+                    shutil.rmtree(f'{path}/ogg')
+                print('Converting all bonuses to MP4\'s...')
+                path=f'temp/webapp/{x}/video'
+                if not os.path.exists(path):
+                    os.makedirs(path)
+                for y in os.listdir(path):
+                    if os.path.isfile(f'{path}/{y}') and not y.endswith('mp4'):
+                        newname=y.split('.')[0]
+                        video = VideoFileClip(f'{path}/{y}')
+                        video.write_videofile(f'{path}/{newname}.mp4')
+                        os.remove(f'{path}/{y}')
+        return assetversions
+    except:
+        PrintException()
 
 def android_unpack(names):
-    for f in os.listdir('temp/android/assets/www/'):
-        if f.startswith('asset-v'):
+    try:
+        for f in os.listdir('temp/android/assets/www/'):
+            if f.startswith('asset-v'):
+                    if os.path.isfile(f'temp/android/assets/www/{f}'):
+                        shutil.copyfile(f'temp/android/assets/www/{f}',f'temp/asar/app/{f}')
+                    elif os.path.isdir(f'temp/android/assets/www/{f}'):
+                        copy_tree(f'temp/android/assets/www/{f}',f'temp/asar/app/{f}')
+            if f in names:
                 if os.path.isfile(f'temp/android/assets/www/{f}'):
                     shutil.copyfile(f'temp/android/assets/www/{f}',f'temp/asar/app/{f}')
                 elif os.path.isdir(f'temp/android/assets/www/{f}'):
                     copy_tree(f'temp/android/assets/www/{f}',f'temp/asar/app/{f}')
-        if f in names:
-            if os.path.isfile(f'temp/android/assets/www/{f}'):
-                shutil.copyfile(f'temp/android/assets/www/{f}',f'temp/asar/app/{f}')
-            elif os.path.isdir(f'temp/android/assets/www/{f}'):
-                copy_tree(f'temp/android/assets/www/{f}',f'temp/asar/app/{f}')
+    except:
+        PrintException()
 
 
 
 def mac_to_webapp(js_input):
-    os.makedirs('temp/webapp/')
-    os.makedirs('temp/mac/')
-    print('Unpacking template and app...')
-    shutil.unpack_archive('input/macapp.zip','temp/mac/','zip')
-    print('Unpacking asar...')
-    if not os.path.isfile('temp/mac/Incredibox.app/Contents/Resources/app.asar'):
-        print('[bright_red]ERROR: The \'app.asar\' doesn\'t exist! Check the app is called \'Incredibox.app\', and the \'app.asar\' exists!')
-        return False
-    extract_asar('temp/mac/Incredibox.app/Contents/Resources/app.asar','temp/source/')
-    print('Duplicating source to webapp...')
-    for x in os.listdir('temp/source/app'):
-        if os.path.isdir(f'temp/source/app/{x}'):
-            copy_tree(f'temp/source/app/{x}',f'temp/webapp/{x}')
-        elif os.path.isfile(f'temp/source/app/{x}'):
-            shutil.copyfile(f'temp/source/app/{x}',f'temp/webapp/{x}')
+    try:
+        os.makedirs('temp/webapp/')
+        os.makedirs('temp/mac/')
+        print('Unpacking template and app...')
+        shutil.unpack_archive('input/macapp.zip','temp/mac/','zip')
+        print('Unpacking asar...')
+        if not os.path.isfile('temp/mac/Incredibox.app/Contents/Resources/app.asar'):
+            print('[bright_red]ERROR: The \'app.asar\' doesn\'t exist! Check the app is called \'Incredibox.app\', and the \'app.asar\' exists!')
+            return False
+        extract_asar('temp/mac/Incredibox.app/Contents/Resources/app.asar','temp/source/')
+        print('Duplicating source to webapp...')
+        for x in os.listdir('temp/source/app'):
+            if os.path.isdir(f'temp/source/app/{x}'):
+                copy_tree(f'temp/source/app/{x}',f'temp/webapp/{x}')
+            elif os.path.isfile(f'temp/source/app/{x}'):
+                shutil.copyfile(f'temp/source/app/{x}',f'temp/webapp/{x}')
 
-    assetversions = webapp_format_conversion()
-    if js_input == 'modify':
-        jsfix('temp/webapp/js/main.min.js','ios','browser','mp3')
-        jsfix('temp/webapp/js/index.min.js','ios','browser','mp3')
-    print('Packing up webapp...')
-    shutil.make_archive('output/mac-to-webapp-packed','zip','temp/webapp/')
-    print('Packed as \'mac-to-webapp-packed.zip\'! Cleaning up...')
-    if os.path.exists('temp/'):
-        shutil.rmtree('temp/')
-    return True
+        assetversions = webapp_format_conversion()
+        if js_input == 'modify':
+            jsfix('temp/webapp/js/main.min.js','ios','browser','mp3')
+            jsfix('temp/webapp/js/index.min.js','ios','browser','mp3')
+        print('Packing up webapp...')
+        filename = 'output/mac-to-webapp-packed'
+        shutil.make_archive(filename,'zip','temp/webapp/')
+        print('Packed as \'mac-to-webapp-packed.zip\'! Cleaning up...')
+        if os.path.exists('temp/'):
+            shutil.rmtree('temp/')
+        webapp_localhost(filename+'.zip')
+        return True
+    except:
+        PrintException()
 
 def mac_to_source():
-    os.makedirs('temp/mac/')
-    print('Unpacking app...')
-    shutil.unpack_archive('input/macapp.zip','temp/mac/','zip')
-    print('Unpacking asar...')
-    if not os.path.isfile('temp/mac/Incredibox.app/Contents/Resources/app.asar'):
-        print('[bright_red]ERROR: The \'app.asar\' doesn\'t exist! Check the app is called \'Incredibox.app\', and the \'app.asar\' exists!')
-        return False
-    extract_asar('temp/mac/Incredibox.app/Contents/Resources/app.asar','temp/source/')
-    print('Packing source...')
-    shutil.make_archive('output/mac-to-source-packed','zip','temp/source/')
-    print('Packed as \'mac-to-source-packed.zip\'! Cleaning up...')
-    if os.path.exists('temp/'):
-        shutil.rmtree('temp/')
-    return True
+    try:
+        os.makedirs('temp/mac/')
+        print('Unpacking app...')
+        shutil.unpack_archive('input/macapp.zip','temp/mac/','zip')
+        print('Unpacking asar...')
+        if not os.path.isfile('temp/mac/Incredibox.app/Contents/Resources/app.asar'):
+            print('[bright_red]ERROR: The \'app.asar\' doesn\'t exist! Check the app is called \'Incredibox.app\', and the \'app.asar\' exists!')
+            return False
+        extract_asar('temp/mac/Incredibox.app/Contents/Resources/app.asar','temp/source/')
+        print('Packing source...')
+        shutil.make_archive('output/mac-to-source-packed','zip','temp/source/')
+        print('Packed as \'mac-to-source-packed.zip\'! Cleaning up...')
+        if os.path.exists('temp/'):
+            shutil.rmtree('temp/')
+        return True
+    except:
+        PrintException()
 
 def mac_to_windows(js_input):
     try:
@@ -194,20 +236,23 @@ def mac(output,jsinput):
 
 
 def android_to_source(names):
-    os.makedirs('temp/android/')
-    os.makedirs('temp/asar/')
-    print('Unpacking template...')
-    shutil.unpack_archive('templates/asar.zip','temp/asar/','zip')
-    print('Unpacking app...')
-    shutil.unpack_archive('input/app.apk','temp/android/','zip')
-    print('Organising new folder...')
-    android_unpack(names)
-    print('Packing source...')
-    shutil.make_archive('output/apk-to-source-packed','zip','temp/asar/')
-    print('Packed as \'apk-to-source-packed.zip\'! Cleaning up...')
-    if os.path.exists('temp/'):
-        shutil.rmtree('temp/')
-    return True
+    try:
+        os.makedirs('temp/android/')
+        os.makedirs('temp/asar/')
+        print('Unpacking template...')
+        shutil.unpack_archive('templates/asar.zip','temp/asar/','zip')
+        print('Unpacking app...')
+        shutil.unpack_archive('input/app.apk','temp/android/','zip')
+        print('Organising new folder...')
+        android_unpack(names)
+        print('Packing source...')
+        shutil.make_archive('output/apk-to-source-packed','zip','temp/asar/')
+        print('Packed as \'apk-to-source-packed.zip\'! Cleaning up...')
+        if os.path.exists('temp/'):
+            shutil.rmtree('temp/')
+        return True
+    except:
+        PrintException()
 
 def android_to_webapp(names,js_input):
     try:
@@ -231,79 +276,87 @@ def android_to_webapp(names,js_input):
             jsfix('temp/webapp/js/main.min.js','ios','browser','mp3')
             jsfix('temp/webapp/js/index.min.js','ios','browser','mp3')
         print('Packing up webapp...')
-        shutil.make_archive('output/apk-to-webapp-packed','zip','temp/webapp/')
+        filename = 'output/apk-to-webapp-packed'
+        shutil.make_archive(filename,'zip','temp/webapp/')
         print('Packed as \'apk-to-webapp-packed.zip\'! Cleaning up...')
+        if os.path.exists('temp/'):
+            shutil.rmtree('temp/')
+        webapp_localhost(filename+'.zip')
+        return True
+    except:
+        PrintException()
+
+def android_to_windows(names,js_input):
+    try:
+        os.makedirs('temp/windows/')
+        os.makedirs('temp/android/')
+        os.makedirs('temp/asar/')
+        print('Unpacking template(s)...')
+        shutil.unpack_archive('templates/windows.zip','temp/windows/','zip')
+        shutil.unpack_archive('templates/asar.zip','temp/asar/','zip')
+        print('Unpacking app...')
+        shutil.unpack_archive('input/app.apk','temp/android/','zip')
+        print('Organising new asar folder...')
+        android_unpack(names)
+        if js_input == 'modify':
+            jsfix('temp/asar/app/js/main.min.js','win','desktop','ogg')
+            jsfix('temp/asar/app/js/index.min.js','win','desktop','ogg')
+        print('Packing asar...')
+        pack_asar("temp/asar",'temp/app.asar')
+        print('Copying new asar...')
+        shutil.copyfile('temp/app.asar','temp/windows/app/resources/app.asar')
+        print('Repacking new version...')
+        shutil.make_archive('output/apk-to-windows-packed','zip','temp/windows/')
+        print('Packed as \'apk-to-windows-packed.zip\'! Cleaning up...')
         if os.path.exists('temp/'):
             shutil.rmtree('temp/')
         return True
     except:
         PrintException()
 
-def android_to_windows(names,js_input):
-    os.makedirs('temp/windows/')
-    os.makedirs('temp/android/')
-    os.makedirs('temp/asar/')
-    print('Unpacking template(s)...')
-    shutil.unpack_archive('templates/windows.zip','temp/windows/','zip')
-    shutil.unpack_archive('templates/asar.zip','temp/asar/','zip')
-    print('Unpacking app...')
-    shutil.unpack_archive('input/app.apk','temp/android/','zip')
-    print('Organising new asar folder...')
-    android_unpack(names)
-    if js_input == 'modify':
-        jsfix('temp/asar/app/js/main.min.js','win','desktop','ogg')
-        jsfix('temp/asar/app/js/index.min.js','win','desktop','ogg')
-    print('Packing asar...')
-    pack_asar("temp/asar",'temp/app.asar')
-    print('Copying new asar...')
-    shutil.copyfile('temp/app.asar','temp/windows/app/resources/app.asar')
-    print('Repacking new version...')
-    shutil.make_archive('output/apk-to-windows-packed','zip','temp/windows/')
-    print('Packed as \'apk-to-windows-packed.zip\'! Cleaning up...')
-    if os.path.exists('temp/'):
-        shutil.rmtree('temp/')
-    return True
-
 def android_to_mac(names,js_input):
-    os.makedirs('temp/macasar/')
-    os.makedirs('temp/mac/Incredibox.app')
-    os.makedirs('temp/android/')
-    os.makedirs('temp/windows/')
-    os.makedirs('temp/asar/')
-    print('[bright_blue]NOTE: The version being uploaded SHOULD have JS files ≥ v1.1.5')
-    print('Unpacking app...')
-    shutil.unpack_archive('templates/mac.zip','temp/mac/Incredibox.app/','zip')
-    shutil.unpack_archive('templates/macasar.zip','temp/macasar/','zip')
-    shutil.unpack_archive('templates/asar.zip','temp/asar/','zip')
-    shutil.unpack_archive('templates/windows.zip','temp/windows/','zip')
-    shutil.unpack_archive('input/app.apk','temp/android/','zip')
-    print('Formatting...')
-    android_unpack(names)
-    if js_input == 'modify':
-        jsfix('temp/asar/app/js/main.min.js','mac','desktop','ogg')
-        jsfix('temp/asar/app/js/index.min.js','mac','desktop','ogg')
-    for f in os.listdir('temp/asar/app/'):
-        if os.path.isfile(f'temp/asar/app/{f}'):
-            shutil.copyfile(f'temp/asar/app/{f}',f'temp/macasar/app/{f}')
-        elif os.path.isdir(f'temp/asar/app/{f}'):
-            copy_tree(f'temp/asar/app/{f}',f'temp/macasar/app/{f}')
-    print('Packing new asar...')
-    pack_asar('temp/macasar/','temp/mac.asar')
-    print('Moving asars...')
-    shutil.copyfile('temp/mac.asar','temp/mac/Incredibox.app/Contents/Resources/app.asar')
-    shutil.copyfile('temp/windows/app/resources/electron.asar','temp/mac/Incredibox.app/Contents/Resources/electron.asar')
-    os.chmod('temp/mac/Incredibox.app/Contents/MacOS/Incredibox',0o755)
-    os.chmod('temp/mac/Incredibox.app/Contents/PkgInfo',0o755)
-    os.chmod('temp/mac/Incredibox.app/Contents/Frameworks/Incredibox Helper.app/Contents/MacOS/Incredibox Helper',0o755)
-    for f in os.listdir('temp/mac/Incredibox.app/Contents/Frameworks/'):
-        if os.path.isdir(f'temp/mac/Incredibox.app/Contents/Frameworks/{f}') and f.endswith('.framework'):
-            os.chmod(f'temp/mac/Incredibox.app/Contents/Frameworks/{f}/{f.replace(".framework","")}',0o755)
-    print('Packing Mac version...')
-    shutil.make_archive('output/source-to-mac-packed','zip','temp/mac/')
-    print('Packed as \'source-to-mac.zip\'! Cleaning up...')
-    if os.path.exists('temp/'):
-        shutil.rmtree('temp/')
-    return True
+    try:
+        os.makedirs('temp/macasar/')
+        os.makedirs('temp/mac/Incredibox.app')
+        os.makedirs('temp/android/')
+        os.makedirs('temp/windows/')
+        os.makedirs('temp/asar/')
+        print('[bright_blue]NOTE: The version being uploaded SHOULD have JS files ≥ v1.1.5')
+        print('Unpacking app...')
+        shutil.unpack_archive('templates/mac.zip','temp/mac/Incredibox.app/','zip')
+        shutil.unpack_archive('templates/macasar.zip','temp/macasar/','zip')
+        shutil.unpack_archive('templates/asar.zip','temp/asar/','zip')
+        shutil.unpack_archive('templates/windows.zip','temp/windows/','zip')
+        shutil.unpack_archive('input/app.apk','temp/android/','zip')
+        print('Formatting...')
+        android_unpack(names)
+        if js_input == 'modify':
+            jsfix('temp/asar/app/js/main.min.js','mac','desktop','ogg')
+            jsfix('temp/asar/app/js/index.min.js','mac','desktop','ogg')
+        for f in os.listdir('temp/asar/app/'):
+            if os.path.isfile(f'temp/asar/app/{f}'):
+                shutil.copyfile(f'temp/asar/app/{f}',f'temp/macasar/app/{f}')
+            elif os.path.isdir(f'temp/asar/app/{f}'):
+                copy_tree(f'temp/asar/app/{f}',f'temp/macasar/app/{f}')
+        print('Packing new asar...')
+        pack_asar('temp/macasar/','temp/mac.asar')
+        print('Moving asars...')
+        shutil.copyfile('temp/mac.asar','temp/mac/Incredibox.app/Contents/Resources/app.asar')
+        shutil.copyfile('temp/windows/app/resources/electron.asar','temp/mac/Incredibox.app/Contents/Resources/electron.asar')
+        os.chmod('temp/mac/Incredibox.app/Contents/MacOS/Incredibox',0o755)
+        os.chmod('temp/mac/Incredibox.app/Contents/PkgInfo',0o755)
+        os.chmod('temp/mac/Incredibox.app/Contents/Frameworks/Incredibox Helper.app/Contents/MacOS/Incredibox Helper',0o755)
+        for f in os.listdir('temp/mac/Incredibox.app/Contents/Frameworks/'):
+            if os.path.isdir(f'temp/mac/Incredibox.app/Contents/Frameworks/{f}') and f.endswith('.framework'):
+                os.chmod(f'temp/mac/Incredibox.app/Contents/Frameworks/{f}/{f.replace(".framework","")}',0o755)
+        print('Packing Mac version...')
+        shutil.make_archive('output/source-to-mac-packed','zip','temp/mac/')
+        print('Packed as \'source-to-mac.zip\'! Cleaning up...')
+        if os.path.exists('temp/'):
+            shutil.rmtree('temp/')
+        return True
+    except:
+        PrintException()
 
 
 def android(output,jsinput):
@@ -337,24 +390,29 @@ def android(output,jsinput):
 
 
 def source_to_webapp(js_input):
-    os.makedirs('temp/webapp/')
-    print('Unpacking template...')
-    print('Duplicating source to webapp...')
-    for x in os.listdir('input/source/app'):
-        if os.path.isdir(f'input/source/app/{x}'):
-            copy_tree(f'input/source/app/{x}',f'temp/webapp/{x}')
-        elif os.path.isfile(f'input/source/app/{x}'):
-            shutil.copyfile(f'input/source/app/{x}',f'temp/webapp/{x}')
-    assetversions = webapp_format_conversion()
-    if js_input == 'modify':
-        jsfix('temp/webapp/js/main.min.js','ios','browser','mp3')
-        jsfix('temp/webapp/js/index.min.js','ios','browser','mp3')
-    print('Packing up webapp...')
-    shutil.make_archive('output/webapp-packed','zip','temp/webapp/')
-    print('Packed as \'webapp-packed.zip\'! Cleaning up...')
-    if os.path.exists('temp/'):
-        shutil.rmtree('temp/')
-    return True
+    try:
+        os.makedirs('temp/webapp/')
+        print('Unpacking template...')
+        print('Duplicating source to webapp...')
+        for x in os.listdir('input/source/app'):
+            if os.path.isdir(f'input/source/app/{x}'):
+                copy_tree(f'input/source/app/{x}',f'temp/webapp/{x}')
+            elif os.path.isfile(f'input/source/app/{x}'):
+                shutil.copyfile(f'input/source/app/{x}',f'temp/webapp/{x}')
+        assetversions = webapp_format_conversion()
+        if js_input == 'modify':
+            jsfix('temp/webapp/js/main.min.js','ios','browser','mp3')
+            jsfix('temp/webapp/js/index.min.js','ios','browser','mp3')
+        print('Packing up webapp...')
+        filename = 'output/webapp-packed'
+        shutil.make_archive(filename,'zip','temp/webapp/')
+        print('Packed as \'webapp-packed.zip\'! Cleaning up...')
+        if os.path.exists('temp/'):
+            shutil.rmtree('temp/')
+        webapp_localhost(filename+'.zip')
+        return True
+    except:
+        PrintException()
 
 def source_to_windows(js_input):
     try:
@@ -379,41 +437,44 @@ def source_to_windows(js_input):
         PrintException()
 
 def source_to_mac(js_input):
-    os.makedirs('temp/macasar/')
-    os.makedirs('temp/windows/')
-    os.makedirs('temp/mac/Incredibox.app')
-    print('[bright_blue]NOTE: The version being uploaded SHOULD have JS files ≥ v1.1.5')
-    print('Unpacking app...')
-    shutil.unpack_archive('templates/mac.zip','temp/mac/Incredibox.app/','zip')
-    shutil.unpack_archive('templates/windows.zip','temp/windows/','zip')
-    shutil.unpack_archive('templates/macasar.zip','temp/macasar/','zip')
-    copy_tree('input/source','temp/source')
-    print('Formatting...')
-    for f in os.listdir('temp/source/app/'):
-        if os.path.isfile(f'temp/source/app/{f}'):
-            shutil.copyfile(f'temp/source/app/{f}',f'temp/macasar/app/{f}')
-        elif os.path.isdir(f'temp/source/app/{f}'):
-            copy_tree(f'temp/source/app/{f}',f'temp/macasar/app/{f}')
-    if js_input == 'modify':
-        jsfix('temp/macasar/app/js/main.min.js','mac','desktop','ogg')
-        jsfix('temp/macasar/app/js/index.min.js','mac','desktop','ogg')
-    print('Packing new asar...')
-    pack_asar('temp/macasar/','temp/mac.asar')
-    print('Moving asars...')
-    shutil.copyfile('temp/mac.asar','temp/mac/Incredibox.app/Contents/Resources/app.asar')
-    shutil.copyfile('temp/windows/app/resources/electron.asar','temp/mac/Incredibox.app/Contents/Resources/electron.asar')
-    os.chmod('temp/mac/Incredibox.app/Contents/MacOS/Incredibox',0o755)
-    os.chmod('temp/mac/Incredibox.app/Contents/PkgInfo',0o755)
-    os.chmod('temp/mac/Incredibox.app/Contents/Frameworks/Incredibox Helper.app/Contents/MacOS/Incredibox Helper',0o755)
-    for f in os.listdir('temp/mac/Incredibox.app/Contents/Frameworks/'):
-        if os.path.isdir(f'temp/mac/Incredibox.app/Contents/Frameworks/{f}') and f.endswith('.framework'):
-            os.chmod(f'temp/mac/Incredibox.app/Contents/Frameworks/{f}/{f.replace(".framework","")}',0o755)
-    print('Packing Mac version...')
-    shutil.make_archive('output/source-to-mac-packed','zip','temp/mac/')
-    print('Packed as \'source-to-mac.zip\'! Cleaning up...')
-    if os.path.exists('temp/'):
-        shutil.rmtree('temp/')
-    return True
+    try:
+        os.makedirs('temp/macasar/')
+        os.makedirs('temp/windows/')
+        os.makedirs('temp/mac/Incredibox.app')
+        print('[bright_blue]NOTE: The version being uploaded SHOULD have JS files ≥ v1.1.5')
+        print('Unpacking app...')
+        shutil.unpack_archive('templates/mac.zip','temp/mac/Incredibox.app/','zip')
+        shutil.unpack_archive('templates/windows.zip','temp/windows/','zip')
+        shutil.unpack_archive('templates/macasar.zip','temp/macasar/','zip')
+        copy_tree('input/source','temp/source')
+        print('Formatting...')
+        for f in os.listdir('temp/source/app/'):
+            if os.path.isfile(f'temp/source/app/{f}'):
+                shutil.copyfile(f'temp/source/app/{f}',f'temp/macasar/app/{f}')
+            elif os.path.isdir(f'temp/source/app/{f}'):
+                copy_tree(f'temp/source/app/{f}',f'temp/macasar/app/{f}')
+        if js_input == 'modify':
+            jsfix('temp/macasar/app/js/main.min.js','mac','desktop','ogg')
+            jsfix('temp/macasar/app/js/index.min.js','mac','desktop','ogg')
+        print('Packing new asar...')
+        pack_asar('temp/macasar/','temp/mac.asar')
+        print('Moving asars...')
+        shutil.copyfile('temp/mac.asar','temp/mac/Incredibox.app/Contents/Resources/app.asar')
+        shutil.copyfile('temp/windows/app/resources/electron.asar','temp/mac/Incredibox.app/Contents/Resources/electron.asar')
+        os.chmod('temp/mac/Incredibox.app/Contents/MacOS/Incredibox',0o755)
+        os.chmod('temp/mac/Incredibox.app/Contents/PkgInfo',0o755)
+        os.chmod('temp/mac/Incredibox.app/Contents/Frameworks/Incredibox Helper.app/Contents/MacOS/Incredibox Helper',0o755)
+        for f in os.listdir('temp/mac/Incredibox.app/Contents/Frameworks/'):
+            if os.path.isdir(f'temp/mac/Incredibox.app/Contents/Frameworks/{f}') and f.endswith('.framework'):
+                os.chmod(f'temp/mac/Incredibox.app/Contents/Frameworks/{f}/{f.replace(".framework","")}',0o755)
+        print('Packing Mac version...')
+        shutil.make_archive('output/source-to-mac-packed','zip','temp/mac/')
+        print('Packed as \'source-to-mac.zip\'! Cleaning up...')
+        if os.path.exists('temp/'):
+            shutil.rmtree('temp/')
+        return True
+    except:
+        PrintException()
 
 
 def source(output,js_input):
@@ -437,78 +498,89 @@ def source(output,js_input):
 
 
 def windows_to_webapp(js_input):
-    os.makedirs('temp/webapp/')
-    os.makedirs('temp/windows/')
-    print('Unpacking template and app...')
-    shutil.unpack_archive('input/app.zip','temp/windows/','zip')
-    print('Unpacking asar...')
-    extract_asar('temp/windows/app/resources/app.asar','temp/source/')
-    print('Duplicating source to webapp...')
-    for x in os.listdir('temp/source/app'):
-        if os.path.isdir(f'temp/source/app/{x}'):
-            copy_tree(f'temp/source/app/{x}',f'temp/webapp/{x}')
-        elif os.path.isfile(f'temp/source/app/{x}'):
-            shutil.copyfile(f'temp/source/app/{x}',f'temp/webapp/{x}')
+    try:
+        os.makedirs('temp/webapp/')
+        os.makedirs('temp/windows/')
+        print('Unpacking template and app...')
+        shutil.unpack_archive('input/app.zip','temp/windows/','zip')
+        print('Unpacking asar...')
+        extract_asar('temp/windows/app/resources/app.asar','temp/source/')
+        print('Duplicating source to webapp...')
+        for x in os.listdir('temp/source/app'):
+            if os.path.isdir(f'temp/source/app/{x}'):
+                copy_tree(f'temp/source/app/{x}',f'temp/webapp/{x}')
+            elif os.path.isfile(f'temp/source/app/{x}'):
+                shutil.copyfile(f'temp/source/app/{x}',f'temp/webapp/{x}')
 
-    assetversions = webapp_format_conversion()
-    if js_input == 'modify':
-        jsfix('temp/webapp/js/main.min.js','ios','browser','mp3')
-        jsfix('temp/webapp/js/index.min.js','ios','browser','mp3')
-    print('Packing up webapp...')
-    shutil.make_archive('output/windows-to-webapp-packed','zip','temp/webapp/')
-    print('Packed as \'windows-to-webapp-packed.zip\'! Cleaning up...')
-    if os.path.exists('temp/'):
-        shutil.rmtree('temp/')
-    return True
+        assetversions = webapp_format_conversion()
+        if js_input == 'modify':
+            jsfix('temp/webapp/js/main.min.js','ios','browser','mp3')
+            jsfix('temp/webapp/js/index.min.js','ios','browser','mp3')
+        print('Packing up webapp...')
+        filename = 'output/windows-to-webapp-packed'
+        shutil.make_archive(filename,'zip','temp/webapp/')
+        print('Packed as \'windows-to-webapp-packed.zip\'! Cleaning up...')
+        if os.path.exists('temp/'):
+            shutil.rmtree('temp/')
+        webapp_localhost(filename+'.zip')
+        return True
+    except:
+        PrintException()
 
 def windows_to_source():
-    os.makedirs('temp/windows/')
-    print('Unpacking app...')
-    shutil.unpack_archive('input/app.zip','temp/windows/','zip')
-    print('Unpacking asar...')
-    extract_asar('temp/windows/app/resources/app.asar','temp/source/')
-    print('Packing source...')
-    shutil.make_archive('output/windows-to-source-packed','zip','temp/source/')
-    print('Packed as \'windows-to-source-packed.zip\'! Cleaning up...')
-    if os.path.exists('temp/'):
-        shutil.rmtree('temp/')
-    return True
+    try:
+        os.makedirs('temp/windows/')
+        print('Unpacking app...')
+        shutil.unpack_archive('input/app.zip','temp/windows/','zip')
+        print('Unpacking asar...')
+        extract_asar('temp/windows/app/resources/app.asar','temp/source/')
+        print('Packing source...')
+        shutil.make_archive('output/windows-to-source-packed','zip','temp/source/')
+        print('Packed as \'windows-to-source-packed.zip\'! Cleaning up...')
+        if os.path.exists('temp/'):
+            shutil.rmtree('temp/')
+        return True
+    except:
+        PrintException()
 
 def windows_to_mac():
-    os.makedirs('temp/windows/')
-    os.makedirs('temp/macasar/')
-    os.makedirs('temp/mac/Incredibox.app')
-    print('[bright_blue]NOTE: The version being uploaded SHOULD have JS files ≥ v1.1.5')
-    print('Unpacking app...')
-    with zipfile.ZipFile('input/app.zip', 'r') as zip_ref:
-        zip_ref.extractall('temp/windows/')
-    shutil.unpack_archive('templates/mac.zip','temp/mac/Incredibox.app/','zip')
-    shutil.unpack_archive('templates/macasar.zip','temp/macasar/','zip')
-    print('Unpacking asar...')
-    extract_asar('temp/windows/app/resources/app.asar','temp/source/')
-    print('Formatting new asar...')
-    for f in os.listdir('temp/source/app/'):
-        if os.path.isfile(f'temp/source/app/{f}'):
-            shutil.copyfile(f'temp/source/app/{f}',f'temp/macasar/app/{f}')
-        elif os.path.isdir(f'temp/source/app/{f}'):
-            copy_tree(f'temp/source/app/{f}',f'temp/macasar/app/{f}')
-    print('Packing new asar...')
-    pack_asar('temp/macasar/','temp/mac.asar')
-    print('Moving asars...')
-    shutil.copyfile('temp/mac.asar','temp/mac/Incredibox.app/Contents/Resources/app.asar')
-    shutil.copyfile('temp/windows/app/resources/electron.asar','temp/mac/Incredibox.app/Contents/Resources/electron.asar')
-    os.chmod('temp/mac/Incredibox.app/Contents/MacOS/Incredibox',0o755)
-    os.chmod('temp/mac/Incredibox.app/Contents/PkgInfo',0o755)
-    os.chmod('temp/mac/Incredibox.app/Contents/Frameworks/Incredibox Helper.app/Contents/MacOS/Incredibox Helper',0o755)
-    for f in os.listdir('temp/mac/Incredibox.app/Contents/Frameworks/'):
-        if os.path.isdir(f'temp/mac/Incredibox.app/Contents/Frameworks/{f}') and f.endswith('.framework'):
-            os.chmod(f'temp/mac/Incredibox.app/Contents/Frameworks/{f}/{f.replace(".framework","")}',0o755)
-    print('Packing source...')
-    shutil.make_archive('output/windows-to-mac-packed','zip','temp/mac/')
-    print('Packed as \'windows-to-mac.zip\'! Cleaning up...')
-    if os.path.exists('temp/'):
-        shutil.rmtree('temp/')
-    return True
+    try:
+        os.makedirs('temp/windows/')
+        os.makedirs('temp/macasar/')
+        os.makedirs('temp/mac/Incredibox.app')
+        print('[bright_blue]NOTE: The version being uploaded SHOULD have JS files ≥ v1.1.5')
+        print('Unpacking app...')
+        with zipfile.ZipFile('input/app.zip', 'r') as zip_ref:
+            zip_ref.extractall('temp/windows/')
+        shutil.unpack_archive('templates/mac.zip','temp/mac/Incredibox.app/','zip')
+        shutil.unpack_archive('templates/macasar.zip','temp/macasar/','zip')
+        print('Unpacking asar...')
+        extract_asar('temp/windows/app/resources/app.asar','temp/source/')
+        print('Formatting new asar...')
+        for f in os.listdir('temp/source/app/'):
+            if os.path.isfile(f'temp/source/app/{f}'):
+                shutil.copyfile(f'temp/source/app/{f}',f'temp/macasar/app/{f}')
+            elif os.path.isdir(f'temp/source/app/{f}'):
+                copy_tree(f'temp/source/app/{f}',f'temp/macasar/app/{f}')
+        print('Packing new asar...')
+        pack_asar('temp/macasar/','temp/mac.asar')
+        print('Moving asars...')
+        shutil.copyfile('temp/mac.asar','temp/mac/Incredibox.app/Contents/Resources/app.asar')
+        shutil.copyfile('temp/windows/app/resources/electron.asar','temp/mac/Incredibox.app/Contents/Resources/electron.asar')
+        os.chmod('temp/mac/Incredibox.app/Contents/MacOS/Incredibox',0o755)
+        os.chmod('temp/mac/Incredibox.app/Contents/PkgInfo',0o755)
+        os.chmod('temp/mac/Incredibox.app/Contents/Frameworks/Incredibox Helper.app/Contents/MacOS/Incredibox Helper',0o755)
+        for f in os.listdir('temp/mac/Incredibox.app/Contents/Frameworks/'):
+            if os.path.isdir(f'temp/mac/Incredibox.app/Contents/Frameworks/{f}') and f.endswith('.framework'):
+                os.chmod(f'temp/mac/Incredibox.app/Contents/Frameworks/{f}/{f.replace(".framework","")}',0o755)
+        print('Packing source...')
+        shutil.make_archive('output/windows-to-mac-packed','zip','temp/mac/')
+        print('Packed as \'windows-to-mac.zip\'! Cleaning up...')
+        if os.path.exists('temp/'):
+            shutil.rmtree('temp/')
+        return True
+    except:
+        PrintException()
 
 
 def windows(output,js_input):
