@@ -193,7 +193,7 @@ def mac_to_webapp(js_input,file):
     except:
         PrintException()
 
-def mac_to_source():
+def mac_to_source(file):
     try:
         os.makedirs('temp/mac/')
         print('Unpacking app...')
@@ -212,7 +212,7 @@ def mac_to_source():
     except:
         PrintException()
 
-def mac_to_windows(js_input):
+def mac_to_windows(js_input,file):
     try:
         os.makedirs('temp/windows/')
         os.makedirs('temp/mac/')
