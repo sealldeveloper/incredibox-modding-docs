@@ -6,4 +6,3 @@ read -p "Press ENTER once you've accepted the storage access for termux!" < /dev
 cd storage/shared/Documents
 git clone https://github.com/sealldeveloper/incredibox-modding-docs
 cd incredibox-modding-docs
-pkg install openssl -y
