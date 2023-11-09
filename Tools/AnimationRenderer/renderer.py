@@ -115,7 +115,18 @@ def gif_frames(name,v):
     framecount=0
     for frame in track(animation_frames, description=f"({v}) Creating GIF frames..."):
         framecount+=1
-        frame=frame['prop'].split(',')
+        try:
+            oldframe=frame['prop']
+            frame=frame['prop'].split(',')
+        except:
+            print(f'[bright_red]ERROR ({v}): A frame in your animation is missing the \'prop\' aspect at frame {framecount} ({frame})')
+            sys.exit()
+        try:
+            x = frame[0]
+            y = frame[1]
+        except:
+            print(f'[bright_red]ERROR ({v}): A frame in your animation is using an invalid head location that is either missing or not a number ({oldframe}) at frame {framecount}')
+            sys.exit()
         try:
             if v == 'normal':
                 temphead=Image.open(f'output/{name}/{v}/internal/{int(float(frame[0]))}-{int(float(frame[1]))}.png')
@@ -130,7 +141,13 @@ def gif_frames(name,v):
         tempheadless=Image.open(f'output/{name}/{v}/files/headless.png')
         background=Image.new('RGBA',(width,height), (255, 255, 255, 0))
         background.paste(tempheadless,(0,0),tempheadless)
-        background.paste(temphead, (round(float(frame[2])),round(float(frame[3]))), temphead)
+        try:
+            m1 = round(float(frame[2]))
+            m2 = round(float(frame[3]))
+        except:
+            print(f'[bright_red]ERROR ({v}): A frame in your animation is using an invalid movement ({int(frame[0])},{int(frame[1])},{frame[2]},{frame[3]}) at frame {framecount}')
+            sys.exit()
+        background.paste(temphead, m1,m2, temphead)
         background.save(f'output/{name}/{v}/gifframes/{framecount}.png')
         backgroundDraw = ImageDraw.Draw(background)
         backgroundDraw.text((0,0), f"{framecount}",fill=(200,0,0))
