@@ -147,7 +147,7 @@ def gif_frames(name,v):
         except:
             print(f'[bright_red]ERROR ({v}): A frame in your animation is using an invalid movement ({int(frame[0])},{int(frame[1])},{frame[2]},{frame[3]}) at frame {framecount}')
             sys.exit()
-        background.paste(temphead, m1,m2, temphead)
+        background.paste(temphead, (m1,m2), temphead)
         background.save(f'output/{name}/{v}/gifframes/{framecount}.png')
         backgroundDraw = ImageDraw.Draw(background)
         backgroundDraw.text((0,0), f"{framecount}",fill=(200,0,0))
