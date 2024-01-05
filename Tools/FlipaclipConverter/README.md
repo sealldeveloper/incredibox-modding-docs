@@ -15,6 +15,8 @@ This will convert an exported PNG sequence from Flipaclip to a working polo spri
 4. Then open `#start-converter.bat`, a folder called `input` should appear.
 5. Put in the appropriate files:
   - Flipaclip can export a `zip` of your files, put this zip in the input folder.
+  - If you are using your own PNG sequence, zip all the files.
+  - Ensure the zip is called `files.zip`.
 6. Re-run the converter by opening `#start-converter.bat`, type in whether the PNG sequence is HD or not, and the name (usually `number_name` for eg. `1_kick`).
 7. Your output will be in the output folder, under the name of the polo you inputted.
 
