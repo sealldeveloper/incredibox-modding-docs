@@ -88,7 +88,7 @@ def jsfix(path,os,target,snd):
                     p4 = d.split(',osname="',1)[1].split('"',1)[1]
                     d = p3 + f',osname="{os}"' + p4
                 except Exception as e:
-                    print(f'{fname}: No \'osname\' found, moving on...')
+                    print(f'{fname}: No \'osname\' found, no biggie!')
                 p5 = d.split(',sndtype="')[0]
                 p6 = d.split(',sndtype="',1)[1].split('"',1)[1]
                 d = p5 + f',sndtype="{snd}"' + p6
@@ -217,6 +217,7 @@ def mac_to_windows(js_input,file):
         os.makedirs('temp/windows/')
         os.makedirs('temp/mac/')
         os.makedirs('temp/macasar/')
+        print('[bright_blue]NOTE: The version being uploaded SHOULD have JS files ≥ v1.1.5 otherwise you risk a black-screen error on Desktop platforms.')
         print('Unpacking template...')
         shutil.unpack_archive('templates/windows.zip','temp/windows/','zip')
         shutil.unpack_archive(f'input/{file}','temp/mac/','zip')
@@ -315,6 +316,7 @@ def android_to_windows(names,js_input,file):
         os.makedirs('temp/windows/')
         os.makedirs('temp/android/')
         os.makedirs('temp/asar/')
+        print('[bright_blue]NOTE: The version being uploaded SHOULD have JS files ≥ v1.1.5 otherwise you risk a black-screen error on Desktop platforms.')
         print('Unpacking template(s)...')
         shutil.unpack_archive('templates/windows.zip','temp/windows/','zip')
         shutil.unpack_archive('templates/asar.zip','temp/asar/','zip')
@@ -345,7 +347,7 @@ def android_to_mac(names,js_input,file):
         os.makedirs('temp/android/')
         os.makedirs('temp/windows/')
         os.makedirs('temp/asar/')
-        print('[bright_blue]NOTE: The version being uploaded SHOULD have JS files ≥ v1.1.5')
+        print('[bright_blue]NOTE: The version being uploaded SHOULD have JS files ≥ v1.1.5 otherwise you risk a black-screen error on Desktop platforms.')
         print('Unpacking app...')
         shutil.unpack_archive('templates/mac.zip','temp/mac/Incredibox.app/','zip')
         shutil.unpack_archive('templates/macasar.zip','temp/macasar/','zip')
@@ -439,6 +441,7 @@ def source_to_webapp(js_input,folder):
 def source_to_windows(js_input,folder):
     try:
         os.makedirs('temp/windows/')
+        print('[bright_blue]NOTE: The version being uploaded SHOULD have JS files ≥ v1.1.5 otherwise you risk a black-screen error on Desktop platforms.')
         print('Unpacking template...')
         shutil.unpack_archive('templates/windows.zip','temp/windows/','zip')
         copy_tree(f'input/{folder}','temp/source')
@@ -463,7 +466,7 @@ def source_to_mac(js_input,folder):
         os.makedirs('temp/macasar/')
         os.makedirs('temp/windows/')
         os.makedirs('temp/mac/Incredibox.app')
-        print('[bright_blue]NOTE: The version being uploaded SHOULD have JS files ≥ v1.1.5')
+        print('[bright_blue]NOTE: The version being uploaded SHOULD have JS files ≥ v1.1.5 otherwise you risk a black-screen error on Desktop platforms.')
         print('Unpacking app...')
         shutil.unpack_archive('templates/mac.zip','temp/mac/Incredibox.app/','zip')
         shutil.unpack_archive('templates/windows.zip','temp/windows/','zip')
@@ -491,7 +494,6 @@ def source_to_mac(js_input,folder):
                 os.chmod(f'temp/mac/Incredibox.app/Contents/Frameworks/{f}/{f.replace(".framework","")}',0o755)
         print('Packing Mac version...')
         shutil.make_archive('output/source-to-mac-packed','zip','temp/mac/')
-        shutil.unpack_archive('output/source-to-mac-packed.zip','output/','zip')
         print('Packed as \'source-to-mac.zip\'! Cleaning up...')
         if os.path.exists('temp/'):
             shutil.rmtree('temp/')
@@ -568,7 +570,7 @@ def windows_to_mac(file):
         os.makedirs('temp/windows/')
         os.makedirs('temp/macasar/')
         os.makedirs('temp/mac/Incredibox.app')
-        print('[bright_blue]NOTE: The version being uploaded SHOULD have JS files ≥ v1.1.5')
+        print('[bright_blue]NOTE: The version being uploaded SHOULD have JS files ≥ v1.1.5 otherwise you risk a black-screen error on Desktop platforms.')
         print('Unpacking app...')
         with zipfile.ZipFile(f'input/{file}', 'r') as zip_ref:
             zip_ref.extractall('temp/windows/')
