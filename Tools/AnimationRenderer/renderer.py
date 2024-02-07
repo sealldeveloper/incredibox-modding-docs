@@ -172,7 +172,10 @@ def def_vs_check(width,height,name,v):
 def compile_gifs(gifframes,defaultcheckframes,name,v,filename):
     print(f'({v}) Compiling GIFs...')
     imageio.v3.imwrite(f'output/{name}/{v}/output/default-pose-compared-to-first-frame.gif',defaultcheckframes,duration=int(1000), plugin="pillow", mode="RGBA", loop=0, transparency=0, disposal=2)
-    imageio.v3.imwrite(f'output/{name}/{v}/output/anime_{filename}.gif',gifframes,duration=int(1/24*1000), plugin="pillow", mode="RGBA", loop=0, transparency=0, disposal=2)
+    if filename=='no-text':
+        imageio.v3.imwrite(f'output/{name}/{v}/output/anime_{filename}.gif',gifframes,duration=int(1/24*1000), plugin="pillow", mode="RGBA", loop=0, transparency=0, disposal=2)
+    else:
+        imageio.v3.imwrite(f'output/{name}/{v}/output/anime_{filename}.gif',gifframestext,duration=int(1/24*1000), plugin="pillow", mode="RGBA", loop=0, transparency=0, disposal=2)
     print(f'({v}) GIFs finished!')
 
 def audio_merge(name1,name2,totalFrame,v):
@@ -207,7 +210,7 @@ def audio_merge(name1,name2,totalFrame,v):
 def mp4_compile(gifframes,name,totalFrame,v,filename):
     if os.path.exists('input/anime_a.ogg') or os.path.exists('input/anime_combined.ogg'):
         print(f'({v}) Compiling MP4...')
-        if filename == 'n':
+        if filename == 'no-text':
             imageio.v2.mimwrite('output/anime-hd.mp4',gifframes,fps=24,macro_block_size=1)
         else:
             imageio.v2.mimwrite('output/anime-hd.mp4',gifframestext,fps=24,macro_block_size=1)
