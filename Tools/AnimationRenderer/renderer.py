@@ -3,6 +3,7 @@ try:
     from rich import print
     from rich.prompt import Prompt
     from rich.panel import Panel
+    from rich.table import Table
     from rich.progress import track
     import rich
     from PIL import Image, ImageDraw
@@ -16,36 +17,50 @@ except Exception as e:
     print(f'[bright_red]ERROR: Packages have failed to install, please try reinstalling them.\n{str(e)}')
     sys.exit()
 
-def filechecks(render_choice):
-    if not os.path.exists('input/anime.json'):
-        print('[bright_red]ERROR: Make sure theres an \'anime.json\' file in the \'input\' folder.')
+def filechecks(render_choice,filename):
+    if not os.path.exists(f'input/{filename}.json'):
+        print(f'[bright_red]ERROR: Make sure theres an \'{filename}.json\' file in the \'input\' folder.')
         sys.exit()
     else:
-        print('[green]Found \'anime.json\'!')
+        print(f'[green]Found \'{filename}.json\'!')
     if render_choice == 'no-hd' or render_choice == 'both':
-        if not os.path.exists('input/anime.png'):
-            print('[bright_red]ERROR: Make sure theres an \'anime.png\' file in the \'input\' folder.')
+        if not os.path.exists(f'input/{filename}.png'):
+            print(f'[bright_red]ERROR: Make sure theres an \'{filename}.png\' file in the \'input\' folder.')
             sys.exit()
         else:
-            print('[green]Found \'anime.png\'!')
+            print(f'[green]Found \'{filename}.png\'!')
     if render_choice == 'hd' or render_choice == 'both':
-        if not os.path.exists('input/anime-hd.png'):
-            print('[bright_red]ERROR: Make sure theres an \'anime-hd.png\' file in the \'input\' folder.')
+        if not os.path.exists(f'input/{filename}-hd.png'):
+            print(f'[bright_red]ERROR: Make sure theres an \'{filename}-hd.png\' file in the \'input\' folder.')
             sys.exit()
         else:
-            print('[green]Found \'anime-hd.png\'!')
-    if not os.path.exists('input/anime_combined.ogg'):
-        print('[bright_yellow]No \'anime_combined.ogg\' found in \'input\', checking for \'anime_a.ogg\'...')
-        if os.path.exists('input/anime_a.ogg'):
-            print('[green]Found \'anime_a.ogg\'!')
-            if not os.path.exists('input/anime_b.ogg'):
-                print('[bright_yellow]WARNING: No \'anime_b.ogg\' found in the \'input\' folder, will not use an A and B track for audio in the MP4.')
+            print(f'[green]Found \'{filename}-hd.png\'!')
+    if not os.path.exists(f'input/{filename}_combined.ogg'):
+        print(f'[bright_yellow]No \'{filename}_combined.ogg\' found in \'input\', checking for \'{filename}_a.ogg\'...')
+        if os.path.exists(f'input/{filename}_a.ogg'):
+            print(f'[green]Found \'{filename}_a.ogg\'!')
+            if not os.path.exists(f'input/{filename}_b.ogg'):
+                print(f'[bright_yellow]WARNING: No \'{filename}_b.ogg\' found in the \'input\' folder, will not use an A and B track for audio in the MP4.')
             else:
-                print('[green]Found \'anime_b.ogg\'!')
+                print(f'[green]Found \'{filename}_b.ogg\'!')
         else:
-            print('[bright_yellow]WARNING: No \'anime_a.ogg\' found in the \'input\' folder, will not make an MP4.')
+            print(f'[bright_yellow]WARNING: No \'{filename}_a.ogg\' found in the \'input\' folder, will not make an MP4.')
     else:
-            print('[green]Found \'anime_combined.ogg\'!')
+            print(f'[green]Found \'{filename}_combined.ogg\'!')
+
+def file_selection():
+    files=[]
+    table = Table()
+    table.add_column("Render Options", style="magenta")
+    for f in os.listdir('input'):
+        if f.endswith(f'.json') and os.path.isfile(f'input/{f}'):
+            name=f.split('.json')[0]
+            if os.path.isfile(f'input/{name}.png') or os.path.isfile(f'input/{name}-hd.png'):
+                files.append(name)
+                table.add_row(name)
+    print(table)
+    selected = Prompt.ask('Which file do you want to use?', choices=files, show_choices=False)
+    return selected
 
 def pathoverride(path):
     if os.path.exists(path):
@@ -292,9 +307,10 @@ if __name__ == "__main__":
         os.makedirs('input')
         print('[bright_red]ERROR: Please put your files in the \'input\' folder!')
         sys.exit()
+    selected_file_name = file_selection()
     render_choice = Prompt.ask("What render version do you want?",choices=['no-hd','hd','both'])
     no_text_choice = Prompt.ask("Do you want the frame counter?",choices=['y','n'])
-    filechecks(render_choice)
+    filechecks(render_choice,selected_file_name)
     
     f=open('input/anime.json')
     try:
