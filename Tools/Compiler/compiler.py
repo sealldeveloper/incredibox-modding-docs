@@ -282,16 +282,16 @@ def android_to_source(names,file):
 def android_to_webapp(names,js_input,file):
     try:
         print('Importing libraries...')
-        os.makedirs('temp/asar/')
+        os.makedirs('temp/asar/app/')
         os.makedirs('temp/webapp/')
         print('Unpacking templates...')
-        shutil.unpack_archive('templates/asar.zip','temp/asar/','zip')
         print('Unpacking app...')
         shutil.unpack_archive(f'input/{file}','temp/android/','zip')
         print('Organising new folder...')
         android_unpack(names)
+        shutil.unpack_archive('templates/webapp.zip','temp/asar/app/','zip')
         print('Duplicating source to webapp...')
-        for x in os.listdir('temp/asar/app'):
+        for x in os.listdir('temp/asar/app/'):
             if os.path.isdir(f'temp/asar/app/{x}'):
                 copy_tree(f'temp/asar/app/{x}',f'temp/webapp/{x}')
             elif os.path.isfile(f'temp/asar/app/{x}'):
