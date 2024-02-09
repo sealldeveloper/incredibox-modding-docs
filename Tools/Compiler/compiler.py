@@ -133,7 +133,7 @@ def webapp_format_conversion():
                 if not os.path.exists(path):
                     os.makedirs(path)
                 for y in os.listdir(path):
-                    if os.path.isfile(f'{path}/{y}') and not y.endswith('mp4'):
+                    if os.path.isfile(f'{path}/{y}') and not y.endswith('mp4') and not y.endswith('png') and not y.endswith('jpg') and not y.endswith('jpeg'):
                         newname=y.split('.')[0]
                         video = VideoFileClip(f'{path}/{y}')
                         video.write_videofile(f'{path}/{newname}.mp4')
