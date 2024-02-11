@@ -72,10 +72,11 @@ def pathoverride(path):
     os.makedirs(path)
 
 def extract_bodies(width,height,name,v):
+    global selected_file_name
     if v == "hd":
-        img = Image.open("input/anime-hd.png")
+        img = Image.open(f"input/{selected_file_name}-hd.png")
     else:
-        img = Image.open("input/anime.png")
+        img = Image.open(f"input/{selected_file_name}.png")
     imgwidth, imgheight = img.size
     print(f'({v}) Extracting bodies...')
     default=img.crop((0,0,width,height))
@@ -194,6 +195,7 @@ def compile_gifs(gifframes,defaultcheckframes,name,v,filename):
     print(f'({v}) GIFs finished!')
 
 def audio_merge(name1,name2,totalFrame,v):
+    global selected_file_name
     sfxlength = math.floor((totalFrame/2)/0.024)
     try:
         audioa=AudioSegment.from_ogg(name1)
@@ -218,9 +220,9 @@ def audio_merge(name1,name2,totalFrame,v):
         audiocombine=audioa
     else:
         audiocombine=audioa+audiob
-    audiocombine.export('output/anime.ogg',format="ogg")
+    audiocombine.export(f'output/{selected_file_name}.ogg',format="ogg")
     print(f'({v}) Audio merged, adding audio to MP4...')
-    return AudioFileClip('output/anime.ogg')
+    return AudioFileClip(f'output/{selected_file_name}.ogg')
 
 def mp4_compile(gifframes,name,totalFrame,v,filename):
     if os.path.exists('input/anime_a.ogg') or os.path.exists('input/anime_combined.ogg'):
@@ -251,11 +253,11 @@ def cleanup(name,v):
         except Exception as e:
             print(f'[bright_red]ERROR ({v}): Can\'t delete \'output/anime-hd.mp4\'! Most likely you have something already using this file. Please close the programs using this file!\n\n{str(e)}')
             sys.exit()
-    if os.path.exists('output/anime.ogg'):
+    if os.path.exists(f'output/{selected_file_name}.ogg'):
         try:
-            os.remove('output/anime.ogg')
+            os.remove(f'output/{selected_file_name}.ogg')
         except Exception as e:
-            print(f'[bright_red]ERROR ({v}): Can\'t delete \'output/anime.ogg\'! Most likely you have something already using this file. Please close the programs using this file!\n\n{str(e)}')
+            print(f'[bright_red]ERROR ({v}): Can\'t delete \'output/{selected_file_name}.ogg\'! Most likely you have something already using this file. Please close the programs using this file!\n\n{str(e)}')
             sys.exit()
     print(f'[bright_green]({v}) Compiled! Cleaning up...')
     if os.path.exists(f'output/{name}/{v}/internal'):
@@ -312,7 +314,7 @@ if __name__ == "__main__":
     no_text_choice = Prompt.ask("Do you want the frame counter?",choices=['y','n'])
     filechecks(render_choice,selected_file_name)
     
-    f=open('input/anime.json')
+    f=open(f'input/{selected_file_name}.json')
     try:
         data=json.load(f)
         height=int(data['height'])
@@ -322,7 +324,7 @@ if __name__ == "__main__":
         animation_frames=data['arrayFrame']
         name=data['animeName']
     except Exception as e:
-        print(f'[bright_red]ERROR: \'anime.json\' is not a valid animation JSON file!\n\n{str(e)}')
+        print(f'[bright_red]ERROR: \'{selected_file_name}.json\' is not a valid animation JSON file!\n\n{str(e)}')
         sys.exit()
     if not totalFrame == len(animation_frames):
         print(f'[bright_red]ERROR: The \'totalFrame\' ({totalFrame}) and the amount of frames in the \'arrayFrame\' ({len(animation_frames)}) are not the same in the JSON file! Please make them the same, by either adding more frames or updating the totalFrame.')
