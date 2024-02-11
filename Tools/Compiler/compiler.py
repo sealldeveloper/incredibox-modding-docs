@@ -134,10 +134,13 @@ def webapp_format_conversion():
                     os.makedirs(path)
                 for y in os.listdir(path):
                     if os.path.isfile(f'{path}/{y}') and not y.endswith('mp4') and not y.endswith('png') and not y.endswith('jpg') and not y.endswith('jpeg'):
-                        newname=y.split('.')[0]
-                        video = VideoFileClip(f'{path}/{y}')
-                        video.write_videofile(f'{path}/{newname}.mp4')
-                        os.remove(f'{path}/{y}')
+                        try:
+                            newname=y.split('.')[0]
+                            video = VideoFileClip(f'{path}/{y}')
+                            video.write_videofile(f'{path}/{newname}.mp4')
+                            os.remove(f'{path}/{y}')
+                        except Exception as e:
+                            print(f'[bright_blue]({x}) [default]{y} -> [bright_red]ERROR! Couldn\'t convert...\n{str(e)}')
         return assetversions
     except:
         PrintException()
