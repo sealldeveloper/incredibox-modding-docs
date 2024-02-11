@@ -171,6 +171,7 @@ def mac_to_webapp(js_input,file):
             print('[bright_red]ERROR: The \'app.asar\' doesn\'t exist! Check the app is called \'Incredibox.app\', and the \'app.asar\' exists!')
             return False
         extract_asar('temp/mac/Incredibox.app/Contents/Resources/app.asar','temp/source/')
+        shutil.unpack_archive('templates/webapp.zip','temp/source/app/','zip')
         print('Duplicating source to webapp...')
         for x in os.listdir('temp/source/app'):
             if os.path.isdir(f'temp/source/app/{x}'):
@@ -423,6 +424,7 @@ def source_to_webapp(js_input,folder):
                 copy_tree(f'input/{folder}/app/{x}',f'temp/webapp/{x}')
             elif os.path.isfile(f'input/{folder}/app/{x}'):
                 shutil.copyfile(f'input/{folder}/app/{x}',f'temp/webapp/{x}')
+        shutil.unpack_archive('templates/webapp.zip','temp/webapp/','zip')
         assetversions = webapp_format_conversion()
         if js_input == 'modify':
             jsfix('temp/webapp/js/main.min.js','ios','browser','mp3')
@@ -528,12 +530,12 @@ def windows_to_webapp(js_input,file):
         print('Unpacking asar...')
         extract_asar('temp/windows/app/resources/app.asar','temp/source/')
         print('Duplicating source to webapp...')
+        shutil.unpack_archive('templates/webapp.zip','temp/source/app/','zip')
         for x in os.listdir('temp/source/app'):
             if os.path.isdir(f'temp/source/app/{x}'):
                 copy_tree(f'temp/source/app/{x}',f'temp/webapp/{x}')
             elif os.path.isfile(f'temp/source/app/{x}'):
                 shutil.copyfile(f'temp/source/app/{x}',f'temp/webapp/{x}')
-
         assetversions = webapp_format_conversion()
         if js_input == 'modify':
             jsfix('temp/webapp/js/main.min.js','ios','browser','mp3')
