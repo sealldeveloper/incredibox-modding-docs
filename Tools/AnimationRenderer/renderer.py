@@ -59,6 +59,7 @@ def file_selection():
                 files.append(name)
                 table.add_row(name)
     print(table)
+    print("[dodger_blue1]Note: If your not seeing your files make sure the spritesheets do not contain \'-sprite\', the names for the JSON and spritesheet should be the same!")
     selected = Prompt.ask('Which file do you want to use?', choices=files, show_choices=False)
     return selected
 
