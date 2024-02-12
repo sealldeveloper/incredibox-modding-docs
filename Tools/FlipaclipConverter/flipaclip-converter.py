@@ -78,6 +78,9 @@ if __name__ == "__main__":
     for f in os.listdir('temp'):
         if f.endswith('.png'):
             files.append(f)
+    if len(files) == 0:
+        print('[bright_red]ERROR: 0 files in zip! Make sure to zip the files themselves, not a folder containing the files!')
+        sys.exit()
     allimages=[]
     frames=[]
     polishedframes={}
